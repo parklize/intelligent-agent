@@ -40,5 +40,9 @@ public class Test extends JFrame {
 		}
 		return jContentPane;
 	}
+	
+	public static void main(String[] args) {
+		System.out.println("Hello world");
+	}
 
 }
