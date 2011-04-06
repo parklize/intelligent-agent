@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:daml="http://www.daml.org/2001/03/daml+oil#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:swcl="http://iwec.yonsei.ac.kr/swcl#"
+    xmlns:pro="http://iwec.yonsei.ac.kr/ontology/Shopping.owl#"
+    xmlns="http://iwec.yonsei.ac.kr/ontology/Shopping.owl#"
+    xml:base="http://iwec.yonsei.ac.kr/ontology/Shopping.owl">
+ <owl:Ontology rdf:about="">
+   <owl:imports rdf:resource="http://iwec.yonsei.ac.kr/swcl/swcl.owl"/>
+ </owl:Ontology>
+
+
+<swcl:OPModel rdf:ID="OptimalShopping">
+	<swcl:hasSubjectTo>
+		<swcl:Subject>
+			<swcl:setOfConstraints rdf:parseType="Collection">
+				<swcl:Constraint rdf:ID="Constraint_2">
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="totalPayment">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalPayment"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>									
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="totalPaymentPerItems">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalPaymentPerItems"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+						<swcl:termBlock rdf:ID="totalDeliveryRate">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalDeliveryRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+						<swcl:termBlock rdf:ID="totalDiscountRate">								
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#minus"/>
+							<swcl:factor>
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalDiscountRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+				<swcl:Constraint rdf:ID="Constraint_3">
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="totalPaymentPerItems_2">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalPaymentPerItems"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="Price">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:aggregateOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#sigma"/>
+							<swcl:parameter rdf:resource="#z"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#PurchaseInMall"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#subTotalInMall"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+				<swcl:Constraint rdf:ID="Constraint_4">
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="totalDeliveryRate_2">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="#totalDeliveryRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="DeliveryRate">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:aggregateOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#sigma"/>   
+							<swcl:parameter>
+								<swcl:Variable rdf:ID="x">
+									<swcl:bindingClass rdf:resource="#PurchaseInMall"/>
+								</swcl:Variable>							
+							</swcl:parameter>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#x"/>
+									<swcl:bindingDatatypeProperty rdf:resource="deliveryRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+				<swcl:Constraint rdf:ID="Constraint_5">
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="totalDiscountRate_2">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#OrderList"/>
+									<swcl:bindingDatatypeProperty rdf:resource="totalDiscountRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="DiscountRate">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:aggregateOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#sigma"/>   
+							<swcl:parameter rdf:resource="#x"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#x"/>
+									<swcl:bindingDatatypeProperty rdf:resource="discountRate"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+				<swcl:Constraint rdf:ID="Constraint_6">
+					<swcl:qualifier rdf:resource="#x"/>							
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="subTotalInMall">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#PurchaseInMall"/>
+									<swcl:bindingDatatypeProperty rdf:resource="subTotalInMall"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="Price_2">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:aggregateOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#sigma"/>
+							<swcl:parameter>
+								<swcl:Variable rdf:ID="y">
+									<swcl:bindingClass rdf:resource="#CDs"/>
+								</swcl:Variable>							
+							</swcl:parameter>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#ProductInMall"/>
+									<swcl:bindingDatatypeProperty rdf:resource="hasMallSellingPrice"/>
+								</swcl:FactorAtom>
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#ShoppingItems"/>
+									<swcl:bindingDatatypeProperty rdf:resource="hasQuantityInMall"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+				<swcl:Constraint rdf:ID="Constraint_7">
+					<swcl:qualifier rdf:resource="#y"/>
+					<swcl:hasLHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="ShoppingItems">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#ProductOrder"/>
+									<swcl:bindingDatatypeProperty rdf:resource="PurchaseQuantity"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasLHS>
+					<swcl:hasOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#equal"/>
+					<swcl:hasRHS rdf:parseType="Collection">
+						<swcl:termBlock rdf:ID="ProductOrder">
+							<swcl:sign rdf:resource="http://iwec.yonsei.ac.kr/swcl#plus"/>
+							<swcl:aggregateOperator rdf:resource="http://iwec.yonsei.ac.kr/swcl#sigma"/>		
+							<swcl:parameter rdf:resource="#z"/>										
+							<swcl:factor rdf:parseType="Collection">
+								<swcl:FactorAtom>
+									<swcl:bindingClass rdf:resource="#ShoppingItems"/>
+									<swcl:bindingDatatypeProperty rdf:resource="hasQuantityInMall"/>
+								</swcl:FactorAtom>
+							</swcl:factor>
+						</swcl:termBlock>
+					</swcl:hasRHS>
+				</swcl:Constraint>
+			</swcl:setOfConstraints>
+		</swcl:Subject>
+	</swcl:hasSubjectTo>
+</swcl:OPModel>
+</rdf:RDF>

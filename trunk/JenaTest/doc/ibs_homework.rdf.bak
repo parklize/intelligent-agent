@@ -1,0 +1,28 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<Student rdf:ID="PIAOGUANGYUAN"
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns="http://iwec.yonsei.ac.kr/master#"
+            xml:base="http://www.iwec.yonsei.ac.kr/students/master#">
+     <nationality>China</nationality>
+     <sex>male</sex>
+     <age>26</age>
+     <email>parklize@gmail.com</email>
+     <phone>+82-010-5030-0405</phone>
+     <education>
+          <rdf:Bag>
+	      <rdf:li>Jilin University</rdf:li>
+ 	      <rdf:li>YUST IT Academy</rdf:li>
+	      <rdf:li>Yonsei University</rdf:li>
+	 </rdf:Bag>
+     </education>
+     <experience>
+          <rdf:Bag>
+                 <rdf:li>Part-time Korean Translator</rdf:li>
+                 <rdf:li>Eastern-Nortern Asia Expo Volunteer</rdf:li>
+	         <rdf:li>Assistant Instructor at YUST IT Academy</rdf:li>
+		<rdf:li>Natural Translation Center Freelancer</rdf:li>
+          </rdf:Bag>
+     </experience>
+</Student>
+</rdf:RDF>
