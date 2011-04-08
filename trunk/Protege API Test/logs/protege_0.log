@@ -104,3 +104,44 @@
 2011.04.06 17:49:02.312 KST INFO: 0 ms
  -- TriplePostProcessor.processPossiblyTypedResources()
 2011.04.06 17:49:02.312 KST INFO: Updating underlying frames model in 0 ms -- ProtegeOWLParser.doFinalPostProcessing()
+2011.04.07 15:22:05.968 KST INFO: *** SYSTEM START ***
+2011.04.07 15:22:08.250 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:22:08.500 KST WARNING: jess/JessException -- java.lang.NoClassDefFoundError: jess/JessException
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at edu.stanford.smi.protege.plugin.PluginUtilities.forName(Unknown Source)
+	at edu.stanford.smi.protegex.owl.swrl.bridge.SWRLRuleEngineFactory.<clinit>(Unknown Source)
+	at edu.stanford.smi.protegex.owl.swrl.sqwrl.SQWRLQueryEngineFactory.create(Unknown Source)
+	at com.park.SWRLTest.main(SWRLTest.java:53)
+Caused by: java.lang.ClassNotFoundException: jess.JessException
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:307)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:248)
+	... 6 more
+
+2011.04.07 15:45:58.093 KST INFO: *** SYSTEM START ***
+2011.04.07 15:45:58.687 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:45:58.875 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:46:18.796 KST INFO: *** SYSTEM START ***
+2011.04.07 15:46:19.390 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:46:19.515 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:51:50.953 KST INFO: *** SYSTEM START ***
+2011.04.07 15:51:51.687 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:51:52.781 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:53:51.031 KST INFO: *** SYSTEM START ***
+2011.04.07 15:53:51.656 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:53:52.234 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:54:36.953 KST INFO: *** SYSTEM START ***
+2011.04.07 15:54:37.531 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:54:38.125 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:55:18.984 KST INFO: *** SYSTEM START ***
+2011.04.07 15:55:19.562 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:55:20.140 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:58:45.093 KST INFO: *** SYSTEM START ***
+2011.04.07 15:58:45.656 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()
+2011.04.07 15:58:46.234 KST INFO: Rule engine 'SWRLJessBridge' registered with the SWRLTab. -- SWRLRuleEngineFactory.registerRuleEngine()
+2011.04.07 15:59:22.296 KST INFO: *** SYSTEM START ***
+2011.04.07 15:59:22.859 KST WARNING: [Local Folder Repository] The specified file must be a directory. (F:\workspace\SWCL\Protege_API_Practise\plugins\edu.stanford.smi.protegex.owl) -- LocalFolderRepository.update()

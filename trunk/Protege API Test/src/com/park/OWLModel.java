@@ -13,16 +13,19 @@ public class OWLModel {
 	
 	public static void main(String[] args) {
 		
-		try {
-			JenaOWLModel owlModel = ProtegeOWL.createJenaOWLModelFromReader(new FileReader("F:\\workspace\\SWCL\\Jena_API_Practise\\doc\\ShoppinOntology.owl"));
-			System.out.println(owlModel.getOWLIndividuals());
-		} catch (OntologyLoadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		/*
+		 * load owl file and print owl individuals
+		 */
+//		try {
+//			JenaOWLModel owlModel = ProtegeOWL.createJenaOWLModelFromReader(new FileReader("F:\\workspace\\SWCL\\Jena_API_Practise\\doc\\ShoppinOntology.owl"));
+//			System.out.println(owlModel.getOWLIndividuals());
+//		} catch (OntologyLoadException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	    
 		
 	}
