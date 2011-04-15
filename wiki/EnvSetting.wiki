@@ -1,0 +1,15 @@
+#labels Phase-Implementation,Phase-Deploy
+Subclipse
+http://subclipse.tigris.org/install.html
+
+Eclispse
+Helios
+
+OS
+Windows XP
+
+Protege
+4.1
+
+Ant
+1.8.2
