@@ -126,8 +126,8 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 		if (constraintsTable == null) {
 			// Initialize column headings
 			final String[] colHeads = {"Constraint Name", "Constraint"};
-			// Initialize data
-			final Object[][] data = {{"row1-col1", "row1-col2"},{"row2-col1", "row2-col2"}};
+			// Initialize data with null
+			final Object[][] data = null;
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			constraintsTable = new JTable(model);
 		}
