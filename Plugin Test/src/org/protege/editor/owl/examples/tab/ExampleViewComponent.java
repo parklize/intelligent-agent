@@ -1,6 +1,7 @@
 package org.protege.editor.owl.examples.tab;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,25 +53,24 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 
     @Override
     protected void initialiseOWLView() throws Exception {
-    	
         setLayout(new BorderLayout());
-        // generated code
-        containerPanel = getContainerPanel();
-        add(new JScrollPane(getConstraintsPanel()),BorderLayout.CENTER);
+        // add panels to the protege jPanel
+        add(getMenuPanel(),BorderLayout.NORTH);
+        add(getConstraintsPanel(),BorderLayout.CENTER);
         
         // default codes
         log.info("Example View Component initialized");
     }
     
     // generated codes
-    protected OWLClass updateView(OWLClass selectedClass){
-    	log.info("updateView is called");
+//    protected OWLClass updateView(OWLClass selectedClass){
+//    	log.info("updateView is called");
 //    	namesComponent.setText("updateView");
-    	if(selectedClass != null){
-    		System.out.println(selectedClass.toString());
-    	}
-    	return selectedClass;
-    }
+//    	if(selectedClass != null){
+//    		System.out.println(selectedClass.toString());
+//    	}
+//    	return selectedClass;
+//    }
     
     // render the class and recursively all of its subclasses
 //    private void render(OWLClass selectedClass, int indent){
@@ -85,19 +85,11 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 //    	}
 //    }
     
-    // initialize the container panel
-    private JPanel getContainerPanel(){
-    	if(containerPanel == null){
-    	   containerPanel = new JPanel();
-//    	   containerPanel.add(getMenuPanel());
-    	   containerPanel.add(getConstraintsPanel());
-    	}
-    	return containerPanel;
-    }
     // initialize the menu panel
     private JPanel getMenuPanel(){
     	if(menuPanel == null){
     	   menuPanel = new JPanel();
+    	   menuPanel.setPreferredSize(new Dimension(0,20));
     	}
     	return menuPanel;
     }
