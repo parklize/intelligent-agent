@@ -1,16 +1,14 @@
 package org.protege.editor.owl.examples.tab;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
@@ -26,7 +24,12 @@ import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLClass;
-
+/**
+ * 
+ * Author: parklize
+ * Date: 2011.04.20~
+ *
+ */
 
 
 public class ExampleViewComponent extends AbstractOWLViewComponent {
@@ -35,11 +38,11 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
     private static final Logger log = Logger.getLogger(ExampleViewComponent.class);
     
     // components for our view
-    private JPanel containerPanel = null; // 
     private JPanel menuPanel = null; // menu panel located in top
     private JPanel constraintsPanel = null; // constraintsPanel contains constraints scroll pane
     private JScrollPane constraintsScrollPane = null; // constriantsScrollPane contains constraints table
-    private JTable constraintsTable = null; //constraints table
+    private JTable constraintsTable = null; // constraints table
+    private JButton addConstraintButton = null; // add constraint button
 
     // convinience class for querying the asserted subsumption hierarchy directly
 //    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
@@ -89,7 +92,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
     private JPanel getMenuPanel(){
     	if(menuPanel == null){
     	   menuPanel = new JPanel();
+    	   menuPanel.setLayout(new BorderLayout());
     	   menuPanel.setPreferredSize(new Dimension(0,20));
+    	   menuPanel.add(getAddConstraintButton(),BorderLayout.EAST);
     	}
     	return menuPanel;
     }
@@ -127,6 +132,15 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 			constraintsTable = new JTable(model);
 		}
 		return constraintsTable;
+	}
+	// initialize the add constraint button
+	private JButton getAddConstraintButton(){
+		if(addConstraintButton == null){
+			addConstraintButton = new JButton();
+			addConstraintButton.setText("+");
+			addConstraintButton.setPreferredSize(new Dimension(20,5));
+		}
+		return addConstraintButton;
 	}
 
 
