@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.2
+Created-By: 1.6.0_21-b07 (Sun Microsystems Inc.)
+Bundle-ManifestVersion: 2
+Bundle-Name: Taxonomy Example View
+Bundle-SymbolicName: org.protege.editor.owl.examples.tab;singleton:=tr
+ ue
+Bundle-Category: protege
+Bundle-Description: An example view to demonstrate the plugin mechanis
+ m for developers
+Bundle-Vendor: The Protege Development Team
+Bundle-DocURL: http://www.co-ode.org
+Bundle-ClassPath: .
+Import-Package: org.osgi.framework,org.apache.log4j
+Bundle-Version: 1.0.0.2011_04_18_0241
+Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivato
+ r
+Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.commo
+ n,org.protege.editor.core.application,org.protege.editor.owl,org.sema
+ nticweb.owl.owlapi
+Built-By: parklize
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/protege_plugin_jars"/>
+	<classpathentry kind="lib" path="F:/Materials/Graduate paper/protege4.1/plugin_test01/build/org.protege.owl.examples.tab.jar"/>
+	<classpathentry kind="lib" path="F:/Materials/Graduate paper/protege4.1/plugin_test01/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="F:/Materials/Graduate paper/Utils/protege-plugin-needed-jars/org.semanticweb.owl.owlapi.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
