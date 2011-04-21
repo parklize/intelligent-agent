@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -71,6 +70,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
        OWLModelManager owlModelManager = getOWLModelManager();
        Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
        
+       // dump active ontology present
        for(OWLOntology owl:activeOntologies){
     	   OWLOntologyManager manager = owl.getOWLOntologyManager();
     	   manager.saveOntology(owl,new SystemOutDocumentTarget());
@@ -78,30 +78,6 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         // default codes
         log.info("Example View Component initialized");
     }
-    
-    
-    // generated codes
-//    protected OWLClass updateView(OWLClass selectedClass){
-//    	log.info("updateView is called");
-//    	namesComponent.setText("updateView");
-//    	if(selectedClass != null){
-//    		System.out.println(selectedClass.toString());
-//    	}
-//    	return selectedClass;
-//    }
-    
-    // render the class and recursively all of its subclasses
-//    private void render(OWLClass selectedClass, int indent){
-//    	for(int i=0; i<indent; i++){
-//    		namesComponent.append("\t");
-//    	}
-//    	namesComponent.append(ren.render(selectedClass));
-//    	namesComponent.append("\n");
-//    	// the hierarchy provider gets subclasses for us
-//    	for(OWLClass sub: assertedHierarchyProvider.getChildren(selectedClass)){
-//    		render(sub,indent+1);
-//    	}
-//    }
     
     // initialize the menu panel
     private JPanel getMenuPanel(){
@@ -142,9 +118,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			
 			addConstraintButton = new JButton();
 			addConstraintButton.setText("+");
-//			addConstraintButton.setPreferredSize(new Dimension(20,5));
-			// add event listener
-			addConstraintButton.addActionListener(this);
+			addConstraintButton.addActionListener(this);// add event listener
 		}
 		
 		return addConstraintButton;
@@ -158,6 +132,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			
 			generateSWCLButton = new JButton();
 			generateSWCLButton.setText("G");
+			generateSWCLButton.addActionListener(this);// add event listener
 			
 		}
 		
@@ -212,12 +187,24 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
+		
+		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
-			DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 			tableModel.addRow(new Object[]{"",""});
 		}
 		
+		// the event of clicking the G button, generate the SWCL code
+		if(e.getActionCommand().endsWith("G")){
+			int rowCount = tableModel.getRowCount();// =no. of constraints 
+			for(int i=0;i<rowCount;i++){
+				
+				System.out.println(tableModel.getValueAt(i, 0));
+				System.out.println(tableModel.getValueAt(i, 1));
+				
+			}
+		}
+		
 	}
-
 
 }
