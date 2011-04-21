@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,16 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.OWLModelManagerImpl;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+
 /**
  * 
  * Author: parklize
@@ -56,14 +53,28 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 
     @Override
     protected void initialiseOWLView() throws Exception {
+    	
+    	// set layout 
         setLayout(new BorderLayout());
+        
         // add panels to the protege jPanel
         add(getMenuPanel(),BorderLayout.NORTH);
         add(getConstraintsPanel(),BorderLayout.CENTER);
         
+// EDITING...
+       // access to the ontologies, reasoners, search renderings, change management etc.
+       OWLModelManager owlModelManager = getOWLModelManager();
+       Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
+       Iterator iterator = activeOntologies.iterator(); 
+       
+       for(OWLOntology owl:activeOntologies){
+    	   OWLOntologyManager manager = owl.getOWLOntologyManager();
+    	   manager.saveOntology(owl,new SystemOutDocumentTarget());
+       }
         // default codes
         log.info("Example View Component initialized");
     }
+    
     
     // generated codes
 //    protected OWLClass updateView(OWLClass selectedClass){
@@ -90,17 +101,24 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
     
     // initialize the menu panel
     private JPanel getMenuPanel(){
+    	
     	if(menuPanel == null){
+    		
     	   menuPanel = new JPanel();
     	   menuPanel.setLayout(new BorderLayout());
     	   menuPanel.setPreferredSize(new Dimension(0,20));
     	   menuPanel.add(getAddConstraintButton(),BorderLayout.EAST);
+    	   
     	}
+    	
     	return menuPanel;
+    	
     }
     // initialize the constraints panel
     private JPanel getConstraintsPanel(){
+    	
     	if(constraintsPanel == null){
+    		
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
 			gridBagConstraints.fill = GridBagConstraints.BOTH;
 			gridBagConstraints.gridy = 0;
@@ -110,8 +128,11 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 			constraintsPanel = new JPanel();
 			constraintsPanel.setLayout(new GridBagLayout());
 			constraintsPanel.add(getConstraintsScrollPane(), gridBagConstraints);
+			
     	}
+    	
     	return constraintsPanel;
+    	
     }
     // initialize the constraints scroll pane
     private JScrollPane getConstraintsScrollPane(){
@@ -123,24 +144,33 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
     }
     // initialize the constraints table
 	private JTable getConstraintsTable() {
+		
 		if (constraintsTable == null) {
 			// Initialize column headings
 			final String[] colHeads = {"Constraint Name", "Constraint"};
 			// Initialize data with null
 			final Object[][] data = null;
+			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			constraintsTable = new JTable(model);
 		}
+		
 		return constraintsTable;
+		
 	}
 	// initialize the add constraint button
 	private JButton getAddConstraintButton(){
+		
 		if(addConstraintButton == null){
+			
 			addConstraintButton = new JButton();
 			addConstraintButton.setText("+");
 			addConstraintButton.setPreferredSize(new Dimension(20,5));
+			
 		}
+		
 		return addConstraintButton;
+		
 	}
 
 

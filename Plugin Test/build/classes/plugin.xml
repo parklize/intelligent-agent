@@ -1,10 +1,19 @@
-<?xml version="1.0" ?>
-  <plugin>
-  	<extension id="org.coode.taxonomy.TabbedHierarchyView"
-			point="org.protege.editor.core.application.ViewComponent">
-  		<label value="Tabbed Subclasses"/>
-  		<class value="org.coode.taxonomy.TabbedHierarchyView"/>
-  		<headerColor value="@org.protege.classcolor"/>
-  		<category value="@org.protege.classcategory"/>
-  	</extension>
-  </plugin>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   <extension id="ExampleViewComponent"
+              point="org.protege.editor.core.application.ViewComponent">
+      <label value="Example View Component"/>
+      <class value="org.protege.editor.owl.examples.tab.ExampleViewComponent"/>
+      <category value="@org.protege.ontologycategory"/>
+   </extension>
+   <extension id="ExampleWorkspaceTab"
+              point="org.protege.editor.core.application.WorkspaceTab">
+      <label value="Example Tab"/>
+      <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
+      <index value="X"/>
+      <editorKitId value="OWLEditorKit"/>
+      <defaultViewConfigFileName value="viewconfig-exampleTab.xml"/>
+   </extension>
+</plugin>
