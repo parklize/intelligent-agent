@@ -50,6 +50,7 @@ public class ClassAndInstance {
 			
 			// dump the ontology to stdout
 			manager.saveOntology(ontology,new SystemOutDocumentTarget());
+System.out.println("edited");
 			
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
