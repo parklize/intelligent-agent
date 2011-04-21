@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -25,21 +28,23 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * 
  * Author: parklize
  * Date: 2011.04.20~
- *
+ * 
  */
 
 
-public class ExampleViewComponent extends AbstractOWLViewComponent {
+public class ExampleViewComponent extends AbstractOWLViewComponent implements ActionListener{
 	// default codes
     private static final long serialVersionUID = -4515710047558710080L;
     private static final Logger log = Logger.getLogger(ExampleViewComponent.class);
     
     // components for our view
     private JPanel menuPanel = null; // menu panel located in top
+    private JPanel buttonsPanel = null; // buttons panel located at east of menu panel
     private JPanel constraintsPanel = null; // constraintsPanel contains constraints scroll pane
     private JScrollPane constraintsScrollPane = null; // constriantsScrollPane contains constraints table
     private JTable constraintsTable = null; // constraints table
     private JButton addConstraintButton = null; // add constraint button
+    private JButton generateSWCLButton = null; // button to generate SWCL code
 
     // convinience class for querying the asserted subsumption hierarchy directly
 //    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
@@ -65,7 +70,6 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
        // access to the ontologies, reasoners, search renderings, change management etc.
        OWLModelManager owlModelManager = getOWLModelManager();
        Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
-       Iterator iterator = activeOntologies.iterator(); 
        
        for(OWLOntology owl:activeOntologies){
     	   OWLOntologyManager manager = owl.getOWLOntologyManager();
@@ -107,13 +111,59 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
     	   menuPanel = new JPanel();
     	   menuPanel.setLayout(new BorderLayout());
     	   menuPanel.setPreferredSize(new Dimension(0,20));
-    	   menuPanel.add(getAddConstraintButton(),BorderLayout.EAST);
+    	   menuPanel.add(getButtonsPanel(),BorderLayout.EAST);
     	   
     	}
     	
     	return menuPanel;
     	
     }
+    
+    // initialize the buttons panel
+    private JPanel getButtonsPanel(){
+    	
+    	if(buttonsPanel == null){
+    		
+    		buttonsPanel = new JPanel();
+    		buttonsPanel.setLayout(new GridLayout());
+    		buttonsPanel.setPreferredSize(new Dimension(60,0));
+    		buttonsPanel.add(getAddConstraintButton());
+    		buttonsPanel.add(getGenerateSWCLButton());
+    	}
+    	
+    	return buttonsPanel;
+    	
+    }
+    
+	// initialize the add constraint button
+	private JButton getAddConstraintButton(){
+		
+		if(addConstraintButton == null){
+			
+			addConstraintButton = new JButton();
+			addConstraintButton.setText("+");
+//			addConstraintButton.setPreferredSize(new Dimension(20,5));
+			// add event listener
+			addConstraintButton.addActionListener(this);
+		}
+		
+		return addConstraintButton;
+		
+	}
+	
+	// initialize the generate SWCL code button
+	private JButton getGenerateSWCLButton(){
+		
+		if(generateSWCLButton == null){
+			
+			generateSWCLButton = new JButton();
+			generateSWCLButton.setText("G");
+			
+		}
+		
+		return generateSWCLButton;
+	}
+
     // initialize the constraints panel
     private JPanel getConstraintsPanel(){
     	
@@ -158,18 +208,14 @@ public class ExampleViewComponent extends AbstractOWLViewComponent {
 		return constraintsTable;
 		
 	}
-	// initialize the add constraint button
-	private JButton getAddConstraintButton(){
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		
-		if(addConstraintButton == null){
-			
-			addConstraintButton = new JButton();
-			addConstraintButton.setText("+");
-			addConstraintButton.setPreferredSize(new Dimension(20,5));
-			
+		if(e.getActionCommand().equals("+")){
+			DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
+			tableModel.addRow(new Object[]{"",""});
 		}
-		
-		return addConstraintButton;
 		
 	}
 
