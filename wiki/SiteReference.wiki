@@ -1,4 +1,4 @@
-#labels Phase-Implementation
+#labels Phase-Implementation,relatedsites
 http://protegewiki.stanford.edu/wiki/P4APIOverview#Overview
 http://protege.stanford.edu/protege/4.1/docs/api/
 http://protegewiki.stanford.edu/wiki/PluginAnatomy
