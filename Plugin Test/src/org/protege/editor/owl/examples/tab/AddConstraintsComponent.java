@@ -5,19 +5,16 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
-import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import java.awt.Cursor;
+import java.awt.Color;
 /**
  * 
  * Author: parklize
@@ -38,6 +35,17 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JPanel containerPanel = null;
 	private JPanel menuPanel = null;
 	private JButton add = null;
+	private JComboBox optionsComboBox = null;
+	private JScrollPane lhsScrollPane = null;
+	private JPanel lhsPanel = null;
+	private JLabel lhsLable = null;
+	private JLabel rhsLabel = null;
+	private JScrollPane rhsScrollPane = null;
+	private JPanel rhsPanel = null;
+	private JScrollPane qualifierScrollPane = null;
+	private JPanel qualifierPanel = null;
+	private int qualifierNumber = 0;
+	
 	/**
 	 * This is the default constructor
 	 */
@@ -57,11 +65,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.setTitle("SWCL");
 	}
 
-	/**
-	 * This method initializes jContentPane
-	 * 
-	 * @return javax.swing.JPanel
-	 */
+	// jContentPane
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
@@ -70,48 +74,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return jContentPane;
 	}
-
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getJPanel() {
-		if (constraintPanel == null) {
-			qualifierLabel = new JLabel();
-			qualifierLabel.setBounds(new Rectangle(35, 32, 60, 18));
-			qualifierLabel.setText("qualifier:");
-			operatorLabel = new JLabel();
-			operatorLabel.setBounds(new Rectangle(34, 76, 60, 18));
-			operatorLabel.setText("operator:");
-			constraintPanel = new JPanel();
-			constraintPanel.setLayout(null);
-			constraintPanel.add(operatorLabel, null);
-			constraintPanel.add(getOperatorComboBox(), null);
-			constraintPanel.add(qualifierLabel, null);
-//			constraintPanel.setPreferredSize(new Dimension(0,800));
-		}
-		return constraintPanel;
-	}
-
-	/**
-	 * This method initializes operatorComboBox	
-	 * 	
-	 * @return javax.swing.JComboBox	
-	 */
-	private JComboBox getOperatorComboBox() {
-		if (operatorComboBox == null) {
-			String[] operatorList = {"equal","notEqual","lessThan","lessThanOrEqual","greaterThan","greaterThanOrEqual"};
-			operatorComboBox = new JComboBox(operatorList);
-			operatorComboBox.setBounds(new Rectangle(125, 76, 140, 27));
-		}
-		return operatorComboBox;
-	}
-	/**
-	 * This method initializes jScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
+	
+	// content Scroll pane
 	private JScrollPane getJScrollPane() {
 		if (containerScrollPane == null) {
 			containerScrollPane = new JScrollPane();
@@ -120,12 +84,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return containerScrollPane;
 	}
-
-	/**
-	 * This method initializes containerPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
+	// containter panel
 	private JPanel getContainerPanel() {
 		if (containerPanel == null) {
 			containerPanel = new JPanel();
@@ -136,12 +95,48 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return containerPanel;
 	}
+	
+	// constraint Panel
+	private JPanel getJPanel() {
+		if (constraintPanel == null) {
+			rhsLabel = new JLabel();
+			rhsLabel.setBounds(new Rectangle(33, 302, 60, 18));
+			rhsLabel.setText("RHS:");
+			lhsLable = new JLabel();
+			lhsLable.setBounds(new Rectangle(34, 149, 60, 18));
+			lhsLable.setText("LHS:");
+			qualifierLabel = new JLabel();
+			qualifierLabel.setBounds(new Rectangle(34, 452, 60, 18));
+			qualifierLabel.setText("qualifier:");
+			operatorLabel = new JLabel();
+			operatorLabel.setBounds(new Rectangle(32, 45, 60, 18));
+			operatorLabel.setText("operator:");
+			constraintPanel = new JPanel();
+			constraintPanel.setLayout(null);
+			constraintPanel.add(operatorLabel, null);
+			constraintPanel.add(getOperatorComboBox(), null);
+			constraintPanel.add(qualifierLabel, null);
+//			constraintPanel.setPreferredSize(new Dimension(0,800));
+			constraintPanel.add(getLhsScrollPane(), null);
+			constraintPanel.add(lhsLable, null);
+			constraintPanel.add(rhsLabel, null);
+			constraintPanel.add(getRhsScrollPane(), null);
+			constraintPanel.add(getQualifierScrollPane(), null);
+		}
+		return constraintPanel;
+	}
 
-	/**
-	 * This method initializes menuPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
+	// operator Combobox
+	private JComboBox getOperatorComboBox() {
+		if (operatorComboBox == null) {
+			String[] operatorList = {"equal","notEqual","lessThan","lessThanOrEqual","greaterThan","greaterThanOrEqual"};
+			operatorComboBox = new JComboBox(operatorList);
+			operatorComboBox.setBounds(new Rectangle(140, 45, 140, 27));
+		}
+		return operatorComboBox;
+	}
+	
+	// menu panel
 	private JPanel getMenuPanel() {
 		if (menuPanel == null) {
 			menuPanel = new JPanel();
@@ -149,28 +144,23 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			menuPanel.setPreferredSize(new Dimension(0,50));
 			menuPanel.add(getOkButton(), null);
 			menuPanel.add(getADD(), null);
+			menuPanel.add(getOptionsComboBox(), null);
 		}
 		return menuPanel;
 	}
 
-	/**
-	 * This method initializes ADD	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
+	// Add Button
 	private JButton getADD() {
 		if (add == null) {
 			add = new JButton();
-			add.setBounds(new Rectangle(60, 9, 69, 28));
+			add.setBounds(new Rectangle(190, 10, 69, 28));
 			add.setText("ADD");
+			add.addActionListener(this);
 		}
 		return add;
 	}
-	/**
-	 * This method initializes okButton	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
+	
+	// OK button
 	private JButton getOkButton() {
 		if (okButton == null) {
 			okButton = new JButton();
@@ -180,12 +170,107 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return okButton;
 	}
+	
+	// options
+	private JComboBox getOptionsComboBox() {
+		if (optionsComboBox == null) {
+			String[] options = {"qualifier","LHS Termblock","RHS Termblock"};
+			optionsComboBox = new JComboBox(options);
+			optionsComboBox.setBounds(new Rectangle(27, 10, 119, 28));
+		}
+		return optionsComboBox;
+	}
+	
+	// LHS scroll pane
+	private JScrollPane getLhsScrollPane() {
+		if (lhsScrollPane == null) {
+			lhsScrollPane = new JScrollPane();
+			lhsScrollPane.setBounds(new Rectangle(142, 149, 501, 112));
+			lhsScrollPane.setViewportView(getLhsPanel());
+		}
+		return lhsScrollPane;
+	}
+
+	// LHS panel
+	private JPanel getLhsPanel() {
+		if (lhsPanel == null) {
+			lhsPanel = new JPanel();
+			lhsPanel.setLayout(new GridBagLayout());
+		}
+		return lhsPanel;
+	}
+
+	// RHS scroll pane
+	private JScrollPane getRhsScrollPane() {
+		if (rhsScrollPane == null) {
+			rhsScrollPane = new JScrollPane();
+			rhsScrollPane.setBounds(new Rectangle(141, 302, 501, 112));
+			rhsScrollPane.setViewportView(getRhsPanel());
+		}
+		return rhsScrollPane;
+	}
+
+	// RHS panel
+	private JPanel getRhsPanel() {
+		if (rhsPanel == null) {
+			rhsPanel = new JPanel();
+			rhsPanel.setLayout(new GridBagLayout());
+		}
+		return rhsPanel;
+	}
+
+	// Qualifier Scroll pane
+	private JScrollPane getQualifierScrollPane() {
+		if (qualifierScrollPane == null) {
+			qualifierScrollPane = new JScrollPane();
+			qualifierScrollPane.setBounds(new Rectangle(142, 452, 501, 112));
+			qualifierScrollPane.setViewportView(getQualifierPanel());
+		}
+		return qualifierScrollPane;
+	}
+
+	// Qualifier panel for all qualifiers
+	private JPanel getQualifierPanel() {
+		if (qualifierPanel == null) {
+			qualifierPanel = new JPanel();
+			qualifierPanel.setLayout(null);
+
+		}
+		return qualifierPanel;
+	}
+
+	// qualifier panel 
+	private JPanel getQPanel(int qualifierNumber) {
+
+System.out.println(qualifierNumber);
+			JPanel qPanel = new JPanel();
+			qPanel.setLayout(new GridBagLayout());
+			qPanel.setBounds(new Rectangle(0, 25*qualifierNumber, 499, 25));
+			qPanel.setBackground(new Color(238, 238, 0));
+			
+			double qualifierPanelHeight = qualifierPanel.getPreferredSize().getHeight()+25;
+System.out.println(qualifierPanelHeight);
+			qualifierPanel.setPreferredSize(new Dimension(0,(int)qualifierPanelHeight));
+			qualifierScrollPane.revalidate();// check scroll bar necessity 
+
+		return qPanel;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// OK event
 		if(e.getActionCommand().equals("OK")){
 			System.out.println(operatorComboBox.getSelectedItem());
 		}
+		// ADD event
+		if(e.getActionCommand().equals("ADD")){
+			if(optionsComboBox.getSelectedItem().equals("qualifier")){
+				qualifierPanel.add(getQPanel(qualifierNumber),null);
+				qualifierPanel.repaint();
+				qualifierNumber++;
+			}
+		}
 		
 	}
+
 }  
