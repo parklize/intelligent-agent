@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +28,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * 
  * Author: parklize
  * Date: 2011.04.20~
+ * Description: SWCL view component in Protege
  * 
  */
 
@@ -192,6 +194,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
 			tableModel.addRow(new Object[]{"",""});
+			// create add constraint component
+			AddConstraintsComponent acc = new AddConstraintsComponent();
+			acc.setVisible(true);
 		}
 		
 		// the event of clicking the G button, generate the SWCL code
