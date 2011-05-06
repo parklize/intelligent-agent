@@ -9,20 +9,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+
 
 /**
  * 
@@ -133,7 +139,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		if(generateSWCLButton == null){
 			
 			generateSWCLButton = new JButton();
-			generateSWCLButton.setText("G");
+			generateSWCLButton.setText("D");
 			generateSWCLButton.addActionListener(this);// add event listener
 			
 		}
@@ -174,12 +180,19 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		
 		if (constraintsTable == null) {
 			// Initialize column headings
-			final String[] colHeads = {"Constraint Name", "Constraint"};
+			final String[] colHeads = {"Enabled","Constraint Name", "Constraint"};
 			// Initialize data with null
 			final Object[][] data = null;
 			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			constraintsTable = new JTable(model);
+			
+			TableColumn tableColumn = constraintsTable.getColumn("Enabled");
+			tableColumn.setMaxWidth(50);
+			tableColumn.setMinWidth(50);
+			tableColumn.setCellEditor(new CheckButtonEditor(new JCheckBox()));
+			tableColumn.setCellRenderer(new CheckBoxRenderer());// renderer for displaying the checkbox component in the cell
+			
 		}
 		
 		return constraintsTable;
@@ -193,7 +206,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
-			tableModel.addRow(new Object[]{"",""});
+			JCheckBox jb = new JCheckBox();
+			jb.setHorizontalAlignment(SwingConstants.CENTER);
+			tableModel.addRow(new Object[]{jb,"",""});
 			// create add constraint component
 			AddConstraintsComponent acc = new AddConstraintsComponent();
 			acc.setVisible(true);

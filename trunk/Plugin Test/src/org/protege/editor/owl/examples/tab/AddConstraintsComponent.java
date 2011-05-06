@@ -45,6 +45,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane qualifierScrollPane = null;
 	private JPanel qualifierPanel = null;
 	private int qualifierNumber = 0;
+	private int lhsTermblockNumber = 0;
+	private int rhsTermblockNumber = 0;
 	
 	/**
 	 * This is the default constructor
@@ -250,7 +252,7 @@ System.out.println(qualifierNumber);
 			
 			double qualifierPanelHeight = qualifierPanel.getPreferredSize().getHeight()+25;
 System.out.println(qualifierPanelHeight);
-			qualifierPanel.setPreferredSize(new Dimension(0,(int)qualifierPanelHeight));
+			qualifierPanel.setPreferredSize(new Dimension(0,(int)qualifierPanelHeight));// resize qualifierPanel
 			qualifierScrollPane.revalidate();// check scroll bar necessity 
 
 		return qPanel;
@@ -264,11 +266,18 @@ System.out.println(qualifierPanelHeight);
 		}
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){
-			if(optionsComboBox.getSelectedItem().equals("qualifier")){
+			String selectedItem = (String) optionsComboBox.getSelectedItem();
+			// Add qualifier
+			if(selectedItem.equals("qualifier")){
 				qualifierPanel.add(getQPanel(qualifierNumber),null);
 				qualifierPanel.repaint();
 				qualifierNumber++;
+			}else if(selectedItem.equals("LHS Termblock")){
+				
+			}else if(selectedItem.equals("RHS Termblock")){
+				
 			}
+			
 		}
 		
 	}
