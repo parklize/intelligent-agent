@@ -65,6 +65,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.setSize(680, 680);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);// delete process in memory
 	}
 
 	// jContentPane
@@ -102,17 +103,17 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JPanel getJPanel() {
 		if (constraintPanel == null) {
 			rhsLabel = new JLabel();
-			rhsLabel.setBounds(new Rectangle(33, 302, 60, 18));
+			rhsLabel.setBounds(new Rectangle(33, 350, 60, 18));
 			rhsLabel.setText("RHS:");
 			lhsLable = new JLabel();
-			lhsLable.setBounds(new Rectangle(34, 149, 60, 18));
+			lhsLable.setBounds(new Rectangle(33, 170, 60, 18));
 			lhsLable.setText("LHS:");
 			qualifierLabel = new JLabel();
-			qualifierLabel.setBounds(new Rectangle(34, 452, 60, 18));
-			qualifierLabel.setText("qualifier:");
+			qualifierLabel.setBounds(new Rectangle(33, 45, 75, 18));
+			qualifierLabel.setText("QUALIFIER:");
 			operatorLabel = new JLabel();
-			operatorLabel.setBounds(new Rectangle(32, 45, 60, 18));
-			operatorLabel.setText("operator:");
+			operatorLabel.setBounds(new Rectangle(33, 295, 75, 18));
+			operatorLabel.setText("OPERATOR:");
 			constraintPanel = new JPanel();
 			constraintPanel.setLayout(null);
 			constraintPanel.add(operatorLabel, null);
@@ -133,7 +134,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (operatorComboBox == null) {
 			String[] operatorList = {"equal","notEqual","lessThan","lessThanOrEqual","greaterThan","greaterThanOrEqual"};
 			operatorComboBox = new JComboBox(operatorList);
-			operatorComboBox.setBounds(new Rectangle(140, 45, 140, 27));
+			operatorComboBox.setBounds(new Rectangle(140, 295, 140, 27));
 		}
 		return operatorComboBox;
 	}
@@ -176,7 +177,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// options
 	private JComboBox getOptionsComboBox() {
 		if (optionsComboBox == null) {
-			String[] options = {"qualifier","LHS Termblock","RHS Termblock"};
+			String[] options = {"QUALIFIER","LHS Termblock","RHS Termblock"};
 			optionsComboBox = new JComboBox(options);
 			optionsComboBox.setBounds(new Rectangle(27, 10, 119, 28));
 		}
@@ -187,7 +188,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getLhsScrollPane() {
 		if (lhsScrollPane == null) {
 			lhsScrollPane = new JScrollPane();
-			lhsScrollPane.setBounds(new Rectangle(142, 149, 501, 112));
+			lhsScrollPane.setBounds(new Rectangle(142, 170, 500, 120));
 			lhsScrollPane.setViewportView(getLhsPanel());
 		}
 		return lhsScrollPane;
@@ -201,31 +202,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return lhsPanel;
 	}
-
-	// RHS scroll pane
-	private JScrollPane getRhsScrollPane() {
-		if (rhsScrollPane == null) {
-			rhsScrollPane = new JScrollPane();
-			rhsScrollPane.setBounds(new Rectangle(141, 302, 501, 112));
-			rhsScrollPane.setViewportView(getRhsPanel());
-		}
-		return rhsScrollPane;
-	}
-
-	// RHS panel
-	private JPanel getRhsPanel() {
-		if (rhsPanel == null) {
-			rhsPanel = new JPanel();
-			rhsPanel.setLayout(new GridBagLayout());
-		}
-		return rhsPanel;
-	}
-
+	
 	// Qualifier Scroll pane
 	private JScrollPane getQualifierScrollPane() {
 		if (qualifierScrollPane == null) {
 			qualifierScrollPane = new JScrollPane();
-			qualifierScrollPane.setBounds(new Rectangle(142, 452, 501, 112));
+			qualifierScrollPane.setBounds(new Rectangle(142, 45, 500, 120));
 			qualifierScrollPane.setViewportView(getQualifierPanel());
 		}
 		return qualifierScrollPane;
@@ -244,38 +226,97 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// qualifier panel 
 	private JPanel getQPanel(int qualifierNumber) {
 
-System.out.println(qualifierNumber);
+//System.out.println(qualifierNumber);
 			JPanel qPanel = new JPanel();
 			qPanel.setLayout(new GridBagLayout());
-			qPanel.setBounds(new Rectangle(0, 25*qualifierNumber, 499, 25));
-			qPanel.setBackground(new Color(238, 238, 0));
+			qPanel.setBounds(new Rectangle(0, 25*qualifierNumber, 500, 25));
+			qPanel.setBackground(new Color(238, 0, 0));
 			
 			double qualifierPanelHeight = qualifierPanel.getPreferredSize().getHeight()+25;
-System.out.println(qualifierPanelHeight);
+//System.out.println(qualifierPanelHeight);
 			qualifierPanel.setPreferredSize(new Dimension(0,(int)qualifierPanelHeight));// resize qualifierPanel
 			qualifierScrollPane.revalidate();// check scroll bar necessity 
 
 		return qPanel;
 	}
 	
+	// RHS scroll pane
+	private JScrollPane getRhsScrollPane() {
+		if (rhsScrollPane == null) {
+			rhsScrollPane = new JScrollPane();
+			rhsScrollPane.setBounds(new Rectangle(141, 350, 500, 120));
+			rhsScrollPane.setViewportView(getRhsPanel());
+		}
+		return rhsScrollPane;
+	}
+	
+	// RHS panel
+	private JPanel getRhsPanel() {
+		if (rhsPanel == null) {
+			rhsPanel = new JPanel();
+			rhsPanel.setLayout(null);
+		}
+		return rhsPanel;
+	}
+	// RHS Termblock panel 
+	private JPanel getRHSTermblockPanel(int rhsTermblockNumber) {
+
+//System.out.println(rhsTermblockNumber);
+			JPanel rhsTermblock = new JPanel();
+			rhsTermblock.setLayout(null);
+			rhsTermblock.setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
+			rhsTermblock.setBackground(new Color(238, 0, 194));
+			
+			// sign combo box
+			String[] sign = {"+","-"};
+			JComboBox signComboBox = new JComboBox(sign);
+			signComboBox.setBounds(10, 10, 50, 28);
+			
+			// aggregateOpperator
+			String[] aggregateOpp = {" ","sigma","production"};
+			JComboBox aggregateOppComboBox = new JComboBox(aggregateOpp);
+			aggregateOppComboBox.setBounds(70, 10, 70, 28);
+			
+			// add components to rhsTermblock
+			rhsTermblock.add(signComboBox);
+			rhsTermblock.add(aggregateOppComboBox);
+			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+60;
+//System.out.println(rhsPanelHeight);
+			rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));// resize rhsPanel
+			rhsScrollPane.revalidate();// check scroll bar necessity 
+
+		return rhsTermblock;
+	}
+
+	
+	
+	
+
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// OK event
 		if(e.getActionCommand().equals("OK")){
 			System.out.println(operatorComboBox.getSelectedItem());
+			System.out.println((rhsPanel.getComponent(1)));
 		}
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){
 			String selectedItem = (String) optionsComboBox.getSelectedItem();
 			// Add qualifier
-			if(selectedItem.equals("qualifier")){
+			if(selectedItem.equals("QUALIFIER")){
+System.out.println("this is qualifier");
 				qualifierPanel.add(getQPanel(qualifierNumber),null);
 				qualifierPanel.repaint();
 				qualifierNumber++;
 			}else if(selectedItem.equals("LHS Termblock")){
 				
-			}else if(selectedItem.equals("RHS Termblock")){
 				
+			}else if(selectedItem.equals("RHS Termblock")){
+System.out.println("this is RHS Termblock");
+				rhsPanel.add(getRHSTermblockPanel(rhsTermblockNumber),null);
+				rhsPanel.repaint();
+				rhsTermblockNumber++;
 			}
 			
 		}

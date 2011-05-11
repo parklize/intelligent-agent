@@ -9,15 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -206,8 +203,10 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
+			// set alignment of jcheckbox to center
 			JCheckBox jb = new JCheckBox();
 			jb.setHorizontalAlignment(SwingConstants.CENTER);
+			
 			tableModel.addRow(new Object[]{jb,"",""});
 			// create add constraint component
 			AddConstraintsComponent acc = new AddConstraintsComponent();
@@ -215,12 +214,14 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		}
 		
 		// the event of clicking the G button, generate the SWCL code
-		if(e.getActionCommand().endsWith("G")){
+		if(e.getActionCommand().endsWith("D")){
 			int rowCount = tableModel.getRowCount();// =no. of constraints 
 			for(int i=0;i<rowCount;i++){
 				
-				System.out.println(tableModel.getValueAt(i, 0));
+				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+				System.out.println(jcb.isSelected());
 				System.out.println(tableModel.getValueAt(i, 1));
+				System.out.println(tableModel.getValueAt(i, 2));
 				
 			}
 		}
