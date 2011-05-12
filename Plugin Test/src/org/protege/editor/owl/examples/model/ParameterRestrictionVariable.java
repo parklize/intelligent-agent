@@ -1,15 +1,15 @@
 package org.protege.editor.owl.examples.model;
 
-public class ParameterQualifierVariable extends Variable{
+public class ParameterRestrictionVariable extends Variable{
 	
-	private Qualifier qualifer;
+	private Variable hasValue;
 	private String onProperty;
 	
-	public Qualifier getQualifer() {
-		return qualifer;
+	public Variable getHasValue() {
+		return hasValue;
 	}
-	public void setQualifer(Qualifier qualifer) {
-		this.qualifer = qualifer;
+	public void setHasValue(Variable hasValue) {
+		this.hasValue = hasValue;
 	}
 	public String getOnProperty() {
 		return onProperty;
@@ -18,4 +18,5 @@ public class ParameterQualifierVariable extends Variable{
 		this.onProperty = onProperty;
 	}
 	
+
 }
