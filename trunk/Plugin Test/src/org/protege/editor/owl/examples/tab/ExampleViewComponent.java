@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.owl.examples.utils.CheckBoxRenderer;
+import org.protege.editor.owl.examples.utils.CheckButtonEditor;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;

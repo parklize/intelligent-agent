@@ -1,4 +1,4 @@
-package org.protege.editor.owl.examples.tab;
+package org.protege.editor.owl.examples.utils;
 
 import java.awt.Component;
 import java.awt.event.ItemEvent;
