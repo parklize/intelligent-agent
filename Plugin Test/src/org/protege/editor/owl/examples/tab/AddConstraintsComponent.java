@@ -24,6 +24,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import org.protege.editor.owl.examples.utils.CheckBoxRenderer;
+import javax.swing.JCheckBox;
 /**
  * 
  * Author: parklize
@@ -64,7 +65,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton jButton = null;
 	private JLabel signLabel = null;
 	private JLabel AggOp = null;
-	private JLabel factor = null;
 	private JButton addTermblock = null;
 	private JComboBox signComboBox = null;
 	private JButton addParameter = null;
@@ -73,6 +73,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane parametersScrollPane = null;
 	private JTable parametersTable = null;
 	private JComboBox parameterComboBox = null;
+	private JComboBox factorsComboBox = null;
+	private JScrollPane factorsScrollPane = null;
+	private JTable factorsTable = null;
 	/**
 	 * This is the default constructor
 	 */
@@ -352,10 +355,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// Termblock panel inside add Termblock panel
 	private JPanel getAddTermblockPanelTermblockPanel() {
 		if (addTermblockPanelTermblockPanel == null) {
-			factor = new JLabel();
-			factor.setBounds(new Rectangle(393, 9, 38, 18));
-			factor.setHorizontalAlignment(SwingConstants.CENTER);
-			factor.setText("Factor");
 			AggOp = new JLabel();
 			AggOp.setBounds(new Rectangle(80, 9, 38, 18));
 			AggOp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -370,13 +369,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			addTermblockPanelTermblockPanel.setOpaque(false);
 			addTermblockPanelTermblockPanel.add(signLabel, null);
 			addTermblockPanelTermblockPanel.add(AggOp, null);
-			addTermblockPanelTermblockPanel.add(factor, null);
 			addTermblockPanelTermblockPanel.add(getSignComboBox(), null);
 			addTermblockPanelTermblockPanel.add(getAddParameter(), null);
 			addTermblockPanelTermblockPanel.add(getAddFactor(), null);
 			addTermblockPanelTermblockPanel.add(getAggOpComboBox(), null);
-//			addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
 			addTermblockPanelTermblockPanel.add(getParameterComboBox(), null);
+			addTermblockPanelTermblockPanel.add(getFactorsComboBox(), null);
+			addTermblockPanelTermblockPanel.add(getFactorsScrollPane(), null);
+			addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
 		}
 		return addTermblockPanelTermblockPanel;
 	}
@@ -411,27 +411,33 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 				public void actionPerformed(ActionEvent e) {
 					
 					int selectedIndex = parameterComboBox.getSelectedIndex();
+					DefaultTableModel tableModel = (DefaultTableModel) parametersTable.getModel();
 					
 					if(selectedIndex == 1){
-						// add class parameter
+						// set visible class parameter
 						
 					}else if(selectedIndex == 0){
 						//add qualifier parameter
-						addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
+						parametersScrollPane.setVisible(true);
 						
+						// has value
 						TableColumn hasValue = parametersTable.getColumnModel().getColumn(1);
 						JComboBox hasValueList = new JComboBox();// get values from existing data
 						hasValueList.addItem("A");
 						hasValueList.addItem("B");
 						hasValue.setCellEditor(new DefaultCellEditor(hasValueList));
-						DefaultTableModel tableModel = (DefaultTableModel) parametersTable.getModel();
-						tableModel.addRow(new Object[]{"","A",""});
+
+						// on property
+						TableColumn onProperty = parametersTable.getColumnModel().getColumn(2);
+						JComboBox onPropertyList = new JComboBox();// get properties from hasValue
+						onPropertyList.addItem("A");
+						onProperty.setCellEditor(new DefaultCellEditor(onPropertyList));
+						
+						// add row
+						tableModel.addRow(new Object[]{"","A","A"});
 					}
-					
 				}
-				
 			});
-	
 		}
 		return addParameter;
 	}
@@ -442,7 +448,41 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			addFactor = new JButton();
 			addFactor.setBounds(new Rectangle(442, 8, 41, 19));
 			addFactor.setText("+");
-			addFactor.addActionListener(this);
+			addFactor.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+
+					int selectedIndex = factorsComboBox.getSelectedIndex();
+					DefaultTableModel tableModel = (DefaultTableModel) factorsTable.getModel();
+					
+					if(selectedIndex == 0){
+						// add class factors
+						factorsScrollPane.setVisible(true);
+						
+						// variable
+						TableColumn variable = factorsTable.getColumnModel().getColumn(0);
+						JComboBox variableList = new JComboBox();// get variables from existing data
+						variableList.addItem("C");
+						variableList.addItem("D");
+						variable.setCellEditor(new DefaultCellEditor(variableList));
+						
+						// property
+						TableColumn property = factorsTable.getColumnModel().getColumn(1);
+						JComboBox propertyList = new JComboBox();
+						propertyList.addItem("D");
+						propertyList.addItem("E");
+						property.setCellEditor(new DefaultCellEditor(propertyList));
+						
+						// add row
+						tableModel.addRow(new Object[]{"C","C"});
+						
+					}else if(selectedIndex == 1){
+						
+					}
+					
+				}
+				
+			});
 		}
 		return addFactor;
 	}
@@ -463,6 +503,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			parametersScrollPane = new JScrollPane();
 			parametersScrollPane.setBounds(new Rectangle(168, 36, 186, 55));
 			parametersScrollPane.setViewportView(getParametersTable());
+			parametersScrollPane.setVisible(false);
 		}
 		return parametersScrollPane;
 	}
@@ -474,11 +515,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			final String[] colHeads = {"Variable","hasValue","Onproperty"};
 			final Object[][] data = null;
 			
-			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			parametersTable = new JTable(model);
-			
-
 
 		}
 		return parametersTable;
@@ -494,6 +532,38 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return parameterComboBox;
 	}
 	
+	// factors combobox
+	private JComboBox getFactorsComboBox() {
+		if (factorsComboBox == null) {
+			final String[] factors = {"Cfactor","Ifactor"};
+			factorsComboBox = new JComboBox(factors);
+			factorsComboBox.setBounds(new Rectangle(344, 8, 90, 18));
+		}
+		return factorsComboBox;
+	}
+
+	// factors scrollpane
+	private JScrollPane getFactorsScrollPane() {
+		if (factorsScrollPane == null) {
+			factorsScrollPane = new JScrollPane();
+			factorsScrollPane.setBounds(new Rectangle(367, 31, 126, 60));
+			factorsScrollPane.setViewportView(getFactorsTable());
+			factorsScrollPane.setVisible(false);
+		}
+		return factorsScrollPane;
+	}
+
+	// factors table
+	private JTable getFactorsTable() {
+		if (factorsTable == null) {
+			final String[] colHeads = {"Variable","Property"};
+			final Object[][] data = null;
+			
+			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+			factorsTable = new JTable(model);
+		}
+		return factorsTable;
+	}
 	
 	
 	
@@ -504,7 +574,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
 	
 
-	
+	//===Action Performed Control
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -533,6 +603,10 @@ System.out.println("this is RHS Termblock");
 			}		
 		}	
 	}
+
+
+
+
 
 
 

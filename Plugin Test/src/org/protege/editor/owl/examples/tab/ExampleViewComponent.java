@@ -8,7 +8,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -17,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.examples.utils.CheckBoxRenderer;
 import org.protege.editor.owl.examples.utils.CheckButtonEditor;
@@ -27,8 +25,6 @@ import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-
-
 /**
  * 
  * Author: parklize
@@ -36,7 +32,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Description: SWCL view component in Protege
  * 
  */
-
 
 public class ExampleViewComponent extends AbstractOWLViewComponent implements ActionListener{
 	// default codes
