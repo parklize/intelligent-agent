@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.examples.model.Variable;
 import org.protege.editor.owl.examples.utils.CheckBoxRenderer;
 import org.protege.editor.owl.examples.utils.CheckButtonEditor;
+import org.protege.editor.owl.examples.utils.OWLClassHelper;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
@@ -59,9 +60,12 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private JButton addConstraintButton = null; // add constraint button
     private JButton generateSWCLButton = null; // button to generate SWCL code
     private OWLModelManager owlModelManager = null;
+    private OWLOntology owl = null;
+    private OWLClassHelper owlClassHelper = null;
     
     // global variables
-    private ArrayList<Variable> variableList = new ArrayList<Variable>();
+	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
+	private Iterator variablesIterator = variablesList.iterator();
 
     // convinience class for querying the asserted subsumption hierarchy directly
 //    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
@@ -95,7 +99,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 //       }
        
        // get all properties in ontology
-        OWLOntology owl = owlModelManager.getActiveOntology();
+        owl = owlModelManager.getActiveOntology();
         OWLOntologyManager manager = owl.getOWLOntologyManager();
         OWLDataFactory odf = manager.getOWLDataFactory();
         Set d = owl.getDataPropertiesInSignature();
@@ -109,13 +113,16 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         }
         while(it2.hasNext()){
 //        	System.out.println(it2.next().toString());// get all classes
-        	System.out.println("=============");
+System.out.println("=============");
         	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
+        	this.owlClassHelper = new OWLClassHelper(owlClass);
         	i = owlClass.getIndividuals(owl);
             it3 = i.iterator();
             while(it3.hasNext()){
-            	System.out.println(owlClass.toStringID()+" individuals");
-            	System.out.println(it3.next());
+System.out.println("IRI:"+owlClass.getIRI());
+System.out.println("Class Name:"+this.owlClassHelper.getClassName());
+System.out.println(owlClass.toStringID()+" individuals");
+System.out.println(it3.next());
             }
         }
 
@@ -250,7 +257,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager);
+			AddConstraintsComponent acc = new AddConstraintsComponent(this.owl,this.variablesList);
 			acc.setVisible(true);
 		}
 		
