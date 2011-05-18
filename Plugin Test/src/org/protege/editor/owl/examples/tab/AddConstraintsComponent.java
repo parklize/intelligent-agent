@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.rmi.CORBA.Util;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,11 +26,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import org.protege.editor.owl.examples.model.ClassVariable;
+import org.protege.editor.owl.examples.model.RelatedVariable;
 import org.protege.editor.owl.examples.model.Variable;
 import org.protege.editor.owl.examples.utils.CheckBoxRenderer;
+import org.protege.editor.owl.examples.utils.OWLClassHelper;
+import org.protege.editor.owl.examples.utils.Utils;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 import javax.swing.JCheckBox;
 import java.awt.GridBagConstraints;
@@ -65,7 +73,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane qualifierScrollPane = null;
 	private JPanel qualifierPanel = null;
 	private JPanel termblockPanel = null;
-	private int qualifierNumber = 0;
 	private int lhsTermblockNumber = 0;
 	private int rhsTermblockNumber = 0;
 	private JScrollPane termblockScrollpane = null;
@@ -86,7 +93,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JComboBox factorsComboBox = null;
 	private JScrollPane factorsScrollPane = null;
 	private JTable factorsTable = null;
-	private OWLModelManager owlModelManager = null;  //  @jve:decl-index=0:
 	private JLabel variableLabel = null;
 	private JScrollPane variableScrollPane = null;
 	private JPanel variablePanel = null;
@@ -100,42 +106,41 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 /*
  * should be afforded from ExampleViewComponent
  */
-	private ArrayList<String> variablesList = new ArrayList<String>();  //  @jve:decl-index=0:
-	private Iterator variablesIterator = null;
-	/**
-	 * This is the default constructor
-	 * @param owlModelManager 
-	 */
-	public AddConstraintsComponent(OWLModelManager owlModelManager) {
+	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  global variables  //  @jve:decl-index=0:
+	private ArrayList<Variable>	classVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
+	private ArrayList<Variable>	relatedVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
+	
+	private OWLOntology owl = null;
+    private OWLClassHelper owlClassHelper = null;
+	private JScrollPane qualifiersScrollPane = null;
+	private JTable qualifiersTable = null;
+	private JButton addQualifierButton = null;
+	
+	private TableColumn qualifierVariable = null;
+	private TableColumn relatedVariable = null;
+	
+	private Utils util = new Utils();
+    
+	// initialing...
+	public AddConstraintsComponent(OWLOntology owl,ArrayList<Variable> variablesList) {
 		super();
 		initialize();
-		this.owlModelManager = owlModelManager;
+		this.variablesList = variablesList; // get variables already announced
+		this.owl = owl;
 	}
 	
+	// for test purpose
 	public AddConstraintsComponent(){
 		super();
 		initialize();
 	}
-
-	/**
-	 * This method initializes this
-	 * 
-	 * @return void
-	 */
+	
+	// initializing frame
 	private void initialize() {
-/*
- *  for test purpose,construct variablesList		
- */
-		this.variablesList.add("x");
-		this.variablesList.add("y");
-		variablesIterator = variablesList.iterator();
-		
 		this.setSize(680, 800);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
 //		this.setDefaultCloseOperation(EXIT_ON_CLOSE);// delete process in memory
-
-		
 	}
 
 	// jContentPane
@@ -254,19 +259,29 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			values.addItem("A");
 			values.addItem("B");
 			
+			hasValue.setCellEditor(new DefaultCellEditor(values));
 /*
  * cell value changed listener			
  */
 			variablesTable.getModel().addTableModelListener(new TableModelListener(){
 
 				public void tableChanged(TableModelEvent e) {
+					
 					if(e.getType() == TableModelEvent.UPDATE){
-						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());		
+
+						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());	
+						classVariablesList.get(e.getLastRow()).setName(newValue);
+						
+						Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);
+						
+						// apply change to qualifiers table
+						Utils.refreshComboBox(variablesList, qualifierVariable);
+						
 					}
 				}
 				
 			});
-			hasValue.setCellEditor(new DefaultCellEditor(values));
+
 
 		}
 		return variablesTable;
@@ -292,12 +307,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			relatedVariablesTable = new JTable(model);
 			
 			// row 3
-			TableColumn hasValue = relatedVariablesTable.getColumnModel().getColumn(2);
-			JComboBox values = new JComboBox();// get values from existing data
-			while(variablesIterator.hasNext()){
-				values.addItem(variablesIterator.next());
-			}
-			hasValue.setCellEditor(new DefaultCellEditor(values));
+			relatedVariable = relatedVariablesTable.getColumnModel().getColumn(2);
+			// refresh variable combobox
+			Utils.refreshComboBox(variablesList, relatedVariable);
 			
 			// row 4
 			TableColumn property = relatedVariablesTable.getColumnModel().getColumn(3);
@@ -305,6 +317,22 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			properties.addItem("C");
 			properties.addItem("D");
 			property.setCellEditor(new DefaultCellEditor(properties));
+			
+			relatedVariablesTable.getModel().addTableModelListener(new TableModelListener() {
+				
+				@Override
+				public void tableChanged(TableModelEvent e) {
+					
+					if(e.getType() == TableModelEvent.UPDATE){
+
+						String newValue = (String) relatedVariablesTable.getValueAt(e.getLastRow(),e.getColumn());	
+						relatedVariablesList.get(e.getLastRow()).setName(newValue);
+						
+						Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);// refresh variables list
+						Utils.refreshComboBox(variablesList, qualifierVariable);// apply change to qualifiers table
+					}
+				}
+			});
 		}
 		return relatedVariablesTable;
 	}
@@ -318,11 +346,20 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			addVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					DefaultTableModel model = (DefaultTableModel) variablesTable.getModel();
-					model.addRow(new Object[]{"","A"});
+
+					((DefaultTableModel) variablesTable.getModel()).addRow(new Object[]{"","A"});
+/*
+ * binding class editing..					
+ */
+					// add variable to variablesList
+					ClassVariable variable = new ClassVariable();
+					variable.setName("");// default name
+					classVariablesList.add(variable);
+					
+					Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);
+					Utils.refreshComboBox(variablesList, qualifierVariable);// apply change to qualifierVariable table
+					Utils.refreshComboBox(variablesList, relatedVariable);// apply change to relatedVariable table
 				}
-				
 			});
 		}
 		return addVariableButton;
@@ -336,7 +373,18 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			addrelatedVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
-					((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô","A","A"});
+					((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",variablesList.get(0).getName(),"A"});
+/*
+ * binding information editing...					
+ */
+					Utils.refreshComboBox(variablesList, relatedVariable);// refresh variables combobox 
+					// add variable to variablesList
+					RelatedVariable variable = new RelatedVariable();
+					variable.setName("");
+					relatedVariablesList.add(variable);
+					
+					Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);// refresh variables list
+					Utils.refreshComboBox(variablesList, qualifierVariable);// apply change to qualifierVariable table
 				}
 				
 			});
@@ -433,27 +481,56 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			qualifierPanel = new JPanel();
 			qualifierPanel.setLayout(null);
 
+			qualifierPanel.add(getQualifiersScrollPane(), null);
+			qualifierPanel.add(getAddQualifierButton(), null);
 		}
 		return qualifierPanel;
 	}
-
-	// qualifier panel 
-	private JPanel getQPanel(int qualifierNumber) {
-
-//System.out.println(qualifierNumber);
-			JPanel qPanel = new JPanel();
-			qPanel.setLayout(new GridBagLayout());
-			qPanel.setBounds(new Rectangle(0, 25*qualifierNumber, 500, 25));
-			qPanel.setBackground(new Color(238, 0, 0));
-			
-			double qualifierPanelHeight = qualifierPanel.getPreferredSize().getHeight()+25;
-//System.out.println(qualifierPanelHeight);
-			qualifierPanel.setPreferredSize(new Dimension(0,(int)qualifierPanelHeight));// resize qualifierPanel
-			qualifierScrollPane.revalidate();// check scroll bar necessity 
-
-		return qPanel;
-	}
 	
+	// qualifiers scrollpane
+	private JScrollPane getQualifiersScrollPane() {
+		if (qualifiersScrollPane == null) {
+			qualifiersScrollPane = new JScrollPane();
+			qualifiersScrollPane.setBounds(new Rectangle(23, 7, 105, 97));
+			qualifiersScrollPane.setViewportView(getQualifiersTable());
+		}
+		return qualifiersScrollPane;
+	}
+
+	// qualifiers table
+	private JTable getQualifiersTable() {
+		if (qualifiersTable == null) {
+			final String[] colHeads = {"Variable"};
+			final String[][] data = null;
+			
+			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+			qualifiersTable = new JTable(model);
+			qualifierVariable = qualifiersTable.getColumnModel().getColumn(0);
+			// refresh variable combobox
+			Utils.refreshComboBox(variablesList, qualifierVariable);
+		}
+		return qualifiersTable;
+	}
+
+	// add qualifier button
+	private JButton getAddQualifierButton() {
+		if (addQualifierButton == null) {
+			addQualifierButton = new JButton();
+			addQualifierButton.setBounds(new Rectangle(149, 8, 49, 17));
+			addQualifierButton.setText("+");
+			addQualifierButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					DefaultTableModel model = (DefaultTableModel) qualifiersTable.getModel();
+					model.addRow(new Object[]{variablesList.get(0).getName()});
+					
+				}
+				
+			});
+		}
+		return addQualifierButton;
+	}
 	//===RHS scroll pane
 	private JScrollPane getRhsScrollPane() {
 		if (rhsScrollPane == null) {
@@ -768,7 +845,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	//===Action Performed Control
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		// OK event
 		if(e.getActionCommand().equals("OK")){
 			System.out.println(operatorComboBox.getSelectedItem());
@@ -776,15 +852,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){
+			
 			String selectedItem = (String) optionsComboBox.getSelectedItem();
 			// Add qualifier
 			if(selectedItem.equals("QUALIFIER")){
-System.out.println("this is qualifier");
-				qualifierPanel.add(getQPanel(qualifierNumber),null);
-				qualifierPanel.repaint();
-				qualifierNumber++;
-			}else if(selectedItem.equals("LHS Termblock")){
 				
+			}else if(selectedItem.equals("LHS Termblock")){
 				
 			}else if(selectedItem.equals("RHS Termblock")){
 System.out.println("this is RHS Termblock");
@@ -794,6 +867,9 @@ System.out.println("this is RHS Termblock");
 			}		
 		}	
 	}
+
+
+
 
 
 
