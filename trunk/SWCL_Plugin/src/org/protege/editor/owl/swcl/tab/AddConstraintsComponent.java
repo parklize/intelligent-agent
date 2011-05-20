@@ -78,7 +78,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane termblockScrollpane = null;
 	private JPanel addTermblockpanel = null;
 	private JPanel addTermblockPanelMenuPanel = null;
-	private JPanel addTermblockPanelTermblockPanel = null;
+//	private JPanel addTermblockPanelTermblockPanel = null;
 	private JButton jButton = null;
 	private JLabel signLabel = null;
 	private JLabel AggOp = null;
@@ -102,6 +102,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton addrelatedVariableButton = null;
 	private JScrollPane relatedVariablesScrollPane = null;
 	private JTable relatedVariablesTable = null;
+	
+	private JPanel[] rhsTermblocks = new JPanel[100];
 	
 /*
  * should be afforded from ExampleViewComponent
@@ -197,13 +199,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			constraintPanel.add(operatorLabel, null);
 			constraintPanel.add(getOperatorComboBox(), null);
 			constraintPanel.add(qualifierLabel, null);
-//			constraintPanel.setPreferredSize(new Dimension(0,800));
 			constraintPanel.add(getLhsScrollPane(), null);
 			constraintPanel.add(lhsLable, null);
 			constraintPanel.add(rhsLabel, null);
 			constraintPanel.add(getRhsScrollPane(), null);
 			constraintPanel.add(getQualifierScrollPane(), null);
-			constraintPanel.add(getTermblockScrollpane(), null);
+//			constraintPanel.add(getTermblockScrollpane(), null);
 			constraintPanel.add(variableLabel, null);
 			constraintPanel.add(getVariableScrollPane(), null);
 		}
@@ -546,292 +547,309 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (rhsPanel == null) {
 			rhsPanel = new JPanel();
 			rhsPanel.setLayout(null);
-			rhsPanel.setOpaque(false);
 		}
 		return rhsPanel;
 	}
-/*	
+
 	// RHS Termblock panel 
 	private JPanel getRHSTermblockPanel(int rhsTermblockNumber) {
 
-//System.out.println(rhsTermblockNumber);
-			JPanel rhsTermblock = new JPanel();
-			rhsTermblock.setLayout(null);
-			rhsTermblock.setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
-			rhsTermblock.setBackground(new Color(238, 0, 194));
+/*
+ * rhsTermblock should be a array
+ */
+System.out.println(rhsTermblockNumber);
+			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent();
+/*
+ * termblock initializing...
+ */
+			rhsTermblocks[rhsTermblockNumber].setLayout(null);
+			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
+			rhsTermblocks[rhsTermblockNumber].setBackground(new Color(238, 0, 194));
+//			
+//			// sign combo box
+//			String[] sign = {"+","-"};
+//			JComboBox signComboBox = new JComboBox(sign);
+//			signComboBox.setBounds(10, 10, 50, 28);
+//			
+//			// aggregateOpperator
+//			String[] aggregateOpp = {" ","sigma","production"};
+//			JComboBox aggregateOppComboBox = new JComboBox(aggregateOpp);
+//			aggregateOppComboBox.setBounds(70, 10, 70, 28);
+//			
+//			// add components to rhsTermblock
+//			rhsTermblock.add(signComboBox);
+//			rhsTermblock.add(aggregateOppComboBox);
 			
-			// sign combo box
-			String[] sign = {"+","-"};
-			JComboBox signComboBox = new JComboBox(sign);
-			signComboBox.setBounds(10, 10, 50, 28);
 			
-			// aggregateOpperator
-			String[] aggregateOpp = {" ","sigma","production"};
-			JComboBox aggregateOppComboBox = new JComboBox(aggregateOpp);
-			aggregateOppComboBox.setBounds(70, 10, 70, 28);
-			
-			// add components to rhsTermblock
-			rhsTermblock.add(signComboBox);
-			rhsTermblock.add(aggregateOppComboBox);
 			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+60;
 //System.out.println(rhsPanelHeight);
 			rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));// resize rhsPanel
 			rhsScrollPane.revalidate();// check scroll bar necessity 
 
-		return rhsTermblock;
+		return rhsTermblocks[rhsTermblockNumber];
 	}
-*/	
+
+/*
+ * editing....	
+ */
 	//===Termblock pane created when click the add
-	private JScrollPane getTermblockScrollpane() {
-		if (termblockScrollpane == null) {
-			termblockScrollpane = new JScrollPane();
-			termblockScrollpane.setBounds(new Rectangle(142, 568, 500, 120));
-			termblockScrollpane.setViewportView(getAddTermblockPanel());
-		}
-		return termblockScrollpane;
-	}
+//	private JScrollPane getTermblockScrollpane() {
+//		if (termblockScrollpane == null) {
+//			termblockScrollpane = new JScrollPane();
+//			termblockScrollpane.setBounds(new Rectangle(142, 568, 500, 120));
+//			termblockScrollpane.setViewportView(getAddTermblockPanel());
+//		}
+//		return termblockScrollpane;
+//	}
 	
 	// Termblock panel inside the Termblock pane
-	private JPanel getAddTermblockPanel() {
-		if (addTermblockpanel == null) {
-			addTermblockpanel = new JPanel();
-			addTermblockpanel.setLayout(new BorderLayout());
-			addTermblockpanel.setBounds(new Rectangle(0, 0, 497, 80));
-			addTermblockpanel.add(getAddTermblockPanelMenuPanel(), BorderLayout.SOUTH);
-			addTermblockpanel.add(getAddTermblockPanelTermblockPanel(), BorderLayout.CENTER);
-		}
-		return addTermblockpanel;
-	}
+//	private JPanel getAddTermblockPanel() {
+//		if (addTermblockpanel == null) {
+//			addTermblockpanel = new JPanel();
+//			addTermblockpanel.setLayout(new BorderLayout());
+//			addTermblockpanel.setBounds(new Rectangle(0, 0, 497, 80));
+//			addTermblockpanel.add(getAddTermblockPanelMenuPanel(), BorderLayout.SOUTH);
+//			addTermblockpanel.add(getAddTermblockPanelTermblockPanel(), BorderLayout.CENTER);
+//		}
+//		return addTermblockpanel;
+//	}
+
+	
+	
+	
+	
+	
+	
 	
 	// Menu panel inside the Termblock panel
-	private JPanel getAddTermblockPanelMenuPanel() {
-		if (addTermblockPanelMenuPanel == null) {
-			addTermblockPanelMenuPanel = new JPanel();
-			addTermblockPanelMenuPanel.setLayout(null);
-			addTermblockPanelMenuPanel.setPreferredSize(new Dimension(0,30));
-			addTermblockPanelMenuPanel.add(getAddTermblock(), null);
-		}
-		return addTermblockPanelMenuPanel;
-	}
+//	private JPanel getAddTermblockPanelMenuPanel() {
+//		if (addTermblockPanelMenuPanel == null) {
+//			addTermblockPanelMenuPanel = new JPanel();
+//			addTermblockPanelMenuPanel.setLayout(null);
+//			addTermblockPanelMenuPanel.setPreferredSize(new Dimension(0,30));
+//			addTermblockPanelMenuPanel.add(getAddTermblock(), null);
+//		}
+//		return addTermblockPanelMenuPanel;
+//	}
 
 	// Termblock panel inside add Termblock panel
-	private JPanel getAddTermblockPanelTermblockPanel() {
-		if (addTermblockPanelTermblockPanel == null) {
-			AggOp = new JLabel();
-			AggOp.setBounds(new Rectangle(80, 9, 38, 18));
-			AggOp.setHorizontalAlignment(SwingConstants.CENTER);
-			AggOp.setText("AggOp");
-			signLabel = new JLabel();
-			signLabel.setBounds(new Rectangle(15, 9, 38, 18));
-			signLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-			signLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			signLabel.setText("Sign");
-			addTermblockPanelTermblockPanel = new JPanel();
-			addTermblockPanelTermblockPanel.setLayout(null);
-			addTermblockPanelTermblockPanel.setOpaque(false);
-			addTermblockPanelTermblockPanel.add(signLabel, null);
-			addTermblockPanelTermblockPanel.add(AggOp, null);
-			addTermblockPanelTermblockPanel.add(getSignComboBox(), null);
-			addTermblockPanelTermblockPanel.add(getAddParameter(), null);
-			addTermblockPanelTermblockPanel.add(getAddFactor(), null);
-			addTermblockPanelTermblockPanel.add(getAggOpComboBox(), null);
-			addTermblockPanelTermblockPanel.add(getParameterComboBox(), null);
-			addTermblockPanelTermblockPanel.add(getFactorsComboBox(), null);
-			addTermblockPanelTermblockPanel.add(getFactorsScrollPane(), null);
-			addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
-		}
-		return addTermblockPanelTermblockPanel;
-	}
+//	private JPanel getAddTermblockPanelTermblockPanel() {
+//		if (addTermblockPanelTermblockPanel == null) {
+//			JLabel AggOp = new JLabel();
+//			AggOp.setBounds(new Rectangle(80, 9, 38, 18));
+//			AggOp.setHorizontalAlignment(SwingConstants.CENTER);
+//			AggOp.setText("AggOp");
+//			JLabel signLabel = new JLabel();
+//			signLabel.setBounds(new Rectangle(15, 9, 38, 18));
+//			signLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+//			signLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//			signLabel.setText("Sign");
+//			JPanel addTermblockPanelTermblockPanel = new JPanel();
+//			addTermblockPanelTermblockPanel.setLayout(null);
+//			addTermblockPanelTermblockPanel.setOpaque(false);
+//			addTermblockPanelTermblockPanel.add(signLabel, null);
+//			addTermblockPanelTermblockPanel.add(AggOp, null);
+//			addTermblockPanelTermblockPanel.add(getSignComboBox(), null);
+//			addTermblockPanelTermblockPanel.add(getAddParameter(), null);
+//			addTermblockPanelTermblockPanel.add(getAddFactor(), null);
+//			addTermblockPanelTermblockPanel.add(getAggOpComboBox(), null);
+//			addTermblockPanelTermblockPanel.add(getParameterComboBox(), null);
+//			addTermblockPanelTermblockPanel.add(getFactorsComboBox(), null);
+//			addTermblockPanelTermblockPanel.add(getFactorsScrollPane(), null);
+//			addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
+//		}
+//		return addTermblockPanelTermblockPanel;
+//	}
 	
 	// sign combobox
-	private JComboBox getSignComboBox() {
-		if (signComboBox == null) {
-			String[] sign = {"+","-"};
-			signComboBox = new JComboBox(sign);
-			signComboBox.setBounds(new Rectangle(15, 35, 42, 17));
-		}
-		return signComboBox;
-	}
+//	private JComboBox getSignComboBox() {
+//		if (signComboBox == null) {
+//			String[] sign = {"+","-"};
+//			signComboBox = new JComboBox(sign);
+//			signComboBox.setBounds(new Rectangle(15, 35, 42, 17));
+//		}
+//		return signComboBox;
+//	}
 	
 	// aggOp combobox
-	private JComboBox getAggOpComboBox() {
-		if (aggOpComboBox == null) {
-			final String[] aggOp = {"not use","sigma","production"};
-			aggOpComboBox = new JComboBox(aggOp);
-			aggOpComboBox.setBounds(new Rectangle(80, 35, 82, 16));
-		}
-		return aggOpComboBox;
-	}
+//	private JComboBox getAggOpComboBox() {
+//		if (aggOpComboBox == null) {
+//			final String[] aggOp = {"not use","sigma","production"};
+//			aggOpComboBox = new JComboBox(aggOp);
+//			aggOpComboBox.setBounds(new Rectangle(80, 35, 82, 16));
+//		}
+//		return aggOpComboBox;
+//	}
 	// add Parameter button
-	private JButton getAddParameter() {
-		if (addParameter == null) {
-			addParameter = new JButton();
-			addParameter.setBounds(new Rectangle(256, 3, 41, 27));
-			addParameter.setText("+");
-			addParameter.addActionListener(new ActionListener(){
-
-				public void actionPerformed(ActionEvent e) {
-					
-					int selectedIndex = parameterComboBox.getSelectedIndex();
-					DefaultTableModel tableModel = (DefaultTableModel) parametersTable.getModel();
-					
-					if(selectedIndex == 1){
-						// set visible class parameter
-						
-					}else if(selectedIndex == 0){
-						//add qualifier parameter
-						parametersScrollPane.setVisible(true);
-						
-						// has value
-						TableColumn hasValue = parametersTable.getColumnModel().getColumn(1);
-						JComboBox hasValueList = new JComboBox();// get values from existing data
-						hasValueList.addItem("A");
-						hasValueList.addItem("B");
-						hasValue.setCellEditor(new DefaultCellEditor(hasValueList));
-
-						// on property
-						TableColumn onProperty = parametersTable.getColumnModel().getColumn(2);
-						JComboBox onPropertyList = new JComboBox();// get properties from hasValue
-						onPropertyList.addItem("A");
-						onProperty.setCellEditor(new DefaultCellEditor(onPropertyList));
-						
-						// add row
-						tableModel.addRow(new Object[]{"","A","A"});
-					}
-				}
-			});
-		}
-		return addParameter;
-	}
+//	private JButton getAddParameter() {
+//		if (addParameter == null) {
+//			addParameter = new JButton();
+//			addParameter.setBounds(new Rectangle(256, 3, 41, 27));
+//			addParameter.setText("+");
+//			addParameter.addActionListener(new ActionListener(){
+//
+//				public void actionPerformed(ActionEvent e) {
+//					
+//					int selectedIndex = parameterComboBox.getSelectedIndex();
+//					DefaultTableModel tableModel = (DefaultTableModel) parametersTable.getModel();
+//					
+//					if(selectedIndex == 1){
+//						// set visible class parameter
+//						
+//					}else if(selectedIndex == 0){
+//						//add qualifier parameter
+//						parametersScrollPane.setVisible(true);
+//						
+//						// has value
+//						TableColumn hasValue = parametersTable.getColumnModel().getColumn(1);
+//						JComboBox hasValueList = new JComboBox();// get values from existing data
+//						hasValueList.addItem("A");
+//						hasValueList.addItem("B");
+//						hasValue.setCellEditor(new DefaultCellEditor(hasValueList));
+//
+//						// on property
+//						TableColumn onProperty = parametersTable.getColumnModel().getColumn(2);
+//						JComboBox onPropertyList = new JComboBox();// get properties from hasValue
+//						onPropertyList.addItem("A");
+//						onProperty.setCellEditor(new DefaultCellEditor(onPropertyList));
+//						
+//						// add row
+//						tableModel.addRow(new Object[]{"","A","A"});
+//					}
+//				}
+//			});
+//		}
+//		return addParameter;
+//	}
 
 	// add Factor button
-	private JButton getAddFactor() {
-		if (addFactor == null) {
-			addFactor = new JButton();
-			addFactor.setBounds(new Rectangle(442, 8, 41, 19));
-			addFactor.setText("+");
-			addFactor.addActionListener(new ActionListener(){
-
-				public void actionPerformed(ActionEvent e) {
-
-					int selectedIndex = factorsComboBox.getSelectedIndex();
-					DefaultTableModel tableModel = (DefaultTableModel) factorsTable.getModel();
-					
-					if(selectedIndex == 0){
-						// add class factors
-						factorsScrollPane.setVisible(true);
-						
-						// variable
-						TableColumn variable = factorsTable.getColumnModel().getColumn(0);
-						JComboBox variableList = new JComboBox();// get variables from existing data
-						
+//	private JButton getAddFactor() {
+//		if (addFactor == null) {
+//			addFactor = new JButton();
+//			addFactor.setBounds(new Rectangle(442, 8, 41, 19));
+//			addFactor.setText("+");
+//			addFactor.addActionListener(new ActionListener(){
+//
+//				public void actionPerformed(ActionEvent e) {
+//
+//					int selectedIndex = factorsComboBox.getSelectedIndex();
+//					DefaultTableModel tableModel = (DefaultTableModel) factorsTable.getModel();
+//					
+//					if(selectedIndex == 0){
+//						// add class factors
+//						factorsScrollPane.setVisible(true);
+//						
+//						// variable
+//						TableColumn variable = factorsTable.getColumnModel().getColumn(0);
+//						JComboBox variableList = new JComboBox();// get variables from existing data
+//						
 //						OWLOntologyManager manager = owlModelManager.getActiveOntology().getOWLOntologyManager();
 //						OWLDataFactory dataFactory = manager.getOWLDataFactory();
 //						
 //System.out.println(dataFactory.getOWLBottomDataProperty());
 						
-						variableList.addItem("C");
-						variableList.addItem("D");
-						variable.setCellEditor(new DefaultCellEditor(variableList));
-						
-						// property
-						TableColumn property = factorsTable.getColumnModel().getColumn(1);
-						JComboBox propertyList = new JComboBox();
-						propertyList.addItem("D");
-						propertyList.addItem("E");
-						property.setCellEditor(new DefaultCellEditor(propertyList));
-						
-						// add row
-						tableModel.addRow(new Object[]{"C","C"});
-						
-					}else if(selectedIndex == 1){
-						
-					}
-					
-				}
-				
-			});
-		}
-		return addFactor;
-	}
+//						variableList.addItem("C");
+//						variableList.addItem("D");
+//						variable.setCellEditor(new DefaultCellEditor(variableList));
+//						
+//						// property
+//						TableColumn property = factorsTable.getColumnModel().getColumn(1);
+//						JComboBox propertyList = new JComboBox();
+//						propertyList.addItem("D");
+//						propertyList.addItem("E");
+//						property.setCellEditor(new DefaultCellEditor(propertyList));
+//						
+//						// add row
+//						tableModel.addRow(new Object[]{"C","C"});
+//						
+//					}else if(selectedIndex == 1){
+//						
+//					}
+//					
+//				}
+//				
+//			});
+//		}
+//		return addFactor;
+//	}
 	
 	// Confirm button
-	private JButton getAddTermblock() {
-		if (addTermblock == null) {
-			addTermblock = new JButton();
-			addTermblock.setBounds(new Rectangle(411, 8, 81, 14));
-			addTermblock.setText("Confirm");
-		}
-		return addTermblock;
-	}
+//	private JButton getAddTermblock() {
+//		if (addTermblock == null) {
+//			addTermblock = new JButton();
+//			addTermblock.setBounds(new Rectangle(411, 8, 81, 14));
+//			addTermblock.setText("Confirm");
+//		}
+//		return addTermblock;
+//	}
 
 	// parameters scrollpane
-	private JScrollPane getParametersScrollPane() {
-		if (parametersScrollPane == null) {
-			parametersScrollPane = new JScrollPane();
-			parametersScrollPane.setBounds(new Rectangle(168, 36, 186, 55));
-			parametersScrollPane.setViewportView(getParametersTable());
-			parametersScrollPane.setVisible(false);
-		}
-		return parametersScrollPane;
-	}
+//	private JScrollPane getParametersScrollPane() {
+//		if (parametersScrollPane == null) {
+//			parametersScrollPane = new JScrollPane();
+//			parametersScrollPane.setBounds(new Rectangle(168, 36, 186, 55));
+//			parametersScrollPane.setViewportView(getParametersTable());
+//			parametersScrollPane.setVisible(false);
+//		}
+//		return parametersScrollPane;
+//	}
 
 	// parameters table
-	private JTable getParametersTable() {
-		if (parametersTable == null) {
-			
-			final String[] colHeads = {"Variable","hasValue","Onproperty"};
-			final Object[][] data = null;
-			
-			DefaultTableModel model = new DefaultTableModel(data,colHeads);
-			parametersTable = new JTable(model);
-
-		}
-		return parametersTable;
-	}
-	
+//	private JTable getParametersTable() {
+//		if (parametersTable == null) {
+//			
+//			final String[] colHeads = {"Variable","hasValue","Onproperty"};
+//			final Object[][] data = null;
+//			
+//			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+//			parametersTable = new JTable(model);
+//
+//		}
+//		return parametersTable;
+//	}
+//	
 	// parameters combobox
-	private JComboBox getParameterComboBox() {
-		if (parameterComboBox == null) {
-			final String[] parameters = {"Qparameter","Cparameter"};
-			parameterComboBox = new JComboBox(parameters);
-			parameterComboBox.setBounds(new Rectangle(173, 8, 90, 18));
-		}
-		return parameterComboBox;
-	}
+//	private JComboBox getParameterComboBox() {
+//		if (parameterComboBox == null) {
+//			final String[] parameters = {"Qparameter","Cparameter"};
+//			parameterComboBox = new JComboBox(parameters);
+//			parameterComboBox.setBounds(new Rectangle(173, 8, 90, 18));
+//		}
+//		return parameterComboBox;
+//	}
 	
 	// factors combobox
-	private JComboBox getFactorsComboBox() {
-		if (factorsComboBox == null) {
-			final String[] factors = {"Cfactor","Ifactor"};
-			factorsComboBox = new JComboBox(factors);
-			factorsComboBox.setBounds(new Rectangle(344, 8, 90, 18));
-		}
-		return factorsComboBox;
-	}
+//	private JComboBox getFactorsComboBox() {
+//		if (factorsComboBox == null) {
+//			final String[] factors = {"Cfactor","Ifactor"};
+//			factorsComboBox = new JComboBox(factors);
+//			factorsComboBox.setBounds(new Rectangle(344, 8, 90, 18));
+//		}
+//		return factorsComboBox;
+//	}
 
 	// factors scrollpane
-	private JScrollPane getFactorsScrollPane() {
-		if (factorsScrollPane == null) {
-			factorsScrollPane = new JScrollPane();
-			factorsScrollPane.setBounds(new Rectangle(367, 31, 126, 60));
-			factorsScrollPane.setViewportView(getFactorsTable());
-			factorsScrollPane.setVisible(false);
-		}
-		return factorsScrollPane;
-	}
+//	private JScrollPane getFactorsScrollPane() {
+//		if (factorsScrollPane == null) {
+//			factorsScrollPane = new JScrollPane();
+//			factorsScrollPane.setBounds(new Rectangle(367, 31, 126, 60));
+//			factorsScrollPane.setViewportView(getFactorsTable());
+//			factorsScrollPane.setVisible(false);
+//		}
+//		return factorsScrollPane;
+//	}
 
 	// factors table
-	private JTable getFactorsTable() {
-		if (factorsTable == null) {
-			final String[] colHeads = {"Variable","Property"};
-			final Object[][] data = null;
-			
-			DefaultTableModel model = new DefaultTableModel(data,colHeads);
-			factorsTable = new JTable(model);
-		}
-		return factorsTable;
-	}
+//	private JTable getFactorsTable() {
+//		if (factorsTable == null) {
+//			final String[] colHeads = {"Variable","Property"};
+//			final Object[][] data = null;
+//			
+//			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+//			factorsTable = new JTable(model);
+//		}
+//		return factorsTable;
+//	}
 	
 	
 	
@@ -860,8 +878,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			}else if(selectedItem.equals("LHS Termblock")){
 				
 			}else if(selectedItem.equals("RHS Termblock")){
-System.out.println("this is RHS Termblock");
-//				rhsPanel.add(getRHSTermblockPanel(rhsTermblockNumber),null);
+				rhsPanel.add(getRHSTermblockPanel(rhsTermblockNumber),null);
 				rhsPanel.repaint();
 				rhsTermblockNumber++;
 			}		
