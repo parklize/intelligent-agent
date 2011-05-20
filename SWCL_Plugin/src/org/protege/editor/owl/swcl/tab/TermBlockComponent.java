@@ -1,7 +1,5 @@
 package org.protege.editor.owl.swcl.tab;
 
-import java.awt.GridBagLayout;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
