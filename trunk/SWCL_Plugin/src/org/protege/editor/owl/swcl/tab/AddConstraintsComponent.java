@@ -559,9 +559,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
  */
 System.out.println(rhsTermblockNumber);
 			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent();
-/*
- * termblock initializing...
- */
+			
+			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
 			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
 			rhsTermblocks[rhsTermblockNumber].setBackground(new Color(238, 0, 194));
