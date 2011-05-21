@@ -3,14 +3,24 @@ package org.protege.editor.owl.swcl.tab;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import org.protege.editor.owl.swcl.model.*;
+import org.protege.editor.owl.swcl.utils.Utils;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.JButton;
 
 public class TermBlockComponent extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private Utils utils = new Utils();
 	
 	// components attrs
 	private JLabel signLabel = null;
@@ -19,15 +29,21 @@ public class TermBlockComponent extends JPanel {
 	private JComboBox aggOppComboBox = null;
 	private JLabel parameterLabel = null;
 	private JLabel factorLabel = null;
-	
+	private TableColumn parameterColumn = null;
+	private JTable parametersTable = null;
+	private JScrollPane parametersScrollPane = null;
+		
 	// swcl attrs
 	private ArrayList<Variable> variablesList = null;  //  @jve:decl-index=0:
+	private JButton addParameterButton = null;
+	private JScrollPane factorScrollPane = null;
+	private JTable factorTable = null;
+	private TableColumn factorVariableColumn = null;
+	private JButton addFactorButton = null;
 
-	private JComboBox parameterComboBox = null;
 
-	private JComboBox factorV = null;
 
-	private JComboBox factorP = null;
+
 	
 	// default constructor
 	public TermBlockComponent() {
@@ -37,24 +53,24 @@ public class TermBlockComponent extends JPanel {
 	// default constructor
 	public TermBlockComponent(ArrayList<Variable> variablesList) {
 		super();
-		initialize();
 		this.variablesList = variablesList;
+		initialize();
 	}
 
 	// initializing..
 	private void initialize() {
 		factorLabel = new JLabel();
-		factorLabel.setBounds(new Rectangle(399, 6, 46, 18));
+		factorLabel.setBounds(new Rectangle(375, 3, 46, 18));
 		factorLabel.setText("factor");
 		parameterLabel = new JLabel();
-		parameterLabel.setBounds(new Rectangle(262, 6, 82, 18));
+		parameterLabel.setBounds(new Rectangle(238, 3, 82, 18));
 		parameterLabel.setText("Parameter");
 		aggregateOp = new JLabel();
-		aggregateOp.setBounds(new Rectangle(136, 6, 98, 18));
-		aggregateOp.setText("AggregateOp");
+		aggregateOp.setBounds(new Rectangle(112, 3, 98, 18));
+		aggregateOp.setText("aggregateOp");
 		signLabel = new JLabel();
-		signLabel.setBounds(new Rectangle(51, 6, 38, 18));
-		signLabel.setText("SIGN");
+		signLabel.setBounds(new Rectangle(27, 3, 38, 18));
+		signLabel.setText("sign");
 		this.setSize(500, 60);
 		this.setLayout(null);
 		this.add(signLabel, null);
@@ -63,9 +79,10 @@ public class TermBlockComponent extends JPanel {
 		this.add(getAgg(), null);
 		this.add(parameterLabel, null);
 		this.add(factorLabel, null);
-		this.add(getParameter(), null);
-		this.add(getJComboBox(), null);
-		this.add(getJComboBox2(), null);
+		this.add(getParameterScrollPane(), null);
+		this.add(getAddParameterButton(), null);
+		this.add(getFactorScrollPane(), null);
+		this.add(getAddFactorButton(), null);
 	}
 
 	// sign combobox
@@ -75,7 +92,7 @@ System.out.println("What's wrong?");
 			final String[] signs = {"+","-"};
 			
 			signComboBox = new JComboBox(signs);
-			signComboBox.setBounds(new Rectangle(36, 30, 49, 27));
+			signComboBox.setBounds(new Rectangle(27, 30, 49, 27));
 		}
 		return signComboBox;
 	}
@@ -85,119 +102,188 @@ System.out.println("What's wrong?");
 		if (aggOppComboBox == null) {
 			final String[] aggOpps = {"not use","sigma","production"};
 			aggOppComboBox = new JComboBox(aggOpps);
-			aggOppComboBox.setBounds(new Rectangle(129, 30, 103, 27));
+			aggOppComboBox.setBounds(new Rectangle(112, 30, 103, 27));
 		}
 		return aggOppComboBox;
 	}
-	// parameter combobox
-	private JComboBox getParameter() {
-		if (parameterComboBox == null) {
-			parameterComboBox = new JComboBox();
-			parameterComboBox.setBounds(new Rectangle(264, 30, 62, 27));
+	
+	/*
+	 * Parameter
+	 */
+
+	// parameters scrollpane
+	private JScrollPane getParameterScrollPane() {
+		if (parametersScrollPane == null) {
+			parametersScrollPane = new JScrollPane();
+			parametersScrollPane.setBounds(new Rectangle(239, 24, 81, 36));
+			parametersScrollPane.setViewportView(getParameterTable());
 		}
-		return parameterComboBox;
+		return parametersScrollPane;
+	}
+	
+	// parameters table
+	private JTable getParameterTable() {
+		if (parametersTable == null) {
+			final String[] colHeads = {"Variable"};
+			final String[][] data = null;
+			
+			DefaultTableModel dt = new DefaultTableModel(data,colHeads);
+			parametersTable = new JTable(dt);
+			parameterColumn = parametersTable.getColumnModel().getColumn(0);
+			// initialize parameter's variable combobox
+			utils.refreshComboBox(variablesList, parameterColumn);
+			
+		}
+		return parametersTable;
+	}
+	
+	// add parameter button
+	private JButton getAddParameterButton() {
+		if (addParameterButton == null) {
+			addParameterButton = new JButton();
+			addParameterButton.setBounds(new Rectangle(326, 3, 43, 18));
+			addParameterButton.setText("+");
+			addParameterButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					
+					DefaultTableModel model = (DefaultTableModel) parametersTable.getModel();
+					model.addRow(new Object[]{variablesList.get(0).getName()});
+					
+				}});
+		}
+		return addParameterButton;
+	}
+	/*
+	 * Factor
+	 */
+	private JScrollPane getFactorScrollPane() {
+		if (factorScrollPane == null) {
+			factorScrollPane = new JScrollPane();
+			factorScrollPane.setBounds(new Rectangle(356, 24, 135, 36));
+			factorScrollPane.setViewportView(getFactorTable());
+		}
+		return factorScrollPane;
+	}
+	
+	// factor table
+	private JTable getFactorTable() {
+		if (factorTable == null) {
+			final String[] colHeads = {"Variable","Property"};
+			final String[][] data = null;
+			DefaultTableModel dt = new DefaultTableModel(data,colHeads);
+			factorTable = new JTable(dt);
+			factorVariableColumn  = factorTable.getColumnModel().getColumn(0);
+			// initialize factor variable combobox
+			utils.refreshComboBox(variablesList, factorVariableColumn);
+		}
+		return factorTable;
 	}
 
-	// factor variable
-	private JComboBox getJComboBox() {
-		if (factorV == null) {
-			factorV = new JComboBox();
-			factorV.setBounds(new Rectangle(340, 30, 62, 27));
-		}
-		return factorV;
-	}
+	// add factor button
+	private JButton getAddFactorButton() {
+		if (addFactorButton == null) {
+			addFactorButton = new JButton();
+			addFactorButton.setBounds(new Rectangle(428, 3, 43, 18));
+			addFactorButton.setText("+");
+			addFactorButton.addActionListener(new ActionListener(){
 
-	// factor parameter
-	private JComboBox getJComboBox2() {
-		if (factorP == null) {
-			factorP = new JComboBox();
-			factorP.setBounds(new Rectangle(420, 30, 62, 27));
-		}
-		return factorP;
-	}
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
 
+					DefaultTableModel model = (DefaultTableModel) factorTable.getModel();
+					model.addRow(new Object[]{variablesList.get(0).getName()});
+					
+				}
+				
+			});
+		}
+		return addFactorButton;
+	}
+	
 	/*
 	 * getter & setter
 	 */
 	public JLabel getSignLabel() {
 		return signLabel;
 	}
-
 	public void setSignLabel(JLabel signLabel) {
 		this.signLabel = signLabel;
 	}
-
 	public JLabel getAggregateOp() {
 		return aggregateOp;
 	}
-
 	public void setAggregateOp(JLabel aggregateOp) {
 		this.aggregateOp = aggregateOp;
 	}
-
 	public JComboBox getSignComboBox() {
 		return signComboBox;
 	}
-
 	public void setSignComboBox(JComboBox signComboBox) {
 		this.signComboBox = signComboBox;
 	}
-
 	public JComboBox getAggOppComboBox() {
 		return aggOppComboBox;
 	}
-
 	public void setAggOppComboBox(JComboBox aggOppComboBox) {
 		this.aggOppComboBox = aggOppComboBox;
 	}
-
 	public JLabel getParameterLabel() {
 		return parameterLabel;
 	}
-
 	public void setParameterLabel(JLabel parameterLabel) {
 		this.parameterLabel = parameterLabel;
 	}
-
 	public JLabel getFactorLabel() {
 		return factorLabel;
 	}
-
 	public void setFactorLabel(JLabel factorLabel) {
 		this.factorLabel = factorLabel;
 	}
-
+	public TableColumn getParameterColumn() {
+		return parameterColumn;
+	}
+	public void setParameterColumn(TableColumn parameterColumn) {
+		this.parameterColumn = parameterColumn;
+	}
+	public JTable getParametersTable() {
+		return parametersTable;
+	}
+	public void setParametersTable(JTable parametersTable) {
+		this.parametersTable = parametersTable;
+	}
+	public JScrollPane getParametersScrollPane() {
+		return parametersScrollPane;
+	}
+	public void setParametersScrollPane(JScrollPane parametersScrollPane) {
+		this.parametersScrollPane = parametersScrollPane;
+	}
 	public ArrayList<Variable> getVariablesList() {
 		return variablesList;
 	}
-
 	public void setVariablesList(ArrayList<Variable> variablesList) {
 		this.variablesList = variablesList;
 	}
-
-	public JComboBox getParameterComboBox() {
-		return parameterComboBox;
+	public JButton getAddParameter() {
+		return addParameterButton;
+	}
+	public void setAddParameter(JButton addParameter) {
+		this.addParameterButton = addParameter;
+	}
+	public TableColumn getFactorVariableColumn() {
+		return factorVariableColumn;
+	}
+	public void setFactorVariableColumn(TableColumn factorVariableColumn) {
+		this.factorVariableColumn = factorVariableColumn;
+	}
+	public void setFactorScrollPane(JScrollPane factorScrollPane) {
+		this.factorScrollPane = factorScrollPane;
+	}
+	public void setFactorTable(JTable factorTable) {
+		this.factorTable = factorTable;
 	}
 
-	public void setParameterComboBox(JComboBox parameterComboBox) {
-		this.parameterComboBox = parameterComboBox;
-	}
-
-	public JComboBox getFactorV() {
-		return factorV;
-	}
-
-	public void setFactorV(JComboBox factorV) {
-		this.factorV = factorV;
-	}
-
-	public JComboBox getFactorP() {
-		return factorP;
-	}
-
-	public void setFactorP(JComboBox factorP) {
-		this.factorP = factorP;
-	}
 
 
 	
