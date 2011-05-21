@@ -64,9 +64,10 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private OWLClassHelper owlClassHelper = null;
     
     // global variables
-	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
-	private Iterator variablesIterator = variablesList.iterator();
-
+	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
+	private ArrayList<Variable>	classVariablesList = new ArrayList<Variable>(); 
+	private ArrayList<Variable>	relatedVariablesList = new ArrayList<Variable>(); 
+	
     // convinience class for querying the asserted subsumption hierarchy directly
 //    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
     
@@ -99,32 +100,32 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 //       }
        
        // get all properties in ontology
-        owl = owlModelManager.getActiveOntology();
-        OWLOntologyManager manager = owl.getOWLOntologyManager();
-        OWLDataFactory odf = manager.getOWLDataFactory();
-        Set d = owl.getDataPropertiesInSignature();
-        Set c = owl.getClassesInSignature();
-        Set<OWLIndividual> i = null;
-        Iterator it = d.iterator();
-        Iterator it2 = c.iterator();
-        Iterator it3 = null;
-        while(it.hasNext()){
-        	System.out.println(it.next().toString());
-        }
-        while(it2.hasNext()){
-//        	System.out.println(it2.next().toString());// get all classes
-System.out.println("=============");
-        	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
-        	this.owlClassHelper = new OWLClassHelper(owlClass);
-        	i = owlClass.getIndividuals(owl);
-            it3 = i.iterator();
-            while(it3.hasNext()){
-System.out.println("IRI:"+owlClass.getIRI());
-System.out.println("Class Name:"+this.owlClassHelper.getClassName());
-System.out.println(owlClass.toStringID()+" individuals");
-System.out.println(it3.next());
-            }
-        }
+//        owl = owlModelManager.getActiveOntology();
+//        OWLOntologyManager manager = owl.getOWLOntologyManager();
+//        OWLDataFactory odf = manager.getOWLDataFactory();
+//        Set d = owl.getDataPropertiesInSignature();
+//        Set c = owl.getClassesInSignature();
+//        Set<OWLIndividual> i = null;
+//        Iterator it = d.iterator();
+//        Iterator it2 = c.iterator();
+//        Iterator it3 = null;
+//        while(it.hasNext()){
+//        	System.out.println(it.next().toString());
+//        }
+//        while(it2.hasNext()){
+////        	System.out.println(it2.next().toString());// get all classes
+//System.out.println("=============");
+//        	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
+//        	this.owlClassHelper = new OWLClassHelper(owlClass);
+//        	i = owlClass.getIndividuals(owl);
+//            it3 = i.iterator();
+//            while(it3.hasNext()){
+//System.out.println("IRI:"+owlClass.getIRI());
+//System.out.println("Class Name:"+this.owlClassHelper.getClassName());
+//System.out.println(owlClass.toStringID()+" individuals");
+//System.out.println(it3.next());
+//            }
+//        }
 
         
         
@@ -212,6 +213,7 @@ System.out.println(it3.next());
     	return constraintsPanel;
     	
     }
+  
     // initialize the constraints scroll pane
     private JScrollPane getConstraintsScrollPane(){
     	if(constraintsScrollPane == null){
@@ -220,6 +222,7 @@ System.out.println(it3.next());
     	}
     	return constraintsScrollPane;
     }
+   
     // initialize the constraints table
 	private JTable getConstraintsTable() {
 		
@@ -257,7 +260,7 @@ System.out.println(it3.next());
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(this.owl,this.variablesList);
+			AddConstraintsComponent acc = new AddConstraintsComponent(owl,variablesList);
 			acc.setVisible(true);
 		}
 		

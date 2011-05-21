@@ -103,14 +103,15 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane relatedVariablesScrollPane = null;
 	private JTable relatedVariablesTable = null;
 	
-	private JPanel[] rhsTermblocks = new JPanel[100];
+	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	
 /*
  * should be afforded from ExampleViewComponent
  */
-	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  global variables  //  @jve:decl-index=0:
-	private ArrayList<Variable>	classVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
-	private ArrayList<Variable>	relatedVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
+	private ArrayList<Variable> totalVariablesList = new ArrayList<Variable>();
+	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
+	private ArrayList<Variable>	classVariablesList = new ArrayList<Variable>(); 
+	private ArrayList<Variable>	relatedVariablesList = new ArrayList<Variable>();  
 	
 	private OWLOntology owl = null;
     private OWLClassHelper owlClassHelper = null;
@@ -124,11 +125,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private Utils util = new Utils();
     
 	// initialing...
-	public AddConstraintsComponent(OWLOntology owl,ArrayList<Variable> variablesList) {
+	public AddConstraintsComponent(OWLOntology owl,ArrayList<Variable> totalVariablesList) {
 		super();
 		initialize();
-		this.variablesList = variablesList; // get variables already announced
+		 // get variables already announced
+		this.totalVariablesList = totalVariablesList;
 		this.owl = owl;
+		
+Utils.printVariablesList("variablesList:", variablesList);
 	}
 	
 	// for test purpose
@@ -204,7 +208,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			constraintPanel.add(rhsLabel, null);
 			constraintPanel.add(getRhsScrollPane(), null);
 			constraintPanel.add(getQualifierScrollPane(), null);
-//			constraintPanel.add(getTermblockScrollpane(), null);
 			constraintPanel.add(variableLabel, null);
 			constraintPanel.add(getVariableScrollPane(), null);
 		}
@@ -275,15 +278,21 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 						
 						Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);
 						
-						// apply change to qualifiers table
-						Utils.refreshComboBox(variablesList, qualifierVariable);
+						// apply change to qualifierVariable table
+						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+						// apply change to relatedVariable table
+						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);
+						// apply change to termblocks
+						for(int i=0;i<100;i++){
+							if(rhsTermblocks[i] != null){
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+							}
+						}
 						
 					}
 				}
-				
 			});
-
-
 		}
 		return variablesTable;
 	}
@@ -309,8 +318,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// row 3
 			relatedVariable = relatedVariablesTable.getColumnModel().getColumn(2);
+			
 			// refresh variable combobox
-			Utils.refreshComboBox(variablesList, relatedVariable);
+			Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);
 			
 			// row 4
 			TableColumn property = relatedVariablesTable.getColumnModel().getColumn(3);
@@ -324,13 +334,23 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 				@Override
 				public void tableChanged(TableModelEvent e) {
 					
-					if(e.getType() == TableModelEvent.UPDATE){
-
+					if(e.getType() == TableModelEvent.UPDATE && e.getColumn() == 0){
+						// set new name
 						String newValue = (String) relatedVariablesTable.getValueAt(e.getLastRow(),e.getColumn());	
 						relatedVariablesList.get(e.getLastRow()).setName(newValue);
-						
-						Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);// refresh variables list
-						Utils.refreshComboBox(variablesList, qualifierVariable);						// apply change to qualifiers table
+						// refresh variables list
+						Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);
+						// apply change to qualifierVariable table
+						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+						// apply change to relatedVariable table
+						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);
+						// apply change to termblocks
+						for(int i=0;i<100;i++){
+							if(rhsTermblocks[i] != null){
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+							}
+						}
 					}
 				}
 			});
@@ -358,8 +378,18 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 					classVariablesList.add(variable);
 					
 					Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);
-					Utils.refreshComboBox(variablesList, qualifierVariable);// apply change to qualifierVariable table
-					Utils.refreshComboBox(variablesList, relatedVariable);// apply change to relatedVariable table
+					// apply change to qualifierVariable table
+					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+					// apply change to relatedVariable table
+					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);
+					// apply change to termblocks
+					for(int i=0;i<100;i++){
+						if(rhsTermblocks[i] != null){
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+						}
+					}
+					
 				}
 			});
 		}
@@ -374,18 +404,35 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			addrelatedVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
-					((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",variablesList.get(0).getName(),"A"});
+					
+					if(totalVariablesList.size()==0){
+						// first create constraint
+						((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",variablesList.get(0).getName(),"A"});
+					}else{
+						// not first time
+						((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",totalVariablesList.get(0).getName(),"A"});
+					}
 /*
  * binding information editing...					
  */
-					Utils.refreshComboBox(variablesList, relatedVariable);// refresh variables combobox 
+					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);// refresh variables combobox 
 					// add variable to variablesList
 					RelatedVariable variable = new RelatedVariable();
 					variable.setName("");
 					relatedVariablesList.add(variable);
 					
 					Utils.refreshTotalArrayList(variablesList, classVariablesList, relatedVariablesList);// refresh variables list
-					Utils.refreshComboBox(variablesList, qualifierVariable);// apply change to qualifierVariable table
+					// apply change to qualifierVariable table
+					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+					// apply change to relatedVariable table
+					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);
+					// apply change to termblocks
+					for(int i=0;i<100;i++){
+						if(rhsTermblocks[i] != null){
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+						}
+					}
 				}
 				
 			});
@@ -447,7 +494,11 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return optionsComboBox;
 	}
 	
-	//===LHS scroll pane
+	/*
+	 * LHS
+	 */
+	
+	// LHS Scrollpane
 	private JScrollPane getLhsScrollPane() {
 		if (lhsScrollPane == null) {
 			lhsScrollPane = new JScrollPane();
@@ -466,7 +517,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return lhsPanel;
 	}
 	
-	//===Qualifier Scroll pane
+	/*
+	 * qualifier
+	 */
 	private JScrollPane getQualifierScrollPane() {
 		if (qualifierScrollPane == null) {
 			qualifierScrollPane = new JScrollPane();
@@ -508,7 +561,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			qualifiersTable = new JTable(model);
 			qualifierVariable = qualifiersTable.getColumnModel().getColumn(0);
 			// refresh variable combobox
-			Utils.refreshComboBox(variablesList, qualifierVariable);
+			Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
 		}
 		return qualifiersTable;
 	}
@@ -532,7 +585,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return addQualifierButton;
 	}
-	//===RHS scroll pane
+	
+	/*
+	 * RHS
+	 */
+	
+	// RHS scroll pane
 	private JScrollPane getRhsScrollPane() {
 		if (rhsScrollPane == null) {
 			rhsScrollPane = new JScrollPane();
@@ -554,318 +612,31 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// RHS Termblock panel 
 	private JPanel getRHSTermblockPanel(int rhsTermblockNumber) {
 
-/*
- * rhsTermblock should be a array
- */
-System.out.println(rhsTermblockNumber);
-			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent();
+			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList));
 			
 			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
 			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
 			rhsTermblocks[rhsTermblockNumber].setBackground(new Color(238, 0, 194));
-//			
-//			// sign combo box
-//			String[] sign = {"+","-"};
-//			JComboBox signComboBox = new JComboBox(sign);
-//			signComboBox.setBounds(10, 10, 50, 28);
-//			
-//			// aggregateOpperator
-//			String[] aggregateOpp = {" ","sigma","production"};
-//			JComboBox aggregateOppComboBox = new JComboBox(aggregateOpp);
-//			aggregateOppComboBox.setBounds(70, 10, 70, 28);
-//			
-//			// add components to rhsTermblock
-//			rhsTermblock.add(signComboBox);
-//			rhsTermblock.add(aggregateOppComboBox);
-			
 			
 			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+60;
-//System.out.println(rhsPanelHeight);
-			rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));// resize rhsPanel
-			rhsScrollPane.revalidate();// check scroll bar necessity 
+			// resize rhsPanel
+			rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));
+			// check scroll bar necessity 
+			rhsScrollPane.revalidate();
 
 		return rhsTermblocks[rhsTermblockNumber];
 	}
-
-/*
- * editing....	
- */
-	//===Termblock pane created when click the add
-//	private JScrollPane getTermblockScrollpane() {
-//		if (termblockScrollpane == null) {
-//			termblockScrollpane = new JScrollPane();
-//			termblockScrollpane.setBounds(new Rectangle(142, 568, 500, 120));
-//			termblockScrollpane.setViewportView(getAddTermblockPanel());
-//		}
-//		return termblockScrollpane;
-//	}
 	
-	// Termblock panel inside the Termblock pane
-//	private JPanel getAddTermblockPanel() {
-//		if (addTermblockpanel == null) {
-//			addTermblockpanel = new JPanel();
-//			addTermblockpanel.setLayout(new BorderLayout());
-//			addTermblockpanel.setBounds(new Rectangle(0, 0, 497, 80));
-//			addTermblockpanel.add(getAddTermblockPanelMenuPanel(), BorderLayout.SOUTH);
-//			addTermblockpanel.add(getAddTermblockPanelTermblockPanel(), BorderLayout.CENTER);
-//		}
-//		return addTermblockpanel;
-//	}
-
-	
-	
-	
-	
-	
-	
-	
-	// Menu panel inside the Termblock panel
-//	private JPanel getAddTermblockPanelMenuPanel() {
-//		if (addTermblockPanelMenuPanel == null) {
-//			addTermblockPanelMenuPanel = new JPanel();
-//			addTermblockPanelMenuPanel.setLayout(null);
-//			addTermblockPanelMenuPanel.setPreferredSize(new Dimension(0,30));
-//			addTermblockPanelMenuPanel.add(getAddTermblock(), null);
-//		}
-//		return addTermblockPanelMenuPanel;
-//	}
-
-	// Termblock panel inside add Termblock panel
-//	private JPanel getAddTermblockPanelTermblockPanel() {
-//		if (addTermblockPanelTermblockPanel == null) {
-//			JLabel AggOp = new JLabel();
-//			AggOp.setBounds(new Rectangle(80, 9, 38, 18));
-//			AggOp.setHorizontalAlignment(SwingConstants.CENTER);
-//			AggOp.setText("AggOp");
-//			JLabel signLabel = new JLabel();
-//			signLabel.setBounds(new Rectangle(15, 9, 38, 18));
-//			signLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-//			signLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//			signLabel.setText("Sign");
-//			JPanel addTermblockPanelTermblockPanel = new JPanel();
-//			addTermblockPanelTermblockPanel.setLayout(null);
-//			addTermblockPanelTermblockPanel.setOpaque(false);
-//			addTermblockPanelTermblockPanel.add(signLabel, null);
-//			addTermblockPanelTermblockPanel.add(AggOp, null);
-//			addTermblockPanelTermblockPanel.add(getSignComboBox(), null);
-//			addTermblockPanelTermblockPanel.add(getAddParameter(), null);
-//			addTermblockPanelTermblockPanel.add(getAddFactor(), null);
-//			addTermblockPanelTermblockPanel.add(getAggOpComboBox(), null);
-//			addTermblockPanelTermblockPanel.add(getParameterComboBox(), null);
-//			addTermblockPanelTermblockPanel.add(getFactorsComboBox(), null);
-//			addTermblockPanelTermblockPanel.add(getFactorsScrollPane(), null);
-//			addTermblockPanelTermblockPanel.add(getParametersScrollPane(), null);
-//		}
-//		return addTermblockPanelTermblockPanel;
-//	}
-	
-	// sign combobox
-//	private JComboBox getSignComboBox() {
-//		if (signComboBox == null) {
-//			String[] sign = {"+","-"};
-//			signComboBox = new JComboBox(sign);
-//			signComboBox.setBounds(new Rectangle(15, 35, 42, 17));
-//		}
-//		return signComboBox;
-//	}
-	
-	// aggOp combobox
-//	private JComboBox getAggOpComboBox() {
-//		if (aggOpComboBox == null) {
-//			final String[] aggOp = {"not use","sigma","production"};
-//			aggOpComboBox = new JComboBox(aggOp);
-//			aggOpComboBox.setBounds(new Rectangle(80, 35, 82, 16));
-//		}
-//		return aggOpComboBox;
-//	}
-	// add Parameter button
-//	private JButton getAddParameter() {
-//		if (addParameter == null) {
-//			addParameter = new JButton();
-//			addParameter.setBounds(new Rectangle(256, 3, 41, 27));
-//			addParameter.setText("+");
-//			addParameter.addActionListener(new ActionListener(){
-//
-//				public void actionPerformed(ActionEvent e) {
-//					
-//					int selectedIndex = parameterComboBox.getSelectedIndex();
-//					DefaultTableModel tableModel = (DefaultTableModel) parametersTable.getModel();
-//					
-//					if(selectedIndex == 1){
-//						// set visible class parameter
-//						
-//					}else if(selectedIndex == 0){
-//						//add qualifier parameter
-//						parametersScrollPane.setVisible(true);
-//						
-//						// has value
-//						TableColumn hasValue = parametersTable.getColumnModel().getColumn(1);
-//						JComboBox hasValueList = new JComboBox();// get values from existing data
-//						hasValueList.addItem("A");
-//						hasValueList.addItem("B");
-//						hasValue.setCellEditor(new DefaultCellEditor(hasValueList));
-//
-//						// on property
-//						TableColumn onProperty = parametersTable.getColumnModel().getColumn(2);
-//						JComboBox onPropertyList = new JComboBox();// get properties from hasValue
-//						onPropertyList.addItem("A");
-//						onProperty.setCellEditor(new DefaultCellEditor(onPropertyList));
-//						
-//						// add row
-//						tableModel.addRow(new Object[]{"","A","A"});
-//					}
-//				}
-//			});
-//		}
-//		return addParameter;
-//	}
-
-	// add Factor button
-//	private JButton getAddFactor() {
-//		if (addFactor == null) {
-//			addFactor = new JButton();
-//			addFactor.setBounds(new Rectangle(442, 8, 41, 19));
-//			addFactor.setText("+");
-//			addFactor.addActionListener(new ActionListener(){
-//
-//				public void actionPerformed(ActionEvent e) {
-//
-//					int selectedIndex = factorsComboBox.getSelectedIndex();
-//					DefaultTableModel tableModel = (DefaultTableModel) factorsTable.getModel();
-//					
-//					if(selectedIndex == 0){
-//						// add class factors
-//						factorsScrollPane.setVisible(true);
-//						
-//						// variable
-//						TableColumn variable = factorsTable.getColumnModel().getColumn(0);
-//						JComboBox variableList = new JComboBox();// get variables from existing data
-//						
-//						OWLOntologyManager manager = owlModelManager.getActiveOntology().getOWLOntologyManager();
-//						OWLDataFactory dataFactory = manager.getOWLDataFactory();
-//						
-//System.out.println(dataFactory.getOWLBottomDataProperty());
-						
-//						variableList.addItem("C");
-//						variableList.addItem("D");
-//						variable.setCellEditor(new DefaultCellEditor(variableList));
-//						
-//						// property
-//						TableColumn property = factorsTable.getColumnModel().getColumn(1);
-//						JComboBox propertyList = new JComboBox();
-//						propertyList.addItem("D");
-//						propertyList.addItem("E");
-//						property.setCellEditor(new DefaultCellEditor(propertyList));
-//						
-//						// add row
-//						tableModel.addRow(new Object[]{"C","C"});
-//						
-//					}else if(selectedIndex == 1){
-//						
-//					}
-//					
-//				}
-//				
-//			});
-//		}
-//		return addFactor;
-//	}
-	
-	// Confirm button
-//	private JButton getAddTermblock() {
-//		if (addTermblock == null) {
-//			addTermblock = new JButton();
-//			addTermblock.setBounds(new Rectangle(411, 8, 81, 14));
-//			addTermblock.setText("Confirm");
-//		}
-//		return addTermblock;
-//	}
-
-	// parameters scrollpane
-//	private JScrollPane getParametersScrollPane() {
-//		if (parametersScrollPane == null) {
-//			parametersScrollPane = new JScrollPane();
-//			parametersScrollPane.setBounds(new Rectangle(168, 36, 186, 55));
-//			parametersScrollPane.setViewportView(getParametersTable());
-//			parametersScrollPane.setVisible(false);
-//		}
-//		return parametersScrollPane;
-//	}
-
-	// parameters table
-//	private JTable getParametersTable() {
-//		if (parametersTable == null) {
-//			
-//			final String[] colHeads = {"Variable","hasValue","Onproperty"};
-//			final Object[][] data = null;
-//			
-//			DefaultTableModel model = new DefaultTableModel(data,colHeads);
-//			parametersTable = new JTable(model);
-//
-//		}
-//		return parametersTable;
-//	}
-//	
-	// parameters combobox
-//	private JComboBox getParameterComboBox() {
-//		if (parameterComboBox == null) {
-//			final String[] parameters = {"Qparameter","Cparameter"};
-//			parameterComboBox = new JComboBox(parameters);
-//			parameterComboBox.setBounds(new Rectangle(173, 8, 90, 18));
-//		}
-//		return parameterComboBox;
-//	}
-	
-	// factors combobox
-//	private JComboBox getFactorsComboBox() {
-//		if (factorsComboBox == null) {
-//			final String[] factors = {"Cfactor","Ifactor"};
-//			factorsComboBox = new JComboBox(factors);
-//			factorsComboBox.setBounds(new Rectangle(344, 8, 90, 18));
-//		}
-//		return factorsComboBox;
-//	}
-
-	// factors scrollpane
-//	private JScrollPane getFactorsScrollPane() {
-//		if (factorsScrollPane == null) {
-//			factorsScrollPane = new JScrollPane();
-//			factorsScrollPane.setBounds(new Rectangle(367, 31, 126, 60));
-//			factorsScrollPane.setViewportView(getFactorsTable());
-//			factorsScrollPane.setVisible(false);
-//		}
-//		return factorsScrollPane;
-//	}
-
-	// factors table
-//	private JTable getFactorsTable() {
-//		if (factorsTable == null) {
-//			final String[] colHeads = {"Variable","Property"};
-//			final Object[][] data = null;
-//			
-//			DefaultTableModel model = new DefaultTableModel(data,colHeads);
-//			factorsTable = new JTable(model);
-//		}
-//		return factorsTable;
-//	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	//===Action Performed Control
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// OK event
 		if(e.getActionCommand().equals("OK")){
-			System.out.println(operatorComboBox.getSelectedItem());
-			System.out.println((rhsPanel.getComponent(1)));
+			Utils.addArrayList(totalVariablesList, variablesList);
 		}
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){

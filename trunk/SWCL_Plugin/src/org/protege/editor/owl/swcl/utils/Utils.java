@@ -32,4 +32,29 @@ public class Utils {
 				}
 			}
 	}
+	
+	public static void addArrayList(ArrayList<Variable> list1, ArrayList<Variable> list2){
+		for(Variable v:list2){
+			list1.add(v);
+		}
+	}
+	
+	public static ArrayList<Variable> sumArrayList(ArrayList<Variable> list1,ArrayList<Variable> list2){
+		ArrayList<Variable> sumArrayList = new ArrayList<Variable>();
+		for(Variable v:list1){
+			sumArrayList.add(v);
+		}
+		for(Variable v:list2){
+			sumArrayList.add(v);
+		}
+		return sumArrayList;
+	}
+	
+	// test purpose
+	public static void printVariablesList(String s,ArrayList<Variable> list){
+		for(Variable v:list){
+			System.out.println(s+v.getName());
+		}
+	}
+	
 }
