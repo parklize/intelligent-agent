@@ -78,7 +78,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane termblockScrollpane = null;
 	private JPanel addTermblockpanel = null;
 	private JPanel addTermblockPanelMenuPanel = null;
-//	private JPanel addTermblockPanelTermblockPanel = null;
 	private JButton jButton = null;
 	private JLabel signLabel = null;
 	private JLabel AggOp = null;
@@ -104,6 +103,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JTable relatedVariablesTable = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
+	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
 	
 /*
  * should be afforded from ExampleViewComponent
@@ -288,6 +288,10 @@ Utils.printVariablesList("variablesList:", variablesList);
 								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
 								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
 							}
+							if(lhsTermblocks[i] != null){
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+							}
 						}
 						
 					}
@@ -350,6 +354,10 @@ Utils.printVariablesList("variablesList:", variablesList);
 								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
 								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
 							}
+							if(lhsTermblocks[i] != null){
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+							}
 						}
 					}
 				}
@@ -388,6 +396,10 @@ Utils.printVariablesList("variablesList:", variablesList);
 							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
 							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
 						}
+						if(lhsTermblocks[i] != null){
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+						}
 					}
 					
 				}
@@ -406,15 +418,13 @@ Utils.printVariablesList("variablesList:", variablesList);
 				public void actionPerformed(ActionEvent e) {
 					
 					if(totalVariablesList.size()==0){
-						// first create constraint
+						// first create constraint, get variables list from variableList
 						((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",variablesList.get(0).getName(),"A"});
 					}else{
-						// not first time
+						// if not, get variables from total variabblesList
 						((DefaultTableModel)relatedVariablesTable.getModel()).addRow(new Object[]{"","¡ô",totalVariablesList.get(0).getName(),"A"});
 					}
-/*
- * binding information editing...					
- */
+
 					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), relatedVariable);// refresh variables combobox 
 					// add variable to variablesList
 					RelatedVariable variable = new RelatedVariable();
@@ -431,6 +441,10 @@ Utils.printVariablesList("variablesList:", variablesList);
 						if(rhsTermblocks[i] != null){
 							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
 							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+						}
+						if(lhsTermblocks[i] != null){
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
 						}
 					}
 				}
@@ -512,9 +526,28 @@ Utils.printVariablesList("variablesList:", variablesList);
 	private JPanel getLhsPanel() {
 		if (lhsPanel == null) {
 			lhsPanel = new JPanel();
-			lhsPanel.setLayout(new GridBagLayout());
+			lhsPanel.setLayout(null);
 		}
 		return lhsPanel;
+	}
+	
+	// LHS Termblock panel 
+	private JPanel getLHSTermblockPanel(int lhsTermblockNumber) {
+
+			lhsTermblocks[lhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList));
+			
+			// termblock initializing...
+			lhsTermblocks[lhsTermblockNumber].setLayout(null);
+			lhsTermblocks[lhsTermblockNumber].setBounds(new Rectangle(0, 60*lhsTermblockNumber, 500, 60));
+			lhsTermblocks[lhsTermblockNumber].setBackground(new Color(238, 223, 194));
+			
+			double lhsPanelHeight = lhsPanel.getPreferredSize().getHeight()+60;
+			// resize rhsPanel
+			lhsPanel.setPreferredSize(new Dimension(0,(int)lhsPanelHeight));
+			// check scroll bar necessity 
+			lhsScrollPane.revalidate();
+
+		return lhsTermblocks[lhsTermblockNumber];
 	}
 	
 	/*
@@ -646,7 +679,9 @@ Utils.printVariablesList("variablesList:", variablesList);
 			if(selectedItem.equals("QUALIFIER")){
 				
 			}else if(selectedItem.equals("LHS Termblock")){
-				
+				lhsPanel.add(getLHSTermblockPanel(lhsTermblockNumber),null);
+				lhsPanel.repaint();
+				lhsTermblockNumber++;
 			}else if(selectedItem.equals("RHS Termblock")){
 				rhsPanel.add(getRHSTermblockPanel(rhsTermblockNumber),null);
 				rhsPanel.repaint();
