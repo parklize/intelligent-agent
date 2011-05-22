@@ -88,7 +88,6 @@ public class TermBlockComponent extends JPanel {
 	// sign combobox
 	private JComboBox getSign() {
 		if (signComboBox == null) {
-System.out.println("What's wrong?");
 			final String[] signs = {"+","-"};
 			
 			signComboBox = new JComboBox(signs);
