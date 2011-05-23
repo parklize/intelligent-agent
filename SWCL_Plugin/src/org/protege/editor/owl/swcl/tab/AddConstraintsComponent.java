@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.model.ClassVariable;
 import org.protege.editor.owl.swcl.model.RelatedVariable;
@@ -33,6 +35,7 @@ import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.OWLClassHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -689,6 +692,7 @@ Utils.printVariablesList("variablesList:", variablesList);
 			}		
 		}	
 	}
+	
 
 
 

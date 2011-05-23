@@ -22,13 +22,27 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.OWLClassHelper;
+import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionEditorPluginImpl;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionExpressionEditor;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
+import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
+import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.protege.editor.owl.ui.view.cls.OWLClassDescriptionViewComponent;
+import org.protege.editor.owl.ui.view.cls.OWLClassUsageViewComponent;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -65,8 +79,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     
     // global variables
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
-	private ArrayList<Variable>	classVariablesList = new ArrayList<Variable>(); 
-	private ArrayList<Variable>	relatedVariablesList = new ArrayList<Variable>(); 
+	private ArrayList<Constraint> constraintList = new ArrayList<Constraint>();
 	
     // convinience class for querying the asserted subsumption hierarchy directly
 //    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
@@ -81,52 +94,63 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     @Override
     protected void initialiseOWLView() throws Exception {
     	
+        // access to the ontologies, reasoners, search renderings, change management etc.
+        owlModelManager = getOWLModelManager();
+        
     	// set layout 
         setLayout(new BorderLayout());
         
         // add panels to the protege jPanel
-        add(getMenuPanel(),BorderLayout.NORTH);
-        add(getConstraintsPanel(),BorderLayout.CENTER);
+//        add(getMenuPanel(),BorderLayout.NORTH);
+//        add(getConstraintsPanel(),BorderLayout.CENTER);
         
-// EDITING...
-       // access to the ontologies, reasoners, search renderings, change management etc.
-       owlModelManager = getOWLModelManager();
-//       Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
-//       
-//       // dump active ontology present
-//       for(OWLOntology owl:activeOntologies){
-//    	   OWLOntologyManager manager = owl.getOWLOntologyManager();
-//    	   manager.saveOntology(owl,new SystemOutDocumentTarget());
-//       }
-       
-       // get all properties in ontology
-//        owl = owlModelManager.getActiveOntology();
-//        OWLOntologyManager manager = owl.getOWLOntologyManager();
-//        OWLDataFactory odf = manager.getOWLDataFactory();
-//        Set d = owl.getDataPropertiesInSignature();
-//        Set c = owl.getClassesInSignature();
-//        Set<OWLIndividual> i = null;
-//        Iterator it = d.iterator();
-//        Iterator it2 = c.iterator();
-//        Iterator it3 = null;
-//        while(it.hasNext()){
-//        	System.out.println(it.next().toString());
-//        }
-//        while(it2.hasNext()){
-////        	System.out.println(it2.next().toString());// get all classes
-//System.out.println("=============");
-//        	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
-//        	this.owlClassHelper = new OWLClassHelper(owlClass);
-//        	i = owlClass.getIndividuals(owl);
-//            it3 = i.iterator();
-//            while(it3.hasNext()){
-//System.out.println("IRI:"+owlClass.getIRI());
-//System.out.println("Class Name:"+this.owlClassHelper.getClassName());
-//System.out.println(owlClass.toStringID()+" individuals");
-//System.out.println(it3.next());
-//            }
-//        }
+        // get workspace
+        OWLWorkspace ow = getOWLWorkspace();
+		// get selected class from workspace
+		OWLClassExpression oc = ow.getOWLSelectionModel().getLastSelectedClass();
+        // including many components
+        OWLComponentFactoryImpl ocf = new OWLComponentFactoryImpl(getOWLEditorKit());
+        add(ocf.getOWLClassDescriptionEditor(oc).getEditorComponent());
 
+      	
+// EDITING...
+/*
+       Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
+       
+       // dump active ontology present
+       for(OWLOntology owl:activeOntologies){
+    	   OWLOntologyManager manager = owl.getOWLOntologyManager();
+    	   manager.saveOntology(owl,new SystemOutDocumentTarget());
+       }
+*/       
+       // get all properties in ontology
+/*        owl = owlModelManager.getActiveOntology();
+        OWLOntologyManager manager = owl.getOWLOntologyManager();
+        OWLDataFactory odf = manager.getOWLDataFactory();
+        Set d = owl.getDataPropertiesInSignature();
+        Set c = owl.getClassesInSignature();
+        Set<OWLIndividual> i = null;
+        Iterator it = d.iterator();
+        Iterator it2 = c.iterator();
+        Iterator it3 = null;
+        while(it.hasNext()){
+        	System.out.println(it.next().toString());
+        }
+        while(it2.hasNext()){
+//        	System.out.println(it2.next().toString());// get all classes
+System.out.println("=============");
+        	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
+        	this.owlClassHelper = new OWLClassHelper(owlClass);
+        	i = owlClass.getIndividuals(owl);
+            it3 = i.iterator();
+            while(it3.hasNext()){
+System.out.println("IRI:"+owlClass.getIRI());
+System.out.println("Class Name:"+this.owlClassHelper.getClassName());
+System.out.println(owlClass.toStringID()+" individuals");
+System.out.println(it3.next());
+            }
+        }
+*/
         
         
         // default codes
@@ -265,16 +289,16 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		}
 		
 		// the event of clicking the G button, generate the SWCL code
-		if(e.getActionCommand().endsWith("D")){
-			int rowCount = tableModel.getRowCount();// =no. of constraints 
-			for(int i=0;i<rowCount;i++){
-				
-				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
-				System.out.println(jcb.isSelected());
-				System.out.println(tableModel.getValueAt(i, 1));
-				System.out.println(tableModel.getValueAt(i, 2));
-				
-			}
+		if(e.getActionCommand().equals("D")){
+//			int rowCount = tableModel.getRowCount();// =no. of constraints 
+//			for(int i=0;i<rowCount;i++){
+//				
+//				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+//				System.out.println(jcb.isSelected());
+//				System.out.println(tableModel.getValueAt(i, 1));
+//				System.out.println(tableModel.getValueAt(i, 2));
+//				
+//			}
 		}
 		
 	}
