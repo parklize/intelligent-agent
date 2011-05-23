@@ -1,12 +1,15 @@
 package org.protege.editor.owl.swcl.model;
 
+import java.util.ArrayList;
+
+
 public class TermBlock {
 	
 	private int id;
 	private String sign;
 	private String aggregateOppertor;
-	private Variable variable;
-	private Factor factor;
+	private ArrayList<Parameter> parameters;
+	private ArrayList<Factor> factors;
 	
 	public int getId() {
 		return id;
@@ -26,18 +29,19 @@ public class TermBlock {
 	public void setAggregateOppertor(String aggregateOppertor) {
 		this.aggregateOppertor = aggregateOppertor;
 	}
-	public Variable getVariable() {
-		return variable;
+	public ArrayList<Parameter> getParameters() {
+		return parameters;
 	}
-	public void setVariable(Variable variable) {
-		this.variable = variable;
+	public void setParameters(ArrayList<Parameter> parameters) {
+		this.parameters = parameters;
 	}
-	public Factor getFactor() {
-		return factor;
+	public ArrayList<Factor> getFactors() {
+		return factors;
 	}
-	public void setFactor(Factor factor) {
-		this.factor = factor;
+	public void setFactors(ArrayList<Factor> factors) {
+		this.factors = factors;
 	}
+	
 	
 	
 }
