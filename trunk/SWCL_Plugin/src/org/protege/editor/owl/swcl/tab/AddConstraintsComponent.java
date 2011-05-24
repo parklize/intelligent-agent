@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.rmi.CORBA.Util;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,34 +16,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.OWLEditorKitFactory;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.model.ClassVariable;
+import org.protege.editor.owl.swcl.model.Constraint;
+import org.protege.editor.owl.swcl.model.Factor;
+import org.protege.editor.owl.swcl.model.LHS;
+import org.protege.editor.owl.swcl.model.Operator;
+import org.protege.editor.owl.swcl.model.Parameter;
+import org.protege.editor.owl.swcl.model.Qualifier;
+import org.protege.editor.owl.swcl.model.RHS;
 import org.protege.editor.owl.swcl.model.RelatedVariable;
+import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
-import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.OWLClassHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
-import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
-
-import javax.swing.JCheckBox;
-import java.awt.GridBagConstraints;
 import java.util.ArrayList;
-import java.util.Iterator;
 /**
  * 
  * Author: parklize
@@ -75,26 +66,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JPanel rhsPanel = null;
 	private JScrollPane qualifierScrollPane = null;
 	private JPanel qualifierPanel = null;
-	private JPanel termblockPanel = null;
 	private int lhsTermblockNumber = 0;
 	private int rhsTermblockNumber = 0;
-	private JScrollPane termblockScrollpane = null;
-	private JPanel addTermblockpanel = null;
-	private JPanel addTermblockPanelMenuPanel = null;
-	private JButton jButton = null;
-	private JLabel signLabel = null;
-	private JLabel AggOp = null;
-	private JButton addTermblock = null;
-	private JComboBox signComboBox = null;
-	private JButton addParameter = null;
-	private JButton addFactor = null;
-	private JComboBox aggOpComboBox = null;
-	private JScrollPane parametersScrollPane = null;
-	private JTable parametersTable = null;
-	private JComboBox parameterComboBox = null;
-	private JComboBox factorsComboBox = null;
-	private JScrollPane factorsScrollPane = null;
-	private JTable factorsTable = null;
 	private JLabel variableLabel = null;
 	private JScrollPane variableScrollPane = null;
 	private JPanel variablePanel = null;
@@ -125,7 +98,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private TableColumn qualifierVariable = null;
 	private TableColumn relatedVariable = null;
 	
-	private Utils util = new Utils();
     
 	// initialing...
 	public AddConstraintsComponent(OWLOntology owl,ArrayList<Variable> totalVariablesList) {
@@ -670,9 +642,128 @@ Utils.printVariablesList("variablesList:", variablesList);
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// OK event
+		// NEED UPDATE,OK event
 		if(e.getActionCommand().equals("OK")){
+			// add varibaleList to totalVariablesList
 			Utils.addArrayList(totalVariablesList, variablesList);
+			
+			// new and initialize constraint
+			Constraint con = new Constraint();
+			
+			// set qualifier
+			DefaultTableModel tableModel = (DefaultTableModel)qualifiersTable.getModel();
+			
+			for(int i=0;i<tableModel.getRowCount();i++){
+				String valName = (String)tableModel.getValueAt(i, 0);
+				for(Variable v:totalVariablesList){
+					if(valName.equals(v.getName())){
+						Qualifier qua = new Qualifier(v);
+						con.getQualifiers().add(qua);
+					}
+				}
+			}
+			
+			//============set LHS===========
+			LHS lhs = new LHS();
+			
+			for(int j=0;j<lhsTermblockNumber;j++){
+				TermBlock tb = new TermBlock();
+//System.out.println(j);
+				String sign = lhsTermblocks[j].getSignComboBox().getSelectedItem().toString();
+				tb.setSign(sign);
+				
+//System.out.println("sign is :" + sign);
+				String agg = lhsTermblocks[j].getAggOppComboBox().getSelectedItem().toString();
+				tb.setAggregateOppertor(agg);
+//System.out.println("agg is:" + agg);
+				
+				// parameter list
+				ArrayList<Parameter> pList = new ArrayList<Parameter>();
+				JTable parameterTable = lhsTermblocks[j].getParametersTable();
+				DefaultTableModel tModel = (DefaultTableModel) parameterTable.getModel();
+				
+				for(int u=0;u<tModel.getRowCount();u++){
+					String valName = (String)tableModel.getValueAt(u, 0);
+					Parameter p = new Parameter();
+					p.setV(Utils.findVariableWithName(totalVariablesList, valName));
+					pList.add(p);
+				}
+				
+				tb.setParameters(pList);
+				
+				// factoer list
+				ArrayList<Factor> fList = new ArrayList<Factor>();
+				JTable factorsTable = lhsTermblocks[j].getFactorsTable();
+				DefaultTableModel fModel = (DefaultTableModel)factorsTable.getModel();
+				
+				for(int q=0;q<fModel.getRowCount();q++){
+					Factor f = new Factor();
+					String vName = (String)fModel.getValueAt(q, 0);
+					// NEED UPDATE (set Factor's OWLProperty)
+					String pro = (String)fModel.getValueAt(q, 1);
+					f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+					fList.add(f);
+				}
+				
+				tb.setFactors(fList);
+				
+				lhs.getTermblocks().add(tb);
+			}
+			con.setLhs(lhs);
+			//==================end of set LHS==============
+			
+			// set opp
+			con.setOpp(new Operator(operatorComboBox.getSelectedItem().toString()));
+			
+			//============set RHS===========
+			RHS rhs = new RHS();
+			
+			for(int j=0;j<rhsTermblockNumber;j++){
+				TermBlock tb = new TermBlock();
+//System.out.println(j);
+				String sign = rhsTermblocks[j].getSignComboBox().getSelectedItem().toString();
+				tb.setSign(sign);
+				
+//System.out.println("sign is :" + sign);
+				String agg = rhsTermblocks[j].getAggOppComboBox().getSelectedItem().toString();
+				tb.setAggregateOppertor(agg);
+//System.out.println("agg is:" + agg);
+				
+				// parameter list
+				ArrayList<Parameter> pList = new ArrayList<Parameter>();
+				JTable parameterTable = rhsTermblocks[j].getParametersTable();
+				DefaultTableModel tModel = (DefaultTableModel) parameterTable.getModel();
+				
+				for(int u=0;u<tModel.getRowCount();u++){
+					String valName = (String)tableModel.getValueAt(u, 0);
+					Parameter p = new Parameter();
+					p.setV(Utils.findVariableWithName(totalVariablesList, valName));
+					pList.add(p);
+				}
+				
+				tb.setParameters(pList);
+				
+				// factoer list
+				ArrayList<Factor> fList = new ArrayList<Factor>();
+				JTable factorsTable = rhsTermblocks[j].getFactorsTable();
+				DefaultTableModel fModel = (DefaultTableModel)factorsTable.getModel();
+				
+				for(int q=0;q<fModel.getRowCount();q++){
+					Factor f = new Factor();
+					String vName = (String)fModel.getValueAt(q, 0);
+					// NEED UPDATE (set Factor's OWLProperty)
+					String pro = (String)fModel.getValueAt(q, 1);
+					f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+					fList.add(f);
+				}
+				
+				tb.setFactors(fList);
+				
+				rhs.getTermblocks().add(tb);
+			}
+			con.setRhs(rhs);
+			//==================end of set RHS==============
+			
 		}
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){
@@ -692,35 +783,6 @@ Utils.printVariablesList("variablesList:", variablesList);
 			}		
 		}	
 	}
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 } 
  	
 	
