@@ -1,23 +1,27 @@
 package org.protege.editor.owl.swcl.model;
 
+import java.util.ArrayList;
+
 public class Constraint {
 	
-	private Qualifier qualifier;
-	private LHS lsh;
+	private String name;
+	private ArrayList<Qualifier> qualifiers = new ArrayList<Qualifier>();
+	private LHS lhs;
 	private Operator opp;
 	private RHS rhs;
 	
-	public Qualifier getQualifier() {
-		return qualifier;
+
+	public ArrayList<Qualifier> getQualifiers() {
+		return qualifiers;
 	}
-	public void setQualifier(Qualifier qualifier) {
-		this.qualifier = qualifier;
+	public void setQualifiers(ArrayList<Qualifier> qualifiers) {
+		this.qualifiers = qualifiers;
 	}
-	public LHS getLsh() {
-		return lsh;
+	public LHS getLhs() {
+		return lhs;
 	}
-	public void setLsh(LHS lsh) {
-		this.lsh = lsh;
+	public void setLhs(LHS lhs) {
+		this.lhs = lhs;
 	}
 	public Operator getOpp() {
 		return opp;
@@ -30,6 +34,12 @@ public class Constraint {
 	}
 	public void setRhs(RHS rhs) {
 		this.rhs = rhs;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

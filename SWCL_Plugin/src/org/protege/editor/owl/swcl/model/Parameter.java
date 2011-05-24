@@ -1,5 +1,7 @@
 package org.protege.editor.owl.swcl.model;
 
+import java.util.ArrayList;
+
 public class Parameter {
 
 	private Variable v;
@@ -11,6 +13,9 @@ public class Parameter {
 	public void setV(Variable v) {
 		this.v = v;
 	}
+
+
+
 	
 	
 }

@@ -282,6 +282,9 @@ public class TermBlockComponent extends JPanel {
 	public void setFactorTable(JTable factorTable) {
 		this.factorTable = factorTable;
 	}
+	public JTable getFactorsTable(){
+		return this.factorTable;
+	}
 
 
 

@@ -101,9 +101,11 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         setLayout(new BorderLayout());
         
         // add panels to the protege jPanel
-//        add(getMenuPanel(),BorderLayout.NORTH);
-//        add(getConstraintsPanel(),BorderLayout.CENTER);
+        add(getMenuPanel(),BorderLayout.NORTH);
+        add(getConstraintsPanel(),BorderLayout.CENTER);
         
+// TESTING....        
+/*        
         // get workspace
         OWLWorkspace ow = getOWLWorkspace();
 		// get selected class from workspace
@@ -111,9 +113,8 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         // including many components
         OWLComponentFactoryImpl ocf = new OWLComponentFactoryImpl(getOWLEditorKit());
         add(ocf.getOWLClassDescriptionEditor(oc).getEditorComponent());
-
+*/
       	
-// EDITING...
 /*
        Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
        

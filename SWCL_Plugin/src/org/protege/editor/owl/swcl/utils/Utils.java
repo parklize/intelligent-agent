@@ -50,6 +50,15 @@ public class Utils {
 		return sumArrayList;
 	}
 	
+	public static Variable findVariableWithName(ArrayList<Variable> vList,String name){
+		for(Variable v:vList){
+			if(name.equals(v.getName())){
+				return v;
+			}
+		}
+		return null;
+	}
+	
 	// test purpose
 	public static void printVariablesList(String s,ArrayList<Variable> list){
 		for(Variable v:list){
