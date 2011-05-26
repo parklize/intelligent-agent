@@ -60,18 +60,18 @@ public class TermBlockComponent extends JPanel {
 	// initializing..
 	private void initialize() {
 		factorLabel = new JLabel();
-		factorLabel.setBounds(new Rectangle(375, 3, 46, 18));
+		factorLabel.setBounds(new Rectangle(353, 18, 46, 18));
 		factorLabel.setText("factor");
 		parameterLabel = new JLabel();
-		parameterLabel.setBounds(new Rectangle(238, 3, 82, 18));
+		parameterLabel.setBounds(new Rectangle(216, 18, 82, 18));
 		parameterLabel.setText("Parameter");
 		aggregateOp = new JLabel();
-		aggregateOp.setBounds(new Rectangle(112, 3, 98, 18));
+		aggregateOp.setBounds(new Rectangle(90, 18, 98, 18));
 		aggregateOp.setText("aggregateOp");
 		signLabel = new JLabel();
-		signLabel.setBounds(new Rectangle(27, 3, 38, 18));
+		signLabel.setBounds(new Rectangle(7, 18, 38, 18));
 		signLabel.setText("sign");
-		this.setSize(500, 60);
+		this.setSize(500, 112);
 		this.setLayout(null);
 		this.add(signLabel, null);
 		this.add(aggregateOp, null);
@@ -91,7 +91,7 @@ public class TermBlockComponent extends JPanel {
 			final String[] signs = {"+","-"};
 			
 			signComboBox = new JComboBox(signs);
-			signComboBox.setBounds(new Rectangle(27, 30, 49, 27));
+			signComboBox.setBounds(new Rectangle(7, 40, 49, 27));
 		}
 		return signComboBox;
 	}
@@ -101,7 +101,7 @@ public class TermBlockComponent extends JPanel {
 		if (aggOppComboBox == null) {
 			final String[] aggOpps = {"not use","sigma","production"};
 			aggOppComboBox = new JComboBox(aggOpps);
-			aggOppComboBox.setBounds(new Rectangle(112, 30, 103, 27));
+			aggOppComboBox.setBounds(new Rectangle(90, 40, 103, 27));
 		}
 		return aggOppComboBox;
 	}
@@ -114,7 +114,7 @@ public class TermBlockComponent extends JPanel {
 	private JScrollPane getParameterScrollPane() {
 		if (parametersScrollPane == null) {
 			parametersScrollPane = new JScrollPane();
-			parametersScrollPane.setBounds(new Rectangle(239, 24, 81, 36));
+			parametersScrollPane.setBounds(new Rectangle(217, 40, 73, 62));
 			parametersScrollPane.setViewportView(getParameterTable());
 		}
 		return parametersScrollPane;
@@ -140,7 +140,7 @@ public class TermBlockComponent extends JPanel {
 	private JButton getAddParameterButton() {
 		if (addParameterButton == null) {
 			addParameterButton = new JButton();
-			addParameterButton.setBounds(new Rectangle(326, 3, 43, 18));
+			addParameterButton.setBounds(new Rectangle(290, 18, 43, 18));
 			addParameterButton.setText("+");
 			addParameterButton.addActionListener(new ActionListener(){
 
@@ -160,7 +160,7 @@ public class TermBlockComponent extends JPanel {
 	private JScrollPane getFactorScrollPane() {
 		if (factorScrollPane == null) {
 			factorScrollPane = new JScrollPane();
-			factorScrollPane.setBounds(new Rectangle(356, 24, 135, 36));
+			factorScrollPane.setBounds(new Rectangle(334, 40, 135, 62));
 			factorScrollPane.setViewportView(getFactorTable());
 		}
 		return factorScrollPane;
@@ -185,7 +185,7 @@ public class TermBlockComponent extends JPanel {
 	private JButton getAddFactorButton() {
 		if (addFactorButton == null) {
 			addFactorButton = new JButton();
-			addFactorButton.setBounds(new Rectangle(428, 3, 43, 18));
+			addFactorButton.setBounds(new Rectangle(406, 18, 43, 18));
 			addFactorButton.setText("+");
 			addFactorButton.addActionListener(new ActionListener(){
 
