@@ -14,6 +14,7 @@ public class OWLClassHelper {
 		this.owlClass = owlClass;
 	}
 	
+	// return name without prefix
 	public String getClassName(){
 		String iriName = owlClass.getIRI().toString();
 		st = new StringTokenizer(iriName,"#");

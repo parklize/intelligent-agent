@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,7 +33,9 @@ import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.OWLClassHelper;
+import org.protege.editor.owl.swcl.utils.OWLComponentFactoryImplExtension;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionEditor;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionEditorPluginImpl;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionExpressionEditor;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
@@ -74,7 +77,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private JButton addConstraintButton = null; // add constraint button
     private JButton generateSWCLButton = null; // button to generate SWCL code
     private OWLModelManager owlModelManager = null;
+    private OWLWorkspace ow = null;
     private OWLOntology owl = null;
+    private OWLClassExpression oc = null;
     private OWLClassHelper owlClassHelper = null;
     
     // global variables
@@ -93,9 +98,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 
     @Override
     protected void initialiseOWLView() throws Exception {
-    	
-        // access to the ontologies, reasoners, search renderings, change management etc.
-        owlModelManager = getOWLModelManager();
+
         
     	// set layout 
         setLayout(new BorderLayout());
@@ -105,16 +108,24 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         add(getConstraintsPanel(),BorderLayout.CENTER);
         
 // TESTING....        
-/*        
+    	
+        // access to the ontologies, reasoners, search renderings, change management etc.
+        owlModelManager = getOWLModelManager();
+        
         // get workspace
         OWLWorkspace ow = getOWLWorkspace();
 		// get selected class from workspace
-		OWLClassExpression oc = ow.getOWLSelectionModel().getLastSelectedClass();
+		oc = ow.getOWLSelectionModel().getLastSelectedClass();
+        
+        
+		
         // including many components
-        OWLComponentFactoryImpl ocf = new OWLComponentFactoryImpl(getOWLEditorKit());
-        add(ocf.getOWLClassDescriptionEditor(oc).getEditorComponent());
-*/
-      	
+//        OWLComponentFactoryImpl ocf = new OWLComponentFactoryImpl(getOWLEditorKit());
+//		OWLComponentFactoryImplExtension ocfe = new OWLComponentFactoryImplExtension(getOWLEditorKit());
+//		JComponent com = ocfe.getOWLClassDescriptionEditor(oc).getEditorComponent();
+//		com.setBounds(0, 0, 50, 50);
+//        add(com);
+
 /*
        Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
        
@@ -155,8 +166,10 @@ System.out.println(it3.next());
         
         
         // default codes
-        log.info("Example View Component initialized");
+//        log.info("Example View Component initialized");
     }
+    
+
     
     // initialize the menu panel
     private JPanel getMenuPanel(){
@@ -285,7 +298,7 @@ System.out.println(it3.next());
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(owl,variablesList);
+			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),oc,variablesList,getOWLEditorKit());
 			acc.setVisible(true);
 		}
 		

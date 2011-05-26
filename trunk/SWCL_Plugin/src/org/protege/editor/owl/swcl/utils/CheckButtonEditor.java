@@ -7,7 +7,6 @@ import java.awt.event.ItemListener;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
  
 public class CheckButtonEditor extends DefaultCellEditor implements ItemListener {
     private static final long serialVersionUID = 198567563L;
@@ -19,10 +18,8 @@ public class CheckButtonEditor extends DefaultCellEditor implements ItemListener
  
     public Component getTableCellEditorComponent(JTable table, Object value,
             boolean isSelected, int row, int column) {
-        if (value == null){
+        if (value == null)
             return null;
-        }
-        
         button = (JCheckBox) value;
         button.addItemListener(this);
         return (Component) value;

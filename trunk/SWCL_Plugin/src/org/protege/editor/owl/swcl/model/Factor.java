@@ -1,11 +1,9 @@
 package org.protege.editor.owl.swcl.model;
 
-import org.semanticweb.owlapi.model.OWLProperty;
-
 public class Factor {
 
 	private Variable v;
-	private OWLProperty owlProperty;
+	private String owlProperty;
 	
 	public Variable getV() {
 		return v;
@@ -13,12 +11,11 @@ public class Factor {
 	public void setV(Variable v) {
 		this.v = v;
 	}
-	public OWLProperty getOwlProperty() {
+	public String getOwlProperty() {
 		return owlProperty;
 	}
-	public void setOwlProperty(OWLProperty owlProperty) {
+	public void setOwlProperty(String owlProperty) {
 		this.owlProperty = owlProperty;
 	}
-	
-	
+
 }

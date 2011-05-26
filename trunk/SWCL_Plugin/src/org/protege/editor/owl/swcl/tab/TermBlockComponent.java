@@ -16,11 +16,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.JButton;
-
+/**
+ * 
+ * Author: parklize
+ * Date: 2011.04.20~
+ * Description: TermBlockComponent
+ */
 public class TermBlockComponent extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Utils utils = new Utils();
 	
 	// components attrs
 	private JLabel signLabel = null;
@@ -41,10 +45,6 @@ public class TermBlockComponent extends JPanel {
 	private TableColumn factorVariableColumn = null;
 	private JButton addFactorButton = null;
 
-
-
-
-	
 	// default constructor
 	public TermBlockComponent() {
 		super();
@@ -130,7 +130,7 @@ public class TermBlockComponent extends JPanel {
 			parametersTable = new JTable(dt);
 			parameterColumn = parametersTable.getColumnModel().getColumn(0);
 			// initialize parameter's variable combobox
-			utils.refreshComboBox(variablesList, parameterColumn);
+			Utils.refreshComboBox(variablesList, parameterColumn);
 			
 		}
 		return parametersTable;
@@ -174,8 +174,9 @@ public class TermBlockComponent extends JPanel {
 			DefaultTableModel dt = new DefaultTableModel(data,colHeads);
 			factorTable = new JTable(dt);
 			factorVariableColumn  = factorTable.getColumnModel().getColumn(0);
+			
 			// initialize factor variable combobox
-			utils.refreshComboBox(variablesList, factorVariableColumn);
+			Utils.refreshComboBox(variablesList, factorVariableColumn);
 		}
 		return factorTable;
 	}

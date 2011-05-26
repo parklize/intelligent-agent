@@ -4,6 +4,10 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 
 public class RelatedVariable extends Variable{
 	
+	public RelatedVariable(String name, String description) {
+		super(name, description);
+		// TODO Auto-generated constructor stub
+	}
 	private Variable hasValue;
 	private OWLDatatype datatypeProperty;
 	
