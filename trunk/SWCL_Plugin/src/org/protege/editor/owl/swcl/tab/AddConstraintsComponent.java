@@ -54,6 +54,10 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 import java.util.ArrayList;
 import java.awt.GridBagLayout;
+import javax.swing.BorderFactory;
+import java.awt.SystemColor;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.BevelBorder;
 /**
  * 
  * Author: parklize
@@ -180,19 +184,19 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JPanel getJPanel() {
 		if (constraintPanel == null) {
 			variableLabel = new JLabel();
-			variableLabel.setBounds(new Rectangle(33, 25, 66, 18));
+			variableLabel.setBounds(new Rectangle(33, 30, 66, 18));
 			variableLabel.setText("VARIABLE:");
 			rhsLabel = new JLabel();
-			rhsLabel.setBounds(new Rectangle(33, 443, 60, 18));
+			rhsLabel.setBounds(new Rectangle(33, 570, 60, 18));
 			rhsLabel.setText("RHS:");
 			lhsLable = new JLabel();
-			lhsLable.setBounds(new Rectangle(33, 290, 60, 18));
+			lhsLable.setBounds(new Rectangle(33, 400, 60, 18));
 			lhsLable.setText("LHS:");
 			qualifierLabel = new JLabel();
-			qualifierLabel.setBounds(new Rectangle(33, 165, 75, 18));
+			qualifierLabel.setBounds(new Rectangle(33, 230, 75, 18));
 			qualifierLabel.setText("QUALIFIER:");
 			operatorLabel = new JLabel();
-			operatorLabel.setBounds(new Rectangle(33, 415, 75, 18));
+			operatorLabel.setBounds(new Rectangle(33, 530, 75, 18));
 			operatorLabel.setText("OPERATOR:");
 			constraintPanel = new JPanel();
 			constraintPanel.setLayout(null);
@@ -214,7 +218,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getVariableScrollPane() {
 		if (variableScrollPane == null) {
 			variableScrollPane = new JScrollPane();
-			variableScrollPane.setBounds(new Rectangle(142, 25, 500, 120));
+			variableScrollPane.setBounds(new Rectangle(142, 30, 500, 155));
 			variableScrollPane.setViewportView(getVariablePanel());
 		}
 		return variableScrollPane;
@@ -237,7 +241,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getVariablesScrollPane() {
 		if (variablesScrollPane == null) {
 			variablesScrollPane = new JScrollPane();
-			variablesScrollPane.setBounds(new Rectangle(27, 36, 118, 67));
+			variablesScrollPane.setBounds(new Rectangle(27, 36, 118, 105));
 			variablesScrollPane.setViewportView(getVariablesTable());
 		}
 		return variablesScrollPane;
@@ -325,7 +329,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (jPanel == null) {
 			jPanel = new JPanel();
 			jPanel.setLayout(new BorderLayout());
-			jPanel.setBounds(new Rectangle(160, 14, 226, 89));
+			jPanel.setBounds(new Rectangle(160, 14, 226, 126));
 	        jPanel.add(getClassExpressionComponent());
 		}
 		return jPanel;
@@ -389,7 +393,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton getClassExpressionApplyButton() {
 		if (classExpressionApplyButton == null) {
 			classExpressionApplyButton = new JButton();
-			classExpressionApplyButton.setBounds(new Rectangle(394, 86, 65, 17));
+			classExpressionApplyButton.setBounds(new Rectangle(396, 122, 65, 17));
 			classExpressionApplyButton.setText("Apply");
 			classExpressionApplyButton.addActionListener(this);
 		}
@@ -401,7 +405,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (operatorComboBox == null) {
 			final String[] operatorList = {"equal","notEqual","lessThan","lessThanOrEqual","greaterThan","greaterThanOrEqual"};
 			operatorComboBox = new JComboBox(operatorList);
-			operatorComboBox.setBounds(new Rectangle(140, 415, 140, 23));
+			operatorComboBox.setBounds(new Rectangle(140, 530, 140, 23));
 		}
 		return operatorComboBox;
 	}
@@ -459,7 +463,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getLhsScrollPane() {
 		if (lhsScrollPane == null) {
 			lhsScrollPane = new JScrollPane();
-			lhsScrollPane.setBounds(new Rectangle(142, 287, 500, 120));
+			lhsScrollPane.setBounds(new Rectangle(142, 400, 500, 114));
 			lhsScrollPane.setViewportView(getLhsPanel());
 		}
 		return lhsScrollPane;
@@ -481,10 +485,10 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// termblock initializing...
 			lhsTermblocks[lhsTermblockNumber].setLayout(null);
-			lhsTermblocks[lhsTermblockNumber].setBounds(new Rectangle(0, 60*lhsTermblockNumber, 500, 60));
-			lhsTermblocks[lhsTermblockNumber].setBackground(new Color(238, 223, 194));
+			lhsTermblocks[lhsTermblockNumber].setBounds(new Rectangle(0, 112*lhsTermblockNumber, 500, 112));
+			lhsTermblocks[lhsTermblockNumber].setBorder(BorderFactory.createLineBorder(SystemColor.activeCaptionBorder, 1));
 			
-			double lhsPanelHeight = lhsPanel.getPreferredSize().getHeight()+60;
+			double lhsPanelHeight = lhsPanel.getPreferredSize().getHeight()+112;
 			// resize rhsPanel
 			lhsPanel.setPreferredSize(new Dimension(0,(int)lhsPanelHeight));
 			// check scroll bar necessity 
@@ -499,7 +503,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getQualifierScrollPane() {
 		if (qualifierScrollPane == null) {
 			qualifierScrollPane = new JScrollPane();
-			qualifierScrollPane.setBounds(new Rectangle(142, 162, 500, 120));
+			qualifierScrollPane.setBounds(new Rectangle(142, 230, 500, 120));
 			qualifierScrollPane.setViewportView(getQualifierPanel());
 		}
 		return qualifierScrollPane;
@@ -570,7 +574,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getRhsScrollPane() {
 		if (rhsScrollPane == null) {
 			rhsScrollPane = new JScrollPane();
-			rhsScrollPane.setBounds(new Rectangle(141, 440, 500, 114));
+			rhsScrollPane.setBounds(new Rectangle(141, 570, 500, 114));
 			rhsScrollPane.setViewportView(getRhsPanel());
 		}
 		return rhsScrollPane;
@@ -592,10 +596,10 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
-			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 60*rhsTermblockNumber, 500, 60));
-			rhsTermblocks[rhsTermblockNumber].setBackground(new Color(238, 0, 194));
+			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 112*rhsTermblockNumber, 500, 112));
+			rhsTermblocks[rhsTermblockNumber].setBorder(BorderFactory.createLineBorder(SystemColor.activeCaptionBorder, 1));
 			
-			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+60;
+			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+112;
 			// resize rhsPanel
 			rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));
 			// check scroll bar necessity 
