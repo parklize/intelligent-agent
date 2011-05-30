@@ -807,7 +807,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 //		System.out.println(str);
 	
-		Test04 test =new Test04(str,tableModel);
+		ConstraintConfirmComponent test =new ConstraintConfirmComponent(str,tableModel);
 		test.setVisible(true);
 		
 //		int rowCount = tableModel.getRowCount();// =no. of constraints 
