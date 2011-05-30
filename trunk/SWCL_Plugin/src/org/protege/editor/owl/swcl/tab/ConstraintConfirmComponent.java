@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextArea;
 import java.awt.Dimension;
 
-public class Test04 extends JFrame implements ActionListener{
+public class ConstraintConfirmComponent extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -32,7 +32,7 @@ public class Test04 extends JFrame implements ActionListener{
 	/**
 	 * This is the default constructor
 	 */
-	public Test04(String str,DefaultTableModel tableModel) {
+	public ConstraintConfirmComponent(String str,DefaultTableModel tableModel) {
 		super();
 		
 		this.str=str;
