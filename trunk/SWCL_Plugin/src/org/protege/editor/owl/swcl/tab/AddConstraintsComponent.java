@@ -101,6 +101,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton addQualifierButton = null;
 	private JTextPane classExpressionTextPane = null;
 	private JComponent com = null;
+	private TableColumn qualifierVariable = null;
+	private JPanel jPanel = null;
+	private JButton classExpressionApplyButton = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
@@ -115,15 +118,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
     private OWLClassHelper owlClassHelper = null;
     private OWLEditorKit oek = null;
     private OWLComponentFactoryImplExtension ocfe = null;
+    private DefaultTableModel tableModel = null;
 
-	
-	private TableColumn qualifierVariable = null;
-	private JPanel jPanel = null;
-	private JButton classExpressionApplyButton = null;
 	
     
 	// initialing...
-	public AddConstraintsComponent(OWLOntology ont,OWLClassExpression oc,ArrayList<Variable> totalVariablesList,OWLEditorKit oek) {
+	public AddConstraintsComponent(OWLOntology ont,OWLClassExpression oc,ArrayList<Variable> totalVariablesList,OWLEditorKit oek, DefaultTableModel tableModel) {
 		super();
 		 // get variables already announced
 		this.totalVariablesList = totalVariablesList;
@@ -131,6 +131,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.oc = oc;
 		this.oek = oek;
 		ocfe = new OWLComponentFactoryImplExtension(oek);
+		this.tableModel = tableModel;
 		initialize();
 		this.classExpressionTextPane = getClassExpressionPane();
 
@@ -331,6 +332,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			jPanel.setLayout(new BorderLayout());
 			jPanel.setBounds(new Rectangle(160, 14, 226, 126));
 	        jPanel.add(getClassExpressionComponent());
+	        jPanel.setVisible(false);
 		}
 		return jPanel;
 	}
@@ -396,6 +398,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			classExpressionApplyButton.setBounds(new Rectangle(396, 122, 65, 17));
 			classExpressionApplyButton.setText("Apply");
 			classExpressionApplyButton.addActionListener(this);
+			classExpressionApplyButton.setVisible(false);
 		}
 		return classExpressionApplyButton;
 	}
@@ -732,10 +735,87 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return con;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	
+	//Abstract Syntax 출력
+	public void getSWCLAbstractSyntax(Constraint con,DefaultTableModel tableModel){
+		
+		String str="Constraint ";
+		
+		//Qualifier 
+	
+		if (con.getQualifiers().size()!=0){				//만약 qualifier사이즈가 0이 아니면 실행
+			str+="( Qualifier (Variable (";
+			
+			for (int i=0; i<con.getQualifiers().size();i++){	// qualifier 사이즈만큼 
+				str+=" "+ con.getQualifiers().get(i).getV().getName();
+			}
+			str+=" ) )";
+		}
+		
+		
+		//LHS
+		
+		str+=" LHS ";
+		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
+			str+="( TermBlock ( "+ con.getLhs().getTermblocks().get(i).getSign();
+			
+			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
+				str+=" "+ con.getLhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";
+					
+				for (int j=0; j<con.getLhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
+					str+=	" "+ con.getLhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
+				}
+				str+=" ) )";
+			}
+			
+			str+=" Factor ( Variable(";
+			
+			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
+				str+=" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
+			
+			}
+			str+=" ) ) ) ) ";
+		}
+		
+		
+		//Operator
+		str+=con.getOpp().getOpp();
+		
+		//RHS
+		str+=" RHS ";
+		for (int i=0; i<con.getRhs().getTermblocks().size();i++){
+			str+="( TermBlock ( "+ con.getRhs().getTermblocks().get(i).getSign();
+			
+			if (con.getRhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
+				str+=" "+ con.getRhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";
+					
+				for (int j=0; j<con.getRhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
+					str+=	" "+ con.getRhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
+				}
+				str+=" ) )";
+			}
+			
+			str+=" Factor ( Variable(";
+			
+			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
+				str+=" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
+			
+			}
+			str+=" ) ) ) )";
+			
+		}
+
+//		System.out.println(str);
+	
+		Test04 test =new Test04(str,tableModel);
+		test.setVisible(true);
+		
+//		int rowCount = tableModel.getRowCount();// =no. of constraints 
+//		for(int i=0;i<rowCount;i++){
+//			
+//			tableModel.setValueAt(str,i,2);
+//		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -768,13 +848,11 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			// add varibaleList to totalVariablesList
 			Utils.addArrayList(totalVariablesList, variablesList);
 			Constraint con = getConstraint();
+			getSWCLAbstractSyntax(con, tableModel);
 		}
 	}
 
 
-
-
-	
 } 
  	
 	

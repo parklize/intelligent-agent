@@ -298,7 +298,7 @@ System.out.println(it3.next());
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),oc,variablesList,getOWLEditorKit());
+			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),oc,variablesList,getOWLEditorKit(), tableModel);
 			acc.setVisible(true);
 		}
 		
