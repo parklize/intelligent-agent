@@ -56,7 +56,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 /**
  * 
- * Author: parklize
+ * Author: parklize,pryiyeon
  * Date: 2011.04.20~
  * Description: SWCL view component in Protege
  * 

@@ -60,7 +60,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.BevelBorder;
 /**
  * 
- * Author: parklize
+ * Author: parklize,pryiyeon
  * Date: 2011.04.25
  * Description: component for adding constraint
  *
