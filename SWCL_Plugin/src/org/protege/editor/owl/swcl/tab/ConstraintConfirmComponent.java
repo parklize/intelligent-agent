@@ -18,7 +18,13 @@ import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextArea;
 import java.awt.Dimension;
-
+/**
+ * 
+ * Author: pryiyeon
+ * Date: 2011.05.20~
+ * Description: SWCL confirm component in Protege
+ * 
+ */
 public class ConstraintConfirmComponent extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
