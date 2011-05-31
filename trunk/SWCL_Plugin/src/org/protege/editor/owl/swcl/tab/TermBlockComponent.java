@@ -1,5 +1,6 @@
 package org.protege.editor.owl.swcl.tab;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
@@ -9,7 +10,9 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import org.protege.editor.owl.swcl.model.*;
+import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -44,6 +47,8 @@ public class TermBlockComponent extends JPanel {
 	private JTable factorTable = null;
 	private TableColumn factorVariableColumn = null;
 	private JButton addFactorButton = null;
+	private OWLOntology ont = null;
+	private SWCLOntologyHelper swclOntologyHelper = null;
 
 	// default constructor
 	public TermBlockComponent() {
@@ -51,9 +56,11 @@ public class TermBlockComponent extends JPanel {
 		initialize();
 	}
 	// default constructor
-	public TermBlockComponent(ArrayList<Variable> variablesList) {
+	public TermBlockComponent(ArrayList<Variable> variablesList,OWLOntology ont) {
 		super();
 		this.variablesList = variablesList;
+		this.ont = ont;
+		this.swclOntologyHelper = new SWCLOntologyHelper(ont);
 		initialize();
 	}
 
@@ -169,14 +176,25 @@ public class TermBlockComponent extends JPanel {
 	// factor table
 	private JTable getFactorTable() {
 		if (factorTable == null) {
+			
 			final String[] colHeads = {"Variable","Property"};
 			final String[][] data = null;
+			
 			DefaultTableModel dt = new DefaultTableModel(data,colHeads);
 			factorTable = new JTable(dt);
-			factorVariableColumn  = factorTable.getColumnModel().getColumn(0);
 			
+			factorVariableColumn  = factorTable.getColumnModel().getColumn(0);		
 			// initialize factor variable combobox
 			Utils.refreshComboBox(variablesList, factorVariableColumn);
+			
+			JComboBox jb = new JComboBox();
+			ArrayList<String> propertyList = swclOntologyHelper.getPropertyList();
+			for(String str:propertyList){
+				jb.addItem(str);
+			}
+			TableColumn propertyColumn = factorTable.getColumnModel().getColumn(1);
+			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
+			
 		}
 		return factorTable;
 	}

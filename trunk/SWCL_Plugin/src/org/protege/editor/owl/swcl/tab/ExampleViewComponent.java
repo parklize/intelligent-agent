@@ -80,7 +80,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private OWLWorkspace ow = null;
     private OWLOntology owl = null;
     private OWLClassExpression oc = null;
-    private OWLClassHelper owlClassHelper = null;
+//    private OWLClassHelper owlClassHelper = null;
     
     // global variables
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
@@ -298,7 +298,7 @@ System.out.println(it3.next());
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),oc,variablesList,getOWLEditorKit(), tableModel);
+			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),variablesList, tableModel);
 			acc.setVisible(true);
 		}
 		
