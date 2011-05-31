@@ -46,6 +46,7 @@ import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.OWLClassHelper;
 import org.protege.editor.owl.swcl.utils.OWLComponentFactoryImplExtension;
+import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -95,15 +96,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton addVariableButton = null;
 	private JScrollPane variablesScrollPane = null;
 	private JTable variablesTable = null;
-	private JTextPane manchesterSyntax = null;
 	private JScrollPane qualifiersScrollPane = null;
 	private JTable qualifiersTable = null;
 	private JButton addQualifierButton = null;
 	private JTextPane classExpressionTextPane = null;
-	private JComponent com = null;
 	private TableColumn qualifierVariable = null;
-	private JPanel jPanel = null;
-	private JButton classExpressionApplyButton = null;
+    private DefaultTableModel tableModel = null;
+	private JLabel constraintName = null;
+	private JTextField constraintNameField = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
@@ -115,25 +115,26 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private OWLOntology ont = null;
 	private OWLClassExpression oc = null;
-    private OWLClassHelper owlClassHelper = null;
-    private OWLEditorKit oek = null;
-    private OWLComponentFactoryImplExtension ocfe = null;
-    private DefaultTableModel tableModel = null;
+
+//    private OWLClassHelper owlClassHelper = null;
+//    private OWLEditorKit oek = null;
+//    private OWLComponentFactoryImplExtension ocfe = null;
+
 
 	
     
 	// initialing...
-	public AddConstraintsComponent(OWLOntology ont,OWLClassExpression oc,ArrayList<Variable> totalVariablesList,OWLEditorKit oek, DefaultTableModel tableModel) {
+	public AddConstraintsComponent(OWLOntology ont, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
 		super();
 		 // get variables already announced
 		this.totalVariablesList = totalVariablesList;
 		this.ont = ont;
-		this.oc = oc;
-		this.oek = oek;
-		ocfe = new OWLComponentFactoryImplExtension(oek);
+//		this.oc = oc;
+//		this.oek = oek;
+//		ocfe = new OWLComponentFactoryImplExtension(oek);
 		this.tableModel = tableModel;
 		initialize();
-		this.classExpressionTextPane = getClassExpressionPane();
+//		this.classExpressionTextPane = getClassExpressionPane();
 
 	}
 	
@@ -184,8 +185,11 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// constraint Panel
 	private JPanel getJPanel() {
 		if (constraintPanel == null) {
+			constraintName = new JLabel();
+			constraintName.setBounds(new Rectangle(33, 17, 66, 18));
+			constraintName.setText("NAME:");
 			variableLabel = new JLabel();
-			variableLabel.setBounds(new Rectangle(33, 30, 66, 18));
+			variableLabel.setBounds(new Rectangle(33, 60, 66, 18));
 			variableLabel.setText("VARIABLE:");
 			rhsLabel = new JLabel();
 			rhsLabel.setBounds(new Rectangle(33, 570, 60, 18));
@@ -211,15 +215,25 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			constraintPanel.add(getQualifierScrollPane(), null);
 			constraintPanel.add(variableLabel, null);
 			constraintPanel.add(getVariableScrollPane(), null);
+			constraintPanel.add(constraintName, null);
+			constraintPanel.add(getJTextField(), null);
 		}
 		return constraintPanel;
 	}
-
+	
+	// constraint name field
+	private JTextField getJTextField() {
+		if (constraintNameField == null) {
+			constraintNameField = new JTextField();
+			constraintNameField.setBounds(new Rectangle(141, 17, 211, 18));
+		}
+		return constraintNameField;
+	}
 	// variableScrollPane
 	private JScrollPane getVariableScrollPane() {
 		if (variableScrollPane == null) {
 			variableScrollPane = new JScrollPane();
-			variableScrollPane.setBounds(new Rectangle(142, 30, 500, 155));
+			variableScrollPane.setBounds(new Rectangle(142, 60, 500, 120));
 			variableScrollPane.setViewportView(getVariablePanel());
 		}
 		return variableScrollPane;
@@ -232,8 +246,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			variablePanel.setLayout(null);
 			variablePanel.add(getAddVariableButton());
 			variablePanel.add(getVariablesScrollPane(), null);
-			variablePanel.add(getJPanel2(), null);
-			variablePanel.add(getClassExpressionApplyButton(), null);
+//			variablePanel.add(getJPanel2(), null);
+//			variablePanel.add(getClassExpressionApplyButton(), null);
 		}
 		return variablePanel;
 	}
@@ -242,7 +256,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getVariablesScrollPane() {
 		if (variablesScrollPane == null) {
 			variablesScrollPane = new JScrollPane();
-			variablesScrollPane.setBounds(new Rectangle(27, 36, 118, 105));
+			variablesScrollPane.setBounds(new Rectangle(27, 8, 385, 103));
 			variablesScrollPane.setViewportView(getVariablesTable());
 		}
 		return variablesScrollPane;
@@ -278,7 +292,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 					int selectedColumn = variablesTable.getSelectedColumn();
 					if(selectedColumn == 1){
 						// get class description from variablesTable 
-						getClassExpressionPane().setText((String) variablesTable.getValueAt(selectedRow, selectedColumn));
+//						getClassExpressionPane().setText((String) variablesTable.getValueAt(selectedRow, selectedColumn));
 					}
 					
 				}
@@ -324,7 +338,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return variablesTable;
 	}
-	
+/*	
 	// class expression panel
 	private JPanel getJPanel2() {
 		if (jPanel == null) {
@@ -336,7 +350,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return jPanel;
 	}
-	
+	*/
+/*	
 	// get class expression component
 	private JComponent getClassExpressionComponent(){
 		
@@ -352,14 +367,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return (JTextPane) jsp.getViewport().getComponent(0);
 		
 	}
-
+*/
 	
 	// add variable button
 	private JButton getAddVariableButton() {
 		if (addVariableButton == null) {
 			addVariableButton = new JButton();
 			addVariableButton.setText("+");
-			addVariableButton.setBounds(new Rectangle(95, 6, 49, 17));
+			addVariableButton.setBounds(new Rectangle(422, 7, 49, 17));
 			addVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -390,7 +405,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return addVariableButton;
 	}
-	
+/*	
 	// class expression change apply button
 	private JButton getClassExpressionApplyButton() {
 		if (classExpressionApplyButton == null) {
@@ -402,7 +417,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return classExpressionApplyButton;
 	}
-	
+*/	
 	// operator Combobox
 	private JComboBox getOperatorComboBox() {
 		if (operatorComboBox == null) {
@@ -484,7 +499,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// LHS Termblock panel 
 	private JPanel getLHSTermblockPanel(int lhsTermblockNumber) {
 
-			lhsTermblocks[lhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList));
+			lhsTermblocks[lhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList),ont);
 			
 			// termblock initializing...
 			lhsTermblocks[lhsTermblockNumber].setLayout(null);
@@ -595,7 +610,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// RHS Termblock panel 
 	private JPanel getRHSTermblockPanel(int rhsTermblockNumber) {
 
-			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList));
+			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList),ont);
 			
 			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
@@ -851,6 +866,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			getSWCLAbstractSyntax(con, tableModel);
 		}
 	}
+
+
 
 
 } 
