@@ -1,5 +1,8 @@
 package com.park.swcl.examples;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
@@ -67,6 +70,12 @@ public class Create_SWCL_Example01 {
 			manager.addAxiom(ontology,classAssertion);
 			manager.addAxiom(ontology, yClassAssertion);
 			manager.addAxiom(ontology, qualifierObjectPropertyAssertion);
+			 
+			Set s = ontology.getClassAssertionAxioms(variable);
+			Iterator it = s.iterator();
+			while(it.hasNext()){
+				System.out.println("===="+it.next().toString());
+			}
 			
 			
 			// dump the ontology to the sysout
