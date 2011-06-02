@@ -8,13 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,36 +19,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
-import org.protege.editor.owl.swcl.utils.OWLClassHelper;
-import org.protege.editor.owl.swcl.utils.OWLComponentFactoryImplExtension;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
-import org.protege.editor.owl.ui.editor.OWLClassExpressionEditor;
-import org.protege.editor.owl.ui.editor.OWLClassExpressionEditorPluginImpl;
-import org.protege.editor.owl.ui.editor.OWLClassExpressionExpressionEditor;
-import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
-import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
-import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.protege.editor.owl.ui.view.cls.OWLClassDescriptionViewComponent;
-import org.protege.editor.owl.ui.view.cls.OWLClassUsageViewComponent;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 /**
  * 
@@ -113,9 +89,10 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         owlModelManager = getOWLModelManager();
         
         // get workspace
-        OWLWorkspace ow = getOWLWorkspace();
+        ow = getOWLWorkspace();
 		// get selected class from workspace
 		oc = ow.getOWLSelectionModel().getLastSelectedClass();
+
         
         
 		
@@ -298,7 +275,7 @@ System.out.println(it3.next());
 			tableModel.addRow(new Object[]{jb,"",""});
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(owlModelManager.getActiveOntology(),variablesList, tableModel);
+			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel);
 			acc.setVisible(true);
 		}
 		

@@ -1,8 +1,6 @@
 package org.protege.editor.owl.swcl.tab;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -11,29 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
-import org.protege.editor.owl.OWLEditorKit;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.swcl.model.ClassVariable;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Factor;
 import org.protege.editor.owl.swcl.model.LHS;
@@ -41,24 +33,48 @@ import org.protege.editor.owl.swcl.model.Operator;
 import org.protege.editor.owl.swcl.model.Parameter;
 import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.RHS;
-import org.protege.editor.owl.swcl.model.RelatedVariable;
 import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
-import org.protege.editor.owl.swcl.utils.OWLClassHelper;
-import org.protege.editor.owl.swcl.utils.OWLComponentFactoryImplExtension;
 import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.io.WriterDocumentTarget;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 import java.util.ArrayList;
-import java.awt.GridBagLayout;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import javax.swing.BorderFactory;
 import java.awt.SystemColor;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.BevelBorder;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 /**
  * 
  * Author: parklize,pryiyeon
@@ -113,8 +129,16 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
  */
 	private ArrayList<Variable> totalVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
-	private OWLOntology ont = null;
+	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private OWLClassExpression oc = null;
+	
+	// create ontology manager to work with
+	private OWLWorkspace ow = null;
+	private OWLModelManager owlModelManager = null;
+	private OWLOntologyManager manager = null;  //  @jve:decl-index=0:
+	private OWLDataFactory dataFactory = null;  //  @jve:decl-index=0:
+	private String base = null;  //  @jve:decl-index=0:
+	private PrefixManager pm = null;  //  @jve:decl-index=0:
 
 //    private OWLClassHelper owlClassHelper = null;
 //    private OWLEditorKit oek = null;
@@ -124,18 +148,30 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
     
 	// initialing...
-	public AddConstraintsComponent(OWLOntology ont, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
+	public AddConstraintsComponent(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
 		super();
+		preinitialize(ow, owlModelManager,totalVariablesList,tableModel);
+		initialize();
+//		this.classExpressionTextPane = getClassExpressionPane();
+
+	}
+	
+	private void preinitialize(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
 		 // get variables already announced
+		this.ow = ow;
+		this.owlModelManager = owlModelManager;
 		this.totalVariablesList = totalVariablesList;
-		this.ont = ont;
+		this.ont = owlModelManager.getActiveOntology();
 //		this.oc = oc;
 //		this.oek = oek;
 //		ocfe = new OWLComponentFactoryImplExtension(oek);
 		this.tableModel = tableModel;
-		initialize();
-//		this.classExpressionTextPane = getClassExpressionPane();
-
+		// create ontology manager to work with
+		this.manager = OWLManager.createOWLOntologyManager(); 
+		this.dataFactory = manager.getOWLDataFactory();  
+		// set base
+		this.base = "http://iwec.yonsei.ac.kr/swcl";  //  @jve:decl-index=0:
+		this.pm = new DefaultPrefixManager(base);  //  @jve:decl-index=0:
 	}
 	
 	// for test purpose
@@ -634,6 +670,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		// new and initialize constraint
 		Constraint con = new Constraint();
 		
+		// set name
+		con.setName(constraintNameField.getText());
+		
 		// set qualifier
 		DefaultTableModel tableModel = (DefaultTableModel)qualifiersTable.getModel();
 		
@@ -685,7 +724,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 				String vName = (String)fModel.getValueAt(q, 0);
 				// NEED UPDATE (set Factor's OWLProperty)
 				String pro = (String)fModel.getValueAt(q, 1);
+				
 				f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+				f.setOwlProperty(pro);
 				fList.add(f);
 			}
 			
@@ -738,6 +779,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 				// NEED UPDATE (set Factor's OWLProperty)
 				String pro = (String)fModel.getValueAt(q, 1);
 				f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+				f.setOwlProperty(pro);
 				fList.add(f);
 			}
 			
@@ -831,7 +873,119 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 //			tableModel.setValueAt(str,i,2);
 //		}
 	}
-	@Override
+
+
+	// NEED UPDATE
+	private void writeVariablesToOnt() {
+Utils.printVariablesList("variablesList:", variablesList);
+		
+		
+		// get the reference to the Variable class(create)
+		OWLClass variable = dataFactory.getOWLClass("#Variable",pm);
+		
+		// save temporary
+		WriterDocumentTarget wdt;
+		FileWriter fw = null;
+		SWCLOntologyHelper soh = new SWCLOntologyHelper(ont);
+		try {
+			// get prefix
+			String ontString = ont.toString();
+			int start = ontString.indexOf("<");
+			int end = ontString.indexOf(">");
+			String prefix = ontString.substring(start, end);
+//System.out.println("Prefix:"+prefix);
+			
+			for(Variable v:variablesList){
+				String des = v.getDescription();
+				String addPrefixDes = des;
+				
+				for(String s:soh.getClassList()){
+//System.out.println("s:"+s);
+//System.out.println(s.length());
+					addPrefixDes = addPrefixDes.replaceAll(s, prefix+"#"+s+">");
+//System.out.println("addPrefixDes:"+addPrefixDes);
+				}
+				v.setDescription(addPrefixDes);
+			}
+			
+			String presentDir = System.getProperty("user.dir");
+			wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp.owl"));
+			manager.saveOntology(ont, new ManchesterOWLSyntaxOntologyFormat(), wdt);
+			
+			// get all variables and dump to ontology
+			for(Variable v:variablesList){
+				// get the reference to the y instance 
+				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
+				// create class assertion that y is the instance of the Variable
+				OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(variable, individual);
+				
+				// add axiom to ontology
+				manager.addAxiom(ont, classAssertion);
+
+				fw = (FileWriter) wdt.getWriter();
+				char[] cs = ("Class: " + prefix + "#ClassFor" + v.getName() + ">\n\n" +
+						"    EquivalentTo:\n"+
+						"        "+v.getDescription()+"\n\n").toCharArray();
+				for(char c: cs){
+					fw.write(c);
+				}
+				fw.flush();
+			}
+			
+			// read temp ontology to ont
+			File file = new File(presentDir + "//temp.owl");
+			OWLOntology tempOnt = manager.loadOntologyFromOntologyDocument(file);
+
+			// read classes created from temp ontology to ont
+			SWCLOntologyHelper tempSoh = new SWCLOntologyHelper(tempOnt);
+			ArrayList<String> classList = tempSoh.getClassList();
+			for(String str:classList){
+				for(Variable v:variablesList){
+					if(str.equals("ClassFor"+v.getName())){
+//System.out.println("new class: "+str);
+						// property
+						OWLDataProperty bindingClass = dataFactory.getOWLDataProperty(IRI.create(this.base+"#bindingClass"));
+						// binding class
+						OWLClass owlClass = tempSoh.getOWLClass(str);
+						// get axioms to ont
+						Set axioms = tempOnt.getAxioms(owlClass);
+						Iterator it = axioms.iterator();
+						while(it.hasNext()){
+//System.out.println("axioms: "+it.next().toString());
+							manager.addAxiom(ont, (OWLAxiom) it.next());
+							
+						}
+						OWLNamedIndividual owlInd = (OWLNamedIndividual) soh.getOWLIndividual(v.getName());
+//System.out.println("owlInd:"+owlInd.toString());
+						OWLDataPropertyAssertionAxiom assertion = dataFactory.getOWLDataPropertyAssertionAxiom(bindingClass, owlInd, str);
+						
+						manager.addAxiom(ont, assertion);
+						manager.saveOntology(ont,new SystemOutDocumentTarget());
+					}
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OWLOntologyStorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OWLOntologyCreationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(fw != null){
+				try {
+					fw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	
 	public void actionPerformed(ActionEvent e) {
 		
 		// Class expression change apply event
@@ -864,11 +1018,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			Utils.addArrayList(totalVariablesList, variablesList);
 			Constraint con = getConstraint();
 			getSWCLAbstractSyntax(con, tableModel);
+			writeVariablesToOnt();
 		}
 	}
-
-
-
 
 } 
  	

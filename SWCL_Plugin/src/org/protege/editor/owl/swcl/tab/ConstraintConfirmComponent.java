@@ -2,22 +2,16 @@ package org.protege.editor.owl.swcl.tab;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import java.awt.GridBagLayout;
 import javax.swing.JButton;
-import java.awt.GridBagConstraints;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextArea;
-import java.awt.Dimension;
 /**
  * 
  * Author: pryiyeon
