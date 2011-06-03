@@ -75,6 +75,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import javax.swing.JTextArea;
 /**
  * 
  * Author: parklize,pryiyeon
@@ -120,6 +123,10 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
     private DefaultTableModel tableModel = null;
 	private JLabel constraintName = null;
 	private JTextField constraintNameField = null;
+	private JPanel abstractSyntaxPanel = null;
+	private JLabel abstractSyntaxLabel = null;
+	private JTextArea abstractSyntaxArea = null;
+	private JButton submitButton = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
@@ -131,6 +138,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private OWLClassExpression oc = null;
+	private String abstractSyntax = null;
+	private Constraint con = null;
 	
 	// create ontology manager to work with
 	private OWLWorkspace ow = null;
@@ -139,6 +148,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private OWLDataFactory dataFactory = null;  //  @jve:decl-index=0:
 	private String base = null;  //  @jve:decl-index=0:
 	private PrefixManager pm = null;  //  @jve:decl-index=0:
+
 
 //    private OWLClassHelper owlClassHelper = null;
 //    private OWLEditorKit oek = null;
@@ -182,7 +192,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
 	// initializing frame
 	private void initialize() {
-		this.setSize(680, 800);
+		this.setSize(680, 963);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
 	}
@@ -193,6 +203,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
 			jContentPane.add(getJScrollPane(), null);
+			jContentPane.add(getJPanel2(), null);
 		}
 		return jContentPane;
 	}
@@ -201,7 +212,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getJScrollPane() {
 		if (containerScrollPane == null) {
 			containerScrollPane = new JScrollPane();
-			containerScrollPane.setBounds(new Rectangle(0, 0, 675, 767));
+			containerScrollPane.setBounds(new Rectangle(0, 0, 675, 750));
 			containerScrollPane.setViewportView(getContainerPanel());
 		}
 		return containerScrollPane;
@@ -477,11 +488,47 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return menuPanel;
 	}
 
+	private JPanel getJPanel2() {
+		if (abstractSyntaxPanel == null) {
+			abstractSyntaxLabel = new JLabel();
+			abstractSyntaxLabel.setText("Abstract Syntax:");
+			abstractSyntaxLabel.setBounds(new Rectangle(33, 20, 97, 18));
+			abstractSyntaxPanel = new JPanel();
+			abstractSyntaxPanel.setLayout(null);
+			abstractSyntaxPanel.setBounds(new Rectangle(0, 749, 673, 180));
+			abstractSyntaxPanel.add(abstractSyntaxLabel, null);
+			abstractSyntaxPanel.add(getJTextArea(), null);
+			abstractSyntaxPanel.add(getJButton(), null);
+		}
+		return abstractSyntaxPanel;
+	}
+
+	
+	private JTextArea getJTextArea() {
+		if (abstractSyntaxArea == null) {
+			abstractSyntaxArea = new JTextArea();
+			abstractSyntaxArea.setLineWrap(true);
+			abstractSyntaxArea.setBounds(new Rectangle(144, 18, 501, 112));
+		}
+		return abstractSyntaxArea;
+	}
+
+	
+	private JButton getJButton() {
+		if (submitButton == null) {
+			submitButton = new JButton();
+			submitButton.setBounds(new Rectangle(559, 142, 88, 24));
+			submitButton.setText("Submit");
+			submitButton.addActionListener(this);
+		}
+		return submitButton;
+	}
+	
 	// Add Button
 	private JButton getADD() {
 		if (add == null) {
 			add = new JButton();
-			add.setBounds(new Rectangle(190, 10, 69, 28));
+			add.setBounds(new Rectangle(190, 10, 69, 24));
 			add.setText("ADD");
 			add.addActionListener(this);
 		}
@@ -493,7 +540,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (okButton == null) {
 			okButton = new JButton();
 			okButton.setText("OK");
-			okButton.setBounds(new Rectangle(592, 9, 51, 28));
+			okButton.setBounds(new Rectangle(592, 9, 51, 24));
 			okButton.addActionListener(this);
 		}
 		return okButton;
@@ -793,8 +840,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	}
 	
 	
-	//Abstract Syntax Ãâ·Â
-	public void getSWCLAbstractSyntax(Constraint con,DefaultTableModel tableModel){
+	// get Abstract Syntax 
+	public String getSWCLAbstractSyntax(Constraint con){
 		
 		String str="Constraint ";
 		
@@ -864,8 +911,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 //		System.out.println(str);
 	
-		ConstraintConfirmComponent test =new ConstraintConfirmComponent(str,tableModel);
-		test.setVisible(true);
+		return str;
 		
 //		int rowCount = tableModel.getRowCount();// =no. of constraints 
 //		for(int i=0;i<rowCount;i++){
@@ -1016,12 +1062,27 @@ Utils.printVariablesList("variablesList:", variablesList);
 		if(e.getActionCommand().equals("OK")){
 			// add varibaleList to totalVariablesList
 			Utils.addArrayList(totalVariablesList, variablesList);
-			Constraint con = getConstraint();
-			getSWCLAbstractSyntax(con, tableModel);
+			this.con = getConstraint();
+			this.abstractSyntax = getSWCLAbstractSyntax(con);
+			abstractSyntaxArea.setText(abstractSyntax);
 			writeVariablesToOnt();
+		}
+		
+		// submit action
+		if(e.getActionCommand().equals("Submit")){
+			int rowCount = this.tableModel.getRowCount();// =no. of constraints 
+			for(int i=0;i<rowCount;i++){
+				if (i==(rowCount-1)){
+					this.tableModel.setValueAt(this.abstractSyntax,i,2);
+					this.tableModel.setValueAt(this.con.getName(), i, 1);
+				}
+			}
 		}
 	}
 
-} 
+
+
+
+}  //  @jve:decl-index=0:visual-constraint="10,10" 
  	
 	

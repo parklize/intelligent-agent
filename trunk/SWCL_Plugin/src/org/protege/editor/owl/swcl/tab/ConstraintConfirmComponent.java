@@ -26,16 +26,18 @@ public class ConstraintConfirmComponent extends JFrame implements ActionListener
 	private JPanel jPanel = null;
 	private JButton jButton = null;
 	private String str=null;
+	private String name = null;
 	private DefaultTableModel tableModel=null;
 	private JTextArea jTextArea = null;
 	private JScrollPane js=null;
 	/**
 	 * This is the default constructor
 	 */
-	public ConstraintConfirmComponent(String str,DefaultTableModel tableModel) {
+	public ConstraintConfirmComponent(String name,String str,DefaultTableModel tableModel) {
 		super();
 		
 		this.str=str;
+		this.name = name;
 		this.tableModel=tableModel;
 		initialize(str);
 	}
@@ -118,11 +120,13 @@ public class ConstraintConfirmComponent extends JFrame implements ActionListener
 
 			int rowCount = this.tableModel.getRowCount();// =no. of constraints 
 			for(int i=0;i<rowCount;i++){
-				if (i==(rowCount-1))
+				if (i==(rowCount-1)){
 					this.tableModel.setValueAt(str,i,2);
+					this.tableModel.setValueAt(name, i, 1);
+				}
 			}
-			this.setVisible(false);
-		}
+			this.dispose();
+			}
 	}
 
 
