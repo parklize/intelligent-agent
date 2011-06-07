@@ -23,6 +23,16 @@ public class SWCLOntologyHelper {
 		this.ont = ont;
 		this.owlManager = ont.getOWLOntologyManager();
 	}
+	
+	// get prefix
+	public String getPrefix(){
+		// get prefix
+		String ontString = ont.toString();
+		int start = ontString.indexOf("<");
+		int end = ontString.indexOf(">");
+		return ontString.substring(start, end);
+	}
+	
 	// get all properties without prefix
 	public ArrayList<String> getPropertyList(){
 		ArrayList<String> propertyList = new ArrayList<String>();

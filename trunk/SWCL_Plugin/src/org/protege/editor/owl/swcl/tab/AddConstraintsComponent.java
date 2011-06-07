@@ -317,33 +317,40 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			variablesTable = new JTable(model);
-			variablesTable.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
+			
+			// add variables from totalvariables list to display
+			if(totalVariablesList.size() != 0){
+				for(Variable v:totalVariablesList){
+					model.addRow(new Object[]{v.getName(),v.getDescription()});
 				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int selectedRow = variablesTable.getSelectedRow();
-					int selectedColumn = variablesTable.getSelectedColumn();
-					if(selectedColumn == 1){
-						// get class description from variablesTable 
-//						getClassExpressionPane().setText((String) variablesTable.getValueAt(selectedRow, selectedColumn));
-					}
-					
-				}
-			});
+			}
+//			variablesTable.addMouseListener(new MouseListener() {
+//				
+//				@Override
+//				public void mouseReleased(MouseEvent e) {
+//				}
+//				
+//				@Override
+//				public void mousePressed(MouseEvent e) {
+//				}
+//				
+//				@Override
+//				public void mouseExited(MouseEvent e) {}
+//				
+//				@Override
+//				public void mouseEntered(MouseEvent e) {}
+//				
+//				@Override
+//				public void mouseClicked(MouseEvent e) {
+//					int selectedRow = variablesTable.getSelectedRow();
+//					int selectedColumn = variablesTable.getSelectedColumn();
+//					if(selectedColumn == 1){
+//						// get class description from variablesTable 
+////						getClassExpressionPane().setText((String) variablesTable.getValueAt(selectedRow, selectedColumn));
+//					}
+//					
+//				}
+//			});
 //			TableColumn hasValue = variablesTable.getColumnModel().getColumn(1);
 
 /*
@@ -934,11 +941,7 @@ Utils.printVariablesList("variablesList:", variablesList);
 		FileWriter fw = null;
 		SWCLOntologyHelper soh = new SWCLOntologyHelper(ont);
 		try {
-			// get prefix
-			String ontString = ont.toString();
-			int start = ontString.indexOf("<");
-			int end = ontString.indexOf(">");
-			String prefix = ontString.substring(start, end);
+			String prefix = soh.getPrefix();
 //System.out.println("Prefix:"+prefix);
 			
 			for(Variable v:variablesList){
@@ -954,6 +957,7 @@ Utils.printVariablesList("variablesList:", variablesList);
 				v.setDescription(addPrefixDes);
 			}
 			
+			// temporary save at current directory as manchester owl syntax
 			String presentDir = System.getProperty("user.dir");
 			wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp.owl"));
 			manager.saveOntology(ont, new ManchesterOWLSyntaxOntologyFormat(), wdt);
