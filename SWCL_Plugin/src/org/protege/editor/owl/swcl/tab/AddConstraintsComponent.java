@@ -1124,6 +1124,7 @@ this.variablesList = totalVariablesList;
 				}
 			}
 			writeVariablesToOnt();
+			// ÀÌ¿¬
 			writeConstraintToOnt();
 			// add varibaleList to totalVariablesList
 //			Utils.addArrayList(totalVariablesList, variablesList);
