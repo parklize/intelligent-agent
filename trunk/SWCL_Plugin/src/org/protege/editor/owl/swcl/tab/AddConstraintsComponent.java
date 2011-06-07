@@ -1060,8 +1060,7 @@ Utils.printVariablesList("variablesList:", variablesList);
 		
 		// NEED UPDATE,OK event
 		if(e.getActionCommand().equals("OK")){
-			// add varibaleList to totalVariablesList
-			Utils.addArrayList(totalVariablesList, variablesList);
+
 			this.con = getConstraint();
 			this.abstractSyntax = getSWCLAbstractSyntax(con);
 			abstractSyntaxArea.setText(abstractSyntax);
@@ -1077,6 +1076,8 @@ Utils.printVariablesList("variablesList:", variablesList);
 					this.tableModel.setValueAt(this.con.getName(), i, 1);
 				}
 			}
+			// add varibaleList to totalVariablesList
+			Utils.addArrayList(totalVariablesList, variablesList);
 		}
 	}
 

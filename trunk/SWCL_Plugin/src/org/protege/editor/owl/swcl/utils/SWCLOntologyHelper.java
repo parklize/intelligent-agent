@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLProperty;
@@ -56,9 +57,9 @@ public class SWCLOntologyHelper {
 	}
 	
 	// return individual name without prefix
-	public String getIndividualName(OWLNamedIndividual owlInd){
+	public String getIndividualName(OWLIndividual ind){
 		String owlIndWithoutPrefix = "";
-		String iriName = owlInd.getIRI().toString();
+		String iriName = ((OWLNamedIndividual) ind).getIRI().toString();
 		StringTokenizer st = new StringTokenizer(iriName,"#");
 		while(st.hasMoreTokens()){
 			owlIndWithoutPrefix = st.nextToken();

@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,9 +27,16 @@ import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
+import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 
 
 /**
@@ -56,6 +65,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private OWLWorkspace ow = null;
     private OWLOntology owl = null;
     private OWLClassExpression oc = null;
+    private SWCLOntologyHelper soh = null;
 //    private OWLClassHelper owlClassHelper = null;
     
     // global variables
@@ -83,17 +93,57 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         add(getMenuPanel(),BorderLayout.NORTH);
         add(getConstraintsPanel(),BorderLayout.CENTER);
         
+        // get info from ontology
+        initializeSWCL();
+        
+        // default codes
+//        log.info("Example View Component initialized");
+    }
+    
+
+    
+    private void initializeSWCL() {
 // TESTING....        
+
     	
         // access to the ontologies, reasoners, search renderings, change management etc.
         owlModelManager = getOWLModelManager();
         
         // get workspace
         ow = getOWLWorkspace();
+        
 		// get selected class from workspace
 		oc = ow.getOWLSelectionModel().getLastSelectedClass();
-
+		
+		// get ontology
+		owl = owlModelManager.getActiveOntology();
+		
+    	// new SWCL ontology helper
+    	soh = new SWCLOntologyHelper(owl);
+		
+		// create Variable class
+		OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
         
+		// get all variables from ontology
+		Set variablesSet = oci.getIndividuals(owl);
+		Iterator it = variablesSet.iterator();
+		
+		while(it.hasNext()){
+			OWLIndividual ind = (OWLIndividual) it.next();
+			String indName = soh.getIndividualName(ind);
+			Variable v = new Variable(indName,"");
+			variablesList.add(v);
+		}
+		
+//		while(it.hasNext()){
+//			OWLIndividual ind = (OWLIndividual) it.next();
+//			System.out.println(ind.toString());
+//			OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
+//	        OWLClassAssertionImpl ocai = new OWLClassAssertionImpl(getOWLDataFactory(), ind, oci, null);
+//			System.out.println(owl.get);
+//		}
+
+
         
 		
         // including many components
@@ -140,15 +190,10 @@ System.out.println(it3.next());
             }
         }
 */
-        
-        
-        // default codes
-//        log.info("Example View Component initialized");
-    }
-    
+		
+	}
 
-    
-    // initialize the menu panel
+	// initialize the menu panel
     private JPanel getMenuPanel(){
     	
     	if(menuPanel == null){
@@ -281,15 +326,21 @@ System.out.println(it3.next());
 		
 		// the event of clicking the G button, generate the SWCL code
 		if(e.getActionCommand().equals("D")){
-//			int rowCount = tableModel.getRowCount();// =no. of constraints 
-//			for(int i=0;i<rowCount;i++){
-//				
-//				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
-//				System.out.println(jcb.isSelected());
-//				System.out.println(tableModel.getValueAt(i, 1));
-//				System.out.println(tableModel.getValueAt(i, 2));
-//				
-//			}
+			int rowCount = tableModel.getRowCount();// =no. of constraints 
+			
+			for(int i=0;i<rowCount;i++){
+				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+
+				if(jcb.isSelected()){
+					// delete selected row
+					tableModel.removeRow(i);
+					// NEED UPDATE... delete info in the ontology
+					
+				}
+				
+			}
+			
+			
 		}
 		
 	}
