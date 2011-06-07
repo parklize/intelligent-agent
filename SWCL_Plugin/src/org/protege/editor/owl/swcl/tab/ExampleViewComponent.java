@@ -7,6 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
@@ -21,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.model.Constraint;
@@ -29,10 +35,16 @@ import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
@@ -105,7 +117,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private void initializeSWCL() {
 // TESTING....        
 
-    	
+		try {   	
         // access to the ontologies, reasoners, search renderings, change management etc.
         owlModelManager = getOWLModelManager();
         
@@ -128,20 +140,58 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		Set variablesSet = oci.getIndividuals(owl);
 		Iterator it = variablesSet.iterator();
 		
+		// temporary save at current directory as manchester owl syntax
+		String presentDir = System.getProperty("user.dir");
+		WriterDocumentTarget wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp1.owl"));
+
+		OWLOntologyManager manager = owl.getOWLOntologyManager();
+		
+		manager.saveOntology(owl,new SystemOutDocumentTarget());
+		manager.saveOntology(owl, new ManchesterOWLSyntaxOntologyFormat(), wdt);
+		
+		// read temp ontology to ont
+		FileReader file = new FileReader(presentDir + "//temp1.owl");
+//		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
+//		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
+//		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
+		BufferedReader br = new BufferedReader(file);
+		String readLine;
+		String prefix = soh.getPrefix();
 		while(it.hasNext()){
 			OWLIndividual ind = (OWLIndividual) it.next();
 			String indName = soh.getIndividualName(ind);
 			Variable v = new Variable(indName,"");
+			while((readLine = br.readLine()) != null){
+				
+				if(readLine.contains("Class: " + prefix + "#ClassFor"+indName + ">")){
+					readLine = br.readLine();
+					readLine = br.readLine();
+					readLine = br.readLine();
+//					System.out.println(readLine);
+					String[] str = readLine.split("#|>");
+					v.setDescription(str[str.length-1]);
+				}
+				
+			}
 			variablesList.add(v);
+			
 		}
 		
 //		while(it.hasNext()){
-//			OWLIndividual ind = (OWLIndividual) it.next();
-//			System.out.println(ind.toString());
-//			OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
-//	        OWLClassAssertionImpl ocai = new OWLClassAssertionImpl(getOWLDataFactory(), ind, oci, null);
-//			System.out.println(owl.get);
-//		}
+//		OWLIndividual ind = (OWLIndividual) it.next();
+//		System.out.println(ind.toString());
+//		OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
+//        OWLClassAssertionImpl ocai = new OWLClassAssertionImpl(getOWLDataFactory(), ind, oci, null);
+//		System.out.println(owl.get);
+//	}
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OWLOntologyStorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
         
