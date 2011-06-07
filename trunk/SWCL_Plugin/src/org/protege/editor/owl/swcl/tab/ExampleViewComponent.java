@@ -135,10 +135,6 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		
 		// create Variable class
 		OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
-        
-		// get all variables from ontology
-		Set variablesSet = oci.getIndividuals(owl);
-		Iterator it = variablesSet.iterator();
 		
 		// temporary save at current directory as manchester owl syntax
 		String presentDir = System.getProperty("user.dir");
@@ -154,28 +150,39 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 //		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
 //		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
 //		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
-		BufferedReader br = new BufferedReader(file);
 		String readLine;
 		String prefix = soh.getPrefix();
-		while(it.hasNext()){
-			OWLIndividual ind = (OWLIndividual) it.next();
-			String indName = soh.getIndividualName(ind);
-			Variable v = new Variable(indName,"");
-			while((readLine = br.readLine()) != null){
-				
-				if(readLine.contains("Class: " + prefix + "#ClassFor"+indName + ">")){
-					readLine = br.readLine();
-					readLine = br.readLine();
-					readLine = br.readLine();
-//					System.out.println(readLine);
-					String[] str = readLine.split("#|>");
-					v.setDescription(str[str.length-1]);
-				}
-				
-			}
-			variablesList.add(v);
+
+			BufferedReader br = new BufferedReader(file);
+
 			
-		}
+//System.out.println("indName:"+indName);
+
+			while((readLine = br.readLine()) != null){
+//System.out.println("readLine:"+readLine);	
+				// get all variables from ontology
+				Set variablesSet = oci.getIndividuals(owl);
+				Iterator it = variablesSet.iterator();
+				while(it.hasNext()){
+					OWLIndividual ind = (OWLIndividual) it.next();
+					String indName = soh.getIndividualName(ind);
+//System.out.println("indName:"+indName);
+					Variable v = new Variable(indName,"");
+					if(readLine.contains("Class: " + prefix + "#ClassFor"+indName + ">")){
+						readLine = br.readLine();
+						readLine = br.readLine();
+						readLine = br.readLine();
+						System.out.println(readLine);
+						String[] str = readLine.split("#|>");
+						v.setDescription(str[str.length-1]);
+						
+						variablesList.add(v);
+					}
+				}
+
+			}
+
+		
 		
 //		while(it.hasNext()){
 //		OWLIndividual ind = (OWLIndividual) it.next();
