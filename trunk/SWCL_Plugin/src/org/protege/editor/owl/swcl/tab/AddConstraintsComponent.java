@@ -173,6 +173,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.ow = ow;
 		this.owlModelManager = owlModelManager;
 		this.totalVariablesList = totalVariablesList;
+this.variablesList = totalVariablesList;
 		this.ont = owlModelManager.getActiveOntology();
 //		this.oc = oc;
 //		this.oek = oek;
@@ -376,17 +377,22 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 						}
 						
 						// apply change to qualifierVariable table
-						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
-
+//						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+						Utils.refreshComboBox(variablesList, qualifierVariable);
+						
 						// apply change to termblocks
 						for(int i=0;i<100;i++){
 							if(rhsTermblocks[i] != null){
-								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
-								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+								Utils.refreshComboBox(variablesList, rhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(variablesList, rhsTermblocks[i].getFactorVariableColumn());
 							}
 							if(lhsTermblocks[i] != null){
-								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
-								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+								Utils.refreshComboBox(variablesList, lhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(variablesList, lhsTermblocks[i].getFactorVariableColumn());
 							}
 						}				
 					}
@@ -443,17 +449,22 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 					variablesList.add(variable);
 					
 					// apply change to qualifierVariable table
-					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+//					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+					Utils.refreshComboBox(variablesList, qualifierVariable);
 					
 					// apply change to termblocks
 					for(int i=0;i<100;i++){
 						if(rhsTermblocks[i] != null){
-							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
-							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+							Utils.refreshComboBox(variablesList,rhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(variablesList,rhsTermblocks[i].getFactorVariableColumn());
 						}
 						if(lhsTermblocks[i] != null){
-							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
-							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+							Utils.refreshComboBox(variablesList,lhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(variablesList,lhsTermblocks[i].getFactorVariableColumn());
 						}
 					}
 					
@@ -652,7 +663,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			qualifiersTable = new JTable(model);
 			qualifierVariable = qualifiersTable.getColumnModel().getColumn(0);
 			// refresh variable combobox
-			Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+//			Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+			Utils.refreshComboBox(variablesList, qualifierVariable);
 		}
 		return qualifiersTable;
 	}
@@ -1114,7 +1126,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			writeVariablesToOnt();
 			writeConstraintToOnt();
 			// add varibaleList to totalVariablesList
-			Utils.addArrayList(totalVariablesList, variablesList);
+//			Utils.addArrayList(totalVariablesList, variablesList);
+			this.totalVariablesList = this.variablesList;
 		}
 	}
 
