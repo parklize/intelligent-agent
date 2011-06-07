@@ -40,6 +40,7 @@ import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
+import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -148,6 +149,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private OWLDataFactory dataFactory = null;  //  @jve:decl-index=0:
 	private String base = null;  //  @jve:decl-index=0:
 	private PrefixManager pm = null;  //  @jve:decl-index=0:
+	private SWCLOntologyHelper soh = null;
 
 
 //    private OWLClassHelper owlClassHelper = null;
@@ -182,6 +184,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		// set base
 		this.base = "http://iwec.yonsei.ac.kr/swcl";  //  @jve:decl-index=0:
 		this.pm = new DefaultPrefixManager(base);  //  @jve:decl-index=0:
+		this.soh = new SWCLOntologyHelper(ont);
 	}
 	
 	// for test purpose
@@ -930,16 +933,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 	// NEED UPDATE
 	private void writeVariablesToOnt() {
-Utils.printVariablesList("variablesList:", variablesList);
-		
-		
+//Utils.printVariablesList("variablesList:", variablesList);
 		// get the reference to the Variable class(create)
 		OWLClass variable = dataFactory.getOWLClass("#Variable",pm);
 		
 		// save temporary
 		WriterDocumentTarget wdt;
 		FileWriter fw = null;
-		SWCLOntologyHelper soh = new SWCLOntologyHelper(ont);
+
 		try {
 			String prefix = soh.getPrefix();
 //System.out.println("Prefix:"+prefix);
@@ -1034,7 +1035,37 @@ Utils.printVariablesList("variablesList:", variablesList);
 			}
 		}
 	}
-
+	
+	// add constraint part to ontology
+	private void writeConstraintToOnt() {
+		// add constraint axiom
+		OWLClass conClass = dataFactory.getOWLClass("#Constraint",pm);
+		OWLIndividual conInd = dataFactory.getOWLNamedIndividual("#"+con.getName(),pm);
+		OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(conClass, conInd);
+		manager.addAxiom(ont, classAssertion);
+		
+		// add has qualifier axiom
+		OWLObjectProperty hasQualifier = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasQualifier"));
+		ArrayList<Qualifier> qualifierList = con.getQualifiers();
+		for(Qualifier q:qualifierList){
+			OWLIndividual ind = soh.getOWLIndividual(q.getV().getName());
+			OWLObjectPropertyAssertionAxiom assertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasQualifier, conInd, ind);
+			AddAxiom addAxiomChange = new AddAxiom(ont,assertion);
+			manager.applyChange(addAxiomChange);
+		}
+		
+		// add LHS axiom NEED UPDATE...
+		
+		// add operator axiom
+		OWLDataProperty hasOperator = dataFactory.getOWLDataProperty(IRI.create(base + "#hasOperator"));
+		OWLDataPropertyAssertionAxiom assertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasOperator, conInd, con.getOpp().getOpp());
+		AddAxiom oppAxiom = new AddAxiom(ont, assertion);
+		manager.applyChange(oppAxiom);
+		
+		// add RHS axiom NEED UPDATE...
+		
+	}
+	
 	
 	public void actionPerformed(ActionEvent e) {
 		
@@ -1068,7 +1099,7 @@ Utils.printVariablesList("variablesList:", variablesList);
 			this.con = getConstraint();
 			this.abstractSyntax = getSWCLAbstractSyntax(con);
 			abstractSyntaxArea.setText(abstractSyntax);
-			writeVariablesToOnt();
+
 		}
 		
 		// submit action
@@ -1080,10 +1111,14 @@ Utils.printVariablesList("variablesList:", variablesList);
 					this.tableModel.setValueAt(this.con.getName(), i, 1);
 				}
 			}
+			writeVariablesToOnt();
+			writeConstraintToOnt();
 			// add varibaleList to totalVariablesList
 			Utils.addArrayList(totalVariablesList, variablesList);
 		}
 	}
+
+
 
 
 
