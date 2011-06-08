@@ -272,13 +272,26 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 					signStr = sign.getLiteral();
 					signStr = signStr.replaceAll("\"", "");
 					signStr = signStr.replaceAll("^^xsd:string", "");
-System.out.println("singStr is:"+signStr);
+//System.out.println("LHS signStr is:"+signStr);
 				}
 				
-				// get has
-				
+				// get hasAggregateOperation value
+				OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
+				Set aggSet = (Set) lhsDataProperty.get(hasAgg);
+				if(aggSet != null){
+					Iterator aggIt = aggSet.iterator();
+					
+					String aggStr = null;
+					while(aggIt.hasNext()){
+						OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
+						aggStr = agg.toString();
+						aggStr = aggStr.replaceAll("\"", "");
+						aggStr = aggStr.replaceAll("^^xsd:string", "");
+//System.out.println("LHS aggStr is:"+aggStr);
+					}
+				}
+
 			}
-			
 			
 			// get operator to constraint
 			OWLDataPropertyImpl hasOperator = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasOperator"));
@@ -296,14 +309,14 @@ System.out.println("singStr is:"+signStr);
 			con.setOpp(operatorCon);
 			
 			// NEED UPDATE...
-			// get LHS to constraint
+			// get RHS to constraint
 			OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasRhs"));
 			Set rhsSet = (Set) indObjProperty.get(hasRhs);
 			Iterator itRhs = rhsSet.iterator();
 			
 			String rhsStr = null;
 			while(itRhs.hasNext()){
-				// get lhs termblock individual
+				// get rhs termblock individual
 				OWLNamedIndividualImpl rhs = (OWLNamedIndividualImpl) itRhs.next();
 				HashMap rhsDataProperty = (HashMap) rhs.getDataPropertyValues(owl);
 				HashMap rhsObjectProperty = (HashMap) rhs.getObjectPropertyValues(owl);
@@ -319,10 +332,24 @@ System.out.println("singStr is:"+signStr);
 					signStr = sign.getLiteral();
 					signStr = signStr.replaceAll("\"", "");
 					signStr = signStr.replaceAll("^^xsd:string", "");
-System.out.println("RHS singStr is:"+signStr);
+//System.out.println("RHS singStr is:"+signStr);
 				}
 				
-				// get has
+				// get hasAggregateOperation value
+				OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
+				Set aggSet = (Set) rhsDataProperty.get(hasAgg);
+				if(aggSet != null){
+					Iterator aggIt = aggSet.iterator();
+					
+					String aggStr = null;
+					while(aggIt.hasNext()){
+						OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
+						aggStr = agg.toString();
+						aggStr = aggStr.replaceAll("\"", "");
+						aggStr = aggStr.replaceAll("^^xsd:string", "");
+//System.out.println("RHS aggStr is:"+aggStr);
+					}
+				}
 				
 			}
 
