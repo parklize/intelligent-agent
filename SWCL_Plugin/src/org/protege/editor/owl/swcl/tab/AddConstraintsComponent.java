@@ -182,10 +182,11 @@ this.variablesList = totalVariablesList;
 		// create ontology manager to work with
 		this.manager = OWLManager.createOWLOntologyManager(); 
 		this.dataFactory = manager.getOWLDataFactory();  
-		// set base
-		this.base = "http://iwec.yonsei.ac.kr/swcl";  //  @jve:decl-index=0:
-		this.pm = new DefaultPrefixManager(base);  //  @jve:decl-index=0:
 		this.soh = new SWCLOntologyHelper(ont);
+		// set base
+		this.base = soh.getPrefix();
+		this.pm = new DefaultPrefixManager(base);  //  @jve:decl-index=0:
+
 	}
 	
 	// for test purpose
@@ -603,7 +604,7 @@ this.variablesList = totalVariablesList;
 	// LHS Termblock panel 
 	private JPanel getLHSTermblockPanel(int lhsTermblockNumber) {
 
-			lhsTermblocks[lhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList),ont);
+			lhsTermblocks[lhsTermblockNumber] =  new TermBlockComponent(variablesList,ont);
 			
 			// termblock initializing...
 			lhsTermblocks[lhsTermblockNumber].setLayout(null);
@@ -715,7 +716,7 @@ this.variablesList = totalVariablesList;
 	// RHS Termblock panel 
 	private JPanel getRHSTermblockPanel(int rhsTermblockNumber) {
 
-			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent(Utils.sumArrayList(totalVariablesList, variablesList),ont);
+			rhsTermblocks[rhsTermblockNumber] =  new TermBlockComponent(variablesList,ont);
 			
 			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
@@ -925,27 +926,22 @@ this.variablesList = totalVariablesList;
 			
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
 				str+=" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
-			
 			}
 			str+=" ) ) ) )";
 			
 		}
-
-//		System.out.println(str);
 	
 		return str;
-		
-//		int rowCount = tableModel.getRowCount();// =no. of constraints 
-//		for(int i=0;i<rowCount;i++){
-//			
-//			tableModel.setValueAt(str,i,2);
-//		}
 	}
 
 
 	// NEED UPDATE
 	private void writeVariablesToOnt() {
+		
 //Utils.printVariablesList("variablesList:", variablesList);
+		
+		String prefix = soh.getPrefix();
+		
 		// get the reference to the Variable class(create)
 		OWLClass variable = dataFactory.getOWLClass("#Variable",pm);
 		
@@ -954,20 +950,47 @@ this.variablesList = totalVariablesList;
 		FileWriter fw = null;
 
 		try {
-			String prefix = soh.getPrefix();
-//System.out.println("Prefix:"+prefix);
 			
+//System.out.println("Prefix:"+prefix);
+
 			for(Variable v:variablesList){
-				String des = v.getDescription();
-				String addPrefixDes = des;
 				
-				for(String s:soh.getClassList()){
-//System.out.println("s:"+s);
-//System.out.println(s.length());
-					addPrefixDes = addPrefixDes.replaceAll(s, prefix+"#"+s+">");
-//System.out.println("addPrefixDes:"+addPrefixDes);
+				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
+				// create subclass axiom
+				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
+				AddAxiom addAxiom = new AddAxiom(ont,axiom);
+				manager.applyChange(addAxiom);
+				
+				// get the reference to the y instance 
+				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
+				// create class assertion that y is the instance of the Variable
+				OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(variable, individual);
+				
+				// add axiom to ontology
+				manager.addAxiom(ont, classAssertion);
+
+				String[] str = v.getDescription().split(" ");
+				// class
+				for(int i=0;i<str.length;i++){
+					// if s is property or class, then add prefix
+					for(String cls:soh.getClassList()){
+						if(str[i].equals(cls)){
+							str[i] = "<" + prefix + "#" + str[i] +">";
+						}
+					}
+					for(String pro:soh.getObjectPropertyList()){
+						if(str[i].equals(pro)){
+							str[i] = "<" + prefix + "#" + str[i] +">";
+						}
+					}
 				}
-				v.setDescription(addPrefixDes);
+				String newDes = "";
+				for(String s:str){
+					newDes = newDes + " " + s;
+				}
+				
+				v.setDescription(newDes);
+//System.out.println(newDes);
 			}
 			
 			// temporary save at current directory as manchester owl syntax
@@ -977,16 +1000,9 @@ this.variablesList = totalVariablesList;
 			
 			// get all variables and dump to ontology
 			for(Variable v:variablesList){
-				// get the reference to the y instance 
-				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
-				// create class assertion that y is the instance of the Variable
-				OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(variable, individual);
-				
-				// add axiom to ontology
-				manager.addAxiom(ont, classAssertion);
-
+//System.out.println("Description:"+v.getDescription());
 				fw = (FileWriter) wdt.getWriter();
-				char[] cs = ("Class: " + prefix + "#ClassFor" + v.getName() + ">\n\n" +
+				char[] cs = ("Class: " + "<" + prefix + "#ClassFor" + v.getName() + ">\n\n" +
 						"    EquivalentTo:\n"+
 						"        "+v.getDescription()+"\n\n").toCharArray();
 				for(char c: cs){
@@ -1023,28 +1039,30 @@ this.variablesList = totalVariablesList;
 						OWLDataPropertyAssertionAxiom assertion = dataFactory.getOWLDataPropertyAssertionAxiom(bindingClass, owlInd, str);
 						
 						manager.addAxiom(ont, assertion);
-						manager.saveOntology(ont,new SystemOutDocumentTarget());
+//						manager.saveOntology(ont,new SystemOutDocumentTarget());
 					}
 				}
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OWLOntologyStorageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OWLOntologyCreationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException e) {e.printStackTrace();
+		} catch (OWLOntologyStorageException e) {e.printStackTrace();
+		} catch (OWLOntologyCreationException e) {e.printStackTrace();
 		} finally {
 			if(fw != null){
 				try {
 					fw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+		}
+		
+		// set description with manchester syntax back
+		for(Variable v:variablesList){
+			
+			String des = v.getDescription();
+			des = des.replaceAll("<"+prefix+"#", "");
+			des = des.replaceAll(">", "");
+			v.setDescription(des);
 		}
 	}
 	
@@ -1126,9 +1144,10 @@ this.variablesList = totalVariablesList;
 			writeVariablesToOnt();
 			// ÀÌ¿¬
 			writeConstraintToOnt();
+			
 			// add varibaleList to totalVariablesList
-//			Utils.addArrayList(totalVariablesList, variablesList);
 			this.totalVariablesList = this.variablesList;
+
 		}
 	}
 
@@ -1137,6 +1156,6 @@ this.variablesList = totalVariablesList;
 
 
 
-}  //  @jve:decl-index=0:visual-constraint="10,10" 
+} 
  	
 	

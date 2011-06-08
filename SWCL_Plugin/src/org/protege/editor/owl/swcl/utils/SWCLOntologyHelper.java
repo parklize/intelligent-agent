@@ -30,7 +30,8 @@ public class SWCLOntologyHelper {
 		String ontString = ont.toString();
 		int start = ontString.indexOf("<");
 		int end = ontString.indexOf(">");
-		return ontString.substring(start, end);
+		
+		return ontString.substring(start+1, end);
 	}
 	
 	// get all properties without prefix
@@ -38,6 +39,17 @@ public class SWCLOntologyHelper {
 		ArrayList<String> propertyList = new ArrayList<String>();
 		Set dataTypePropertySet = ont.getDataPropertiesInSignature();
 		Iterator it = dataTypePropertySet.iterator();
+		while(it.hasNext()){
+			propertyList.add(getPropertyName((OWLProperty)it.next()));
+		}
+		return propertyList;
+	}
+	
+	// get all object properties without prefix
+	public ArrayList<String> getObjectPropertyList(){
+		ArrayList<String> propertyList = new ArrayList<String>();
+		Set objectTypePropertySet = ont.getObjectPropertiesInSignature();
+		Iterator it = objectTypePropertySet.iterator();
 		while(it.hasNext()){
 			propertyList.add(getPropertyName((OWLProperty)it.next()));
 		}
