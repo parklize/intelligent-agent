@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -30,17 +31,24 @@ import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.model.Constraint;
+import org.protege.editor.owl.swcl.model.Operator;
+import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
+import org.protege.editor.owl.swcl.utils.Utils;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -49,6 +57,10 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 
 
 /**
@@ -199,7 +211,10 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 	
 	// NEED TO UPDATE..
 	private void getAllConstraints() {
-
+		
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		
 		// get all constraints
 		OWLClassImpl constraintCls = new OWLClassImpl(getOWLDataFactory(),IRI.create(prefix + "#Constraint"));
 		// get individuals of constraint class
@@ -209,6 +224,45 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		while(it.hasNext()){
 			
 			Constraint con = new Constraint();
+			
+			OWLIndividual ind = (OWLIndividual) it.next();
+			
+			// get operator to constraint
+			HashMap dataProperty = (HashMap) ind.getDataPropertyValues(owl);
+			OWLDataPropertyImpl hasOperator = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasOperator"));
+			Set op = (Set) dataProperty.get(hasOperator);
+			Iterator opIt = op.iterator();
+
+			String operatorStr = null;
+			while(opIt.hasNext()){
+				OWLLiteralImpl operator = (OWLLiteralImpl) opIt.next();
+				operatorStr= operator.getLiteral();
+				operatorStr = operatorStr.replaceAll("\"", "");
+				operatorStr = operatorStr.replaceAll("^^xsd:string", "");
+			}
+			Operator operatorCon = new Operator(operatorStr);
+			con.setOpp(operatorCon);
+			
+			// get qualifier to constriant
+			HashMap objProperty = (HashMap) ind.getObjectPropertyValues(owl);
+			OWLObjectPropertyImpl hasQualifier = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasQualifier"));
+			Set qua = (Set) objProperty.get(hasQualifier);
+			Iterator ito = qua.iterator();
+			
+			String quaStr = null;
+			ArrayList<Qualifier> quaList = new ArrayList<Qualifier>();
+			while(ito.hasNext()){
+				OWLNamedIndividualImpl qualifier = (OWLNamedIndividualImpl) ito.next();
+				quaStr = qualifier.toString();
+				quaStr = quaStr.replaceAll("<"+prefix+"#", "");
+				quaStr = quaStr.replaceAll(">", "");
+System.out.println(quaStr);
+				Variable v = Utils.findVariableWithName(variablesList, quaStr);
+				Qualifier q = new Qualifier(v);
+				quaList.add(q);	
+			}
+			con.setQualifiers(quaList);
+
 			
 		}
 	}
