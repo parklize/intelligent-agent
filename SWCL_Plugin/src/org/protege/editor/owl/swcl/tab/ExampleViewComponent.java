@@ -224,13 +224,65 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 		while(it.hasNext()){
 			
 			Constraint con = new Constraint();
-			
 			OWLIndividual ind = (OWLIndividual) it.next();
+			HashMap indDataProperty = (HashMap) ind.getDataPropertyValues(owl);
+			HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(owl);
+			
+			
+			// get qualifier to constriant
+			OWLObjectPropertyImpl hasQualifier = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasQualifier"));
+			Set qua = (Set) indObjProperty.get(hasQualifier);
+			Iterator ito = qua.iterator();
+			
+			String quaStr = null;
+			ArrayList<Qualifier> quaList = new ArrayList<Qualifier>();
+			while(ito.hasNext()){
+				OWLNamedIndividualImpl qualifier = (OWLNamedIndividualImpl) ito.next();
+				quaStr = qualifier.toString();
+				quaStr = quaStr.replaceAll("<"+prefix+"#", "");
+				quaStr = quaStr.replaceAll(">", "");
+//System.out.println("quaStr is:"+quaStr);
+				Variable v = Utils.findVariableWithName(variablesList, quaStr);
+				Qualifier q = new Qualifier(v);
+				quaList.add(q);	
+			}
+			con.setQualifiers(quaList);
+			
+			// MEED UPDATE...
+			// get LHS to constraint
+			OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasLhs"));
+			Set lhsSet = (Set) indObjProperty.get(hasLhs);
+			Iterator itLhs = lhsSet.iterator();
+			
+			String lhsStr = null;
+			while(itLhs.hasNext()){
+				// get lhs termblock individual
+				OWLNamedIndividualImpl lhs = (OWLNamedIndividualImpl) itLhs.next();
+				HashMap lhsDataProperty = (HashMap) lhs.getDataPropertyValues(owl);
+				HashMap lhsObjectProperty = (HashMap) lhs.getObjectPropertyValues(owl);
+				
+				// get hasSign value
+				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
+				Set si = (Set) lhsDataProperty.get(hasSign);
+				Iterator signIt = si.iterator();
+				
+				String signStr = null;
+				while(signIt.hasNext()){
+					OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
+					signStr = sign.getLiteral();
+					signStr = signStr.replaceAll("\"", "");
+					signStr = signStr.replaceAll("^^xsd:string", "");
+System.out.println("singStr is:"+signStr);
+				}
+				
+				// get has
+				
+			}
+			
 			
 			// get operator to constraint
-			HashMap dataProperty = (HashMap) ind.getDataPropertyValues(owl);
 			OWLDataPropertyImpl hasOperator = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasOperator"));
-			Set op = (Set) dataProperty.get(hasOperator);
+			Set op = (Set) indDataProperty.get(hasOperator);
 			Iterator opIt = op.iterator();
 
 			String operatorStr = null;
@@ -243,25 +295,36 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			Operator operatorCon = new Operator(operatorStr);
 			con.setOpp(operatorCon);
 			
-			// get qualifier to constriant
-			HashMap objProperty = (HashMap) ind.getObjectPropertyValues(owl);
-			OWLObjectPropertyImpl hasQualifier = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasQualifier"));
-			Set qua = (Set) objProperty.get(hasQualifier);
-			Iterator ito = qua.iterator();
+			// NEED UPDATE...
+			// get LHS to constraint
+			OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasRhs"));
+			Set rhsSet = (Set) indObjProperty.get(hasRhs);
+			Iterator itRhs = rhsSet.iterator();
 			
-			String quaStr = null;
-			ArrayList<Qualifier> quaList = new ArrayList<Qualifier>();
-			while(ito.hasNext()){
-				OWLNamedIndividualImpl qualifier = (OWLNamedIndividualImpl) ito.next();
-				quaStr = qualifier.toString();
-				quaStr = quaStr.replaceAll("<"+prefix+"#", "");
-				quaStr = quaStr.replaceAll(">", "");
-System.out.println(quaStr);
-				Variable v = Utils.findVariableWithName(variablesList, quaStr);
-				Qualifier q = new Qualifier(v);
-				quaList.add(q);	
+			String rhsStr = null;
+			while(itRhs.hasNext()){
+				// get lhs termblock individual
+				OWLNamedIndividualImpl rhs = (OWLNamedIndividualImpl) itRhs.next();
+				HashMap rhsDataProperty = (HashMap) rhs.getDataPropertyValues(owl);
+				HashMap rhsObjectProperty = (HashMap) rhs.getObjectPropertyValues(owl);
+				
+				// get hasSign value
+				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
+				Set si = (Set) rhsDataProperty.get(hasSign);
+				Iterator signIt = si.iterator();
+				
+				String signStr = null;
+				while(signIt.hasNext()){
+					OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
+					signStr = sign.getLiteral();
+					signStr = signStr.replaceAll("\"", "");
+					signStr = signStr.replaceAll("^^xsd:string", "");
+System.out.println("RHS singStr is:"+signStr);
+				}
+				
+				// get has
+				
 			}
-			con.setQualifiers(quaList);
 
 			
 		}

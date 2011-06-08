@@ -60,6 +60,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
@@ -957,9 +958,9 @@ this.variablesList = totalVariablesList;
 				
 				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
 				// create subclass axiom
-				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
-				AddAxiom addAxiom = new AddAxiom(ont,axiom);
-				manager.applyChange(addAxiom);
+//				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
+//				AddAxiom addAxiom = new AddAxiom(ont,axiom);
+//				manager.applyChange(addAxiom);
 				
 				// get the reference to the y instance 
 				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
@@ -972,7 +973,7 @@ this.variablesList = totalVariablesList;
 				String[] str = v.getDescription().split(" ");
 				// class
 				for(int i=0;i<str.length;i++){
-					// if s is property or class, then add prefix
+					// if s is property,individual or class, then add prefix
 					for(String cls:soh.getClassList()){
 						if(str[i].equals(cls)){
 							str[i] = "<" + prefix + "#" + str[i] +">";
@@ -983,7 +984,13 @@ this.variablesList = totalVariablesList;
 							str[i] = "<" + prefix + "#" + str[i] +">";
 						}
 					}
+					for(String ind:soh.getIndividualsList()){
+						if(str[i].equals(ind)){
+							str[i] = "<" + prefix + "#" + str[i] +">";
+						}
+					}
 				}
+				
 				String newDes = "";
 				for(String s:str){
 					newDes = newDes + " " + s;
@@ -1085,6 +1092,63 @@ this.variablesList = totalVariablesList;
 		}
 		
 		// add LHS axiom NEED UPDATE...
+		//LHSTermBlock 가져가기
+		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
+			
+			OWLClass LhsTermBClass= dataFactory.getOWLClass("#LhsTermBlock",pm);
+			OWLIndividual lhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"lhsTermBlock"+(i+1),pm);
+			OWLClassAssertionAxiom LhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(LhsTermBClass, lhsTermBInd);
+			manager.addAxiom(ont, LhsTermBAssertion);
+			
+			OWLObjectProperty hasLhs= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasLhs"));
+			OWLClassExpression hasTermBlockAllLhs = dataFactory.getOWLObjectAllValuesFrom(hasLhs, LhsTermBClass);
+			OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(conClass, hasTermBlockAllLhs);
+			AddAxiom addAx = new AddAxiom(ont, ax);
+			manager.applyChange(addAx);
+			
+			// constraint->hasLhs->lhsTermblockInd
+			OWLObjectPropertyAssertionAxiom hasLhsAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasLhs, conInd, lhsTermBInd);
+			AddAxiom hasLhsAddAx = new AddAxiom(ont,hasLhsAx);
+			manager.applyChange(hasLhsAddAx);
+			
+			
+			//sign 가져가기
+
+			OWLDataProperty hasSign = dataFactory.getOWLDataProperty(IRI.create(base + "#hasSign"));
+			OWLDataPropertyAssertionAxiom assertionSign = dataFactory.getOWLDataPropertyAssertionAxiom(hasSign, lhsTermBInd, con.getLhs().getTermblocks().get(i).getSign());
+			AddAxiom SignAxiom = new AddAxiom(ont, assertionSign);
+			manager.applyChange(SignAxiom);
+
+			
+			//aggregateOperation 가져가기  (AggreOper 있으면 parameter도 가져가요)
+			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){	
+				OWLDataProperty hasAggregateOperation = dataFactory.getOWLDataProperty(IRI.create(base + "#hasAggregateOperation"));
+				OWLDataPropertyAssertionAxiom assertionAggreO = dataFactory.getOWLDataPropertyAssertionAxiom(hasAggregateOperation, lhsTermBInd, con.getLhs().getTermblocks().get(i).getAggregateOppertor());
+				AddAxiom AggreOAxiom = new AddAxiom(ont, assertionAggreO);
+				manager.applyChange(AggreOAxiom);
+
+				
+				for (int j=0; j<con.getLhs().getTermblocks().get(i).getParameters().size();j++){
+					OWLObjectProperty hasParameters = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasParameters"));
+					OWLIndividual Pind = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getParameters().get(j).getV().getName());
+					OWLObjectPropertyAssertionAxiom assertionParameters = dataFactory.getOWLObjectPropertyAssertionAxiom(hasParameters, lhsTermBInd, Pind);
+					AddAxiom ParametersAxiom = new AddAxiom(ont, assertionParameters);
+					manager.applyChange(ParametersAxiom);
+
+				}
+			}
+			// factor 가져가기
+			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
+				OWLObjectProperty hasFactors = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactors"));
+				OWLIndividual find = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
+				OWLObjectPropertyAssertionAxiom assertionFactors = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactors, lhsTermBInd, find);
+				AddAxiom FactorsAxiom = new AddAxiom(ont, assertionFactors);
+				manager.applyChange(FactorsAxiom);
+
+			}
+			
+			
+		}
 		
 		// add operator axiom
 		OWLDataProperty hasOperator = dataFactory.getOWLDataProperty(IRI.create(base + "#hasOperator"));
@@ -1093,7 +1157,60 @@ this.variablesList = totalVariablesList;
 		manager.applyChange(oppAxiom);
 		
 		// add RHS axiom NEED UPDATE...
-		
+		//RHSTermBlock 가져가기
+		for (int i=0; i<con.getRhs().getTermblocks().size();i++){
+			
+			OWLClass RhsTermBClass= dataFactory.getOWLClass("#RhsTermBlock",pm);
+			OWLIndividual rhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"rhsTermBlock"+(i+1),pm);
+			OWLClassAssertionAxiom RhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(RhsTermBClass, rhsTermBInd);
+			manager.addAxiom(ont, RhsTermBAssertion);
+			
+			OWLObjectProperty hasRhs= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasRhs"));
+			OWLClassExpression hasTermBlockAllRhs = dataFactory.getOWLObjectAllValuesFrom(hasRhs, RhsTermBClass);
+			OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(conClass, hasTermBlockAllRhs);
+			AddAxiom addAx = new AddAxiom(ont, ax);
+			manager.applyChange(addAx);
+			
+			// constraint->hasLhs->lhsTermblockInd
+			OWLObjectPropertyAssertionAxiom hasRhsAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasRhs, conInd, rhsTermBInd);
+			AddAxiom hasRhsAddAx = new AddAxiom(ont,hasRhsAx);
+			manager.applyChange(hasRhsAddAx);
+			
+			//sign 가져가기
+			OWLDataProperty hasSign = dataFactory.getOWLDataProperty(IRI.create(base + "#hasSign"));
+			OWLDataPropertyAssertionAxiom assertionSign = dataFactory.getOWLDataPropertyAssertionAxiom(hasSign, rhsTermBInd, con.getRhs().getTermblocks().get(i).getSign());
+			AddAxiom SignAxiom = new AddAxiom(ont, assertionSign);
+			manager.applyChange(SignAxiom);
+
+			
+			//aggregateOperation 가져가기  (AggreOper 있으면 parameter도 가져가요)
+			if (con.getRhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){	
+				OWLDataProperty hasAggregateOperation = dataFactory.getOWLDataProperty(IRI.create(base + "#hasAggregateOperation"));
+				OWLDataPropertyAssertionAxiom assertionAggreO = dataFactory.getOWLDataPropertyAssertionAxiom(hasAggregateOperation, rhsTermBInd, con.getRhs().getTermblocks().get(i).getAggregateOppertor());
+				AddAxiom AggreOAxiom = new AddAxiom(ont, assertionAggreO);
+				manager.applyChange(AggreOAxiom);
+
+				
+				for (int j=0; j<con.getRhs().getTermblocks().get(i).getParameters().size();j++){
+					OWLObjectProperty hasParameters = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasParameters"));
+					OWLIndividual Pind = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getParameters().get(j).getV().getName());
+					OWLObjectPropertyAssertionAxiom assertionParameters = dataFactory.getOWLObjectPropertyAssertionAxiom(hasParameters, rhsTermBInd, Pind);
+					AddAxiom ParametersAxiom = new AddAxiom(ont, assertionParameters);
+					manager.applyChange(ParametersAxiom);
+
+				}
+			}
+			// factor 가져가기
+			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
+				OWLObjectProperty hasFactors = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactors"));
+				OWLIndividual find = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
+				OWLObjectPropertyAssertionAxiom assertionFactors = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactors, rhsTermBInd, find);
+				AddAxiom FactorsAxiom = new AddAxiom(ont, assertionFactors);
+				manager.applyChange(FactorsAxiom);
+
+			}
+			
+		}
 	}
 	
 	
