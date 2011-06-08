@@ -127,5 +127,14 @@ public class SWCLOntologyHelper {
 		return propertyNameWithoutPrefix;
 	}
 	
+	// get without prefix
+	public String getWithoutPrefix(String prefixStr,String prefix){
+		
+		String newStr = prefixStr;
+		newStr = newStr.replaceAll("<"+prefix, "");
+		newStr = newStr.replaceAll(">", "");
+		
+		return newStr;
+	}
 	
 }
