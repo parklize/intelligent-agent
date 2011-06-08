@@ -78,25 +78,17 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     private OWLOntology owl = null;
     private OWLClassExpression oc = null;
     private SWCLOntologyHelper soh = null;
-//    private OWLClassHelper owlClassHelper = null;
+	private String prefix = null;
     
     // global variables
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
-	private ArrayList<Constraint> constraintList = new ArrayList<Constraint>();
-	
-    // convinience class for querying the asserted subsumption hierarchy directly
-//    private OWLObjectHierarchyProvider<OWLClass> assertedHierarchyProvider;
-    
-    // provides string renderings of Classes / Properties / Individuals. reflecting the current output setting
-//    private OWLModelManagerEntityRenderer ren;
+	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
 
     @Override
-    protected void disposeOWLView() {
-    }
+    protected void disposeOWLView() {}
 
     @Override
     protected void initialiseOWLView() throws Exception {
-
         
     	// set layout 
         setLayout(new BorderLayout());
@@ -113,143 +105,114 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
     }
     
 
-    
-    private void initializeSWCL() {
-// TESTING....        
+    // NEED UPDATE...
+    private void initializeSWCL() {       
 
-		try {   	
-        // access to the ontologies, reasoners, search renderings, change management etc.
-        owlModelManager = getOWLModelManager();
-        
-        // get workspace
-        ow = getOWLWorkspace();
-        
-		// get selected class from workspace
-		oc = ow.getOWLSelectionModel().getLastSelectedClass();
-		
-		// get ontology
-		owl = owlModelManager.getActiveOntology();
-		
-    	// new SWCL ontology helper
-    	soh = new SWCLOntologyHelper(owl);
-		
-		// create Variable class
-		OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
-		
-		// temporary save at current directory as manchester owl syntax
-		String presentDir = System.getProperty("user.dir");
-		WriterDocumentTarget wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp1.owl"));
-
-		OWLOntologyManager manager = owl.getOWLOntologyManager();
-		
-		manager.saveOntology(owl,new SystemOutDocumentTarget());
-		manager.saveOntology(owl, new ManchesterOWLSyntaxOntologyFormat(), wdt);
-		
-		// read temp ontology to ont
-		FileReader file = new FileReader(presentDir + "//temp1.owl");
-//		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
-//		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
-//		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
-		String readLine;
-		String prefix = soh.getPrefix();
-
-			BufferedReader br = new BufferedReader(file);
-
+	        // access to the ontologies, reasoners, search renderings, change management etc.
+	        owlModelManager = getOWLModelManager();
+	        
+	        // get workspace
+	        ow = getOWLWorkspace();
+	        
+			// get selected class from workspace
+			oc = ow.getOWLSelectionModel().getLastSelectedClass();
 			
-//System.out.println("indName:"+indName);
+			// get ontology
+			owl = owlModelManager.getActiveOntology();
+			
+	    	// new SWCL ontology helper
+	    	soh = new SWCLOntologyHelper(owl);
+	    	
+	    	// prefix 
+	    	prefix = soh.getPrefix();
+	    	
+	    	// get all variables to variablesList
+	    	getAllVariables();
+	    	
+	    	// get all constraints to constraintsList
+	    	getAllConstraints();
 
+	}
+
+	private void getAllVariables() {
+		try {   
+			ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
+	    	
+	    	Iterator it = null;
+			
+			// create Variable class
+			OWLClassImpl variableCls = new OWLClassImpl(getOWLDataFactory(),IRI.create(prefix + "#Variable"));
+			
+			// temporary save at current directory as manchester owl syntax
+			String presentDir = System.getProperty("user.dir");
+			WriterDocumentTarget wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp1.owl"));
+	
+			OWLOntologyManager manager = owl.getOWLOntologyManager();
+			
+	//		manager.saveOntology(owl,new SystemOutDocumentTarget());
+			manager.saveOntology(owl, new ManchesterOWLSyntaxOntologyFormat(), wdt);
+			
+			// read temp ontology to ont
+			FileReader file = new FileReader(presentDir + "//temp1.owl");
+			BufferedReader br = new BufferedReader(file);
+	//		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
+	//		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
+	//		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
+	
+	
+			String readLine;
+	//System.out.println("indName:"+indName);
+			// get all variables
 			while((readLine = br.readLine()) != null){
-//System.out.println("readLine:"+readLine);	
+	//System.out.println("readLine:"+readLine);	
 				// get all variables from ontology
-				Set variablesSet = oci.getIndividuals(owl);
-				Iterator it = variablesSet.iterator();
+				Set variablesSet = variableCls.getIndividuals(owl);
+				it = variablesSet.iterator();
 				while(it.hasNext()){
 					OWLIndividual ind = (OWLIndividual) it.next();
 					String indName = soh.getIndividualName(ind);
-//System.out.println("indName:"+indName);
+	//System.out.println("indName:"+indName);
 					Variable v = new Variable(indName,"");
-					if(readLine.contains("Class: " + prefix + "#ClassFor"+indName + ">")){
+	//System.out.println("Class: " + "<" + prefix + "#ClassFor"+indName + ">");
+					if(readLine.contains("Class: " + "<" + prefix + "#ClassFor"+indName + ">")){
 						readLine = br.readLine();
 						readLine = br.readLine();
 						readLine = br.readLine();
-						System.out.println(readLine);
-						String[] str = readLine.split("#|>");
-						v.setDescription(str[str.length-1]);
+	//System.out.println("1:"+readLine);
+						readLine = readLine.replaceAll("        ", "");
+						readLine = readLine.replaceAll("<"+prefix+"#","");
+						readLine = readLine.replaceAll(">","");
+	//System.out.println("2:"+readLine);
 						
+						v.setDescription(readLine);
 						variablesList.add(v);
 					}
 				}
-
 			}
-
-		
-		
-//		while(it.hasNext()){
-//		OWLIndividual ind = (OWLIndividual) it.next();
-//		System.out.println(ind.toString());
-//		OWLClassImpl oci = new OWLClassImpl(getOWLDataFactory(),IRI.create("http://iwec.yonsei.ac.kr/swcl#Variable"));
-//        OWLClassAssertionImpl ocai = new OWLClassAssertionImpl(getOWLDataFactory(), ind, oci, null);
-//		System.out.println(owl.get);
-//	}
-		
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (OWLOntologyStorageException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-        
-		
-        // including many components
-//        OWLComponentFactoryImpl ocf = new OWLComponentFactoryImpl(getOWLEditorKit());
-//		OWLComponentFactoryImplExtension ocfe = new OWLComponentFactoryImplExtension(getOWLEditorKit());
-//		JComponent com = ocfe.getOWLClassDescriptionEditor(oc).getEditorComponent();
-//		com.setBounds(0, 0, 50, 50);
-//        add(com);
-
-/*
-       Set<OWLOntology> activeOntologies = owlModelManager.getActiveOntologies();
-       
-       // dump active ontology present
-       for(OWLOntology owl:activeOntologies){
-    	   OWLOntologyManager manager = owl.getOWLOntologyManager();
-    	   manager.saveOntology(owl,new SystemOutDocumentTarget());
-       }
-*/       
-       // get all properties in ontology
-/*        owl = owlModelManager.getActiveOntology();
-        OWLOntologyManager manager = owl.getOWLOntologyManager();
-        OWLDataFactory odf = manager.getOWLDataFactory();
-        Set d = owl.getDataPropertiesInSignature();
-        Set c = owl.getClassesInSignature();
-        Set<OWLIndividual> i = null;
-        Iterator it = d.iterator();
-        Iterator it2 = c.iterator();
-        Iterator it3 = null;
-        while(it.hasNext()){
-        	System.out.println(it.next().toString());
-        }
-        while(it2.hasNext()){
-//        	System.out.println(it2.next().toString());// get all classes
-System.out.println("=============");
-        	OWLClassImpl owlClass = (OWLClassImpl) it2.next();
-        	this.owlClassHelper = new OWLClassHelper(owlClass);
-        	i = owlClass.getIndividuals(owl);
-            it3 = i.iterator();
-            while(it3.hasNext()){
-System.out.println("IRI:"+owlClass.getIRI());
-System.out.println("Class Name:"+this.owlClassHelper.getClassName());
-System.out.println(owlClass.toStringID()+" individuals");
-System.out.println(it3.next());
-            }
-        }
-*/
-		
+			
 	}
+	
+	// NEED TO UPDATE..
+	private void getAllConstraints() {
 
+		// get all constraints
+		OWLClassImpl constraintCls = new OWLClassImpl(getOWLDataFactory(),IRI.create(prefix + "#Constraint"));
+		// get individuals of constraint class
+		Set constraintSet = constraintCls.getIndividuals(owl);
+		Iterator it = constraintSet.iterator();
+		
+		while(it.hasNext()){
+			
+			Constraint con = new Constraint();
+			
+		}
+	}
+	
 	// initialize the menu panel
     private JPanel getMenuPanel(){
     	
