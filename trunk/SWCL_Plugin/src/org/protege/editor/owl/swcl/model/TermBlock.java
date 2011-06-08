@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 public class TermBlock {
 	
-	private int id;
+	private String id;
 	private String sign;
 	private String aggregateOppertor;
 	private ArrayList<Parameter> parameters;
 	private ArrayList<Factor> factors;
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getSign() {

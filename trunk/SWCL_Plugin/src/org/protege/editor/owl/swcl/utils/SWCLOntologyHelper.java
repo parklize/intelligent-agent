@@ -67,6 +67,17 @@ public class SWCLOntologyHelper {
 		return classList;
 	}
 	
+	// get all individuals without prefix
+	public ArrayList<String> getIndividualsList(){
+		ArrayList<String> indList = new ArrayList<String>();
+		Set indSet = ont.getIndividualsInSignature();
+		Iterator it = indSet.iterator();
+		while(it.hasNext()){
+			indList.add(getIndividualName((OWLIndividual) it.next()));
+		}
+		return indList;
+	}
+	
 	// return class name without prefix
 	public String getClassName(OWLClass owlClass){
 		String classNameWithoutPrefix = "";
