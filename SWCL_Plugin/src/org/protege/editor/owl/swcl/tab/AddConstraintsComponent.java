@@ -863,11 +863,20 @@ this.variablesList = totalVariablesList;
 		return con;
 	}
 	
+	public String getVariableList(){
+		DefaultTableModel tableModelVar = (DefaultTableModel)variablesTable.getModel();
+		String var="";
+		
+			for(Variable v:totalVariablesList){
+				var += "Variable(" + v.getName()+"  "+v.getDescription()+");\n";
+			}
+		return var;
+	}
 	
 	// get Abstract Syntax 
 	public String getSWCLAbstractSyntax(Constraint con){
 		
-		String str="Constraint ";
+		String str=getVariableList()+"Constraint ";
 		
 		//Qualifier 
 	
@@ -927,13 +936,23 @@ this.variablesList = totalVariablesList;
 			
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
 				str+=" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
+			
 			}
 			str+=" ) ) ) )";
 			
 		}
+
+//		System.out.println(str);
 	
 		return str;
+		
+//		int rowCount = tableModel.getRowCount();// =no. of constraints 
+//		for(int i=0;i<rowCount;i++){
+//			
+//			tableModel.setValueAt(str,i,2);
+//		}
 	}
+
 
 
 	// NEED UPDATE
@@ -1137,14 +1156,36 @@ this.variablesList = totalVariablesList;
 
 				}
 			}
+			
 			// factor 가져가기
 			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
-				OWLObjectProperty hasFactors = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactors"));
-				OWLIndividual find = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
-				OWLObjectPropertyAssertionAxiom assertionFactors = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactors, lhsTermBInd, find);
-				AddAxiom FactorsAxiom = new AddAxiom(ont, assertionFactors);
-				manager.applyChange(FactorsAxiom);
-
+				OWLClass lhsFactorClass= dataFactory.getOWLClass("#LhsFactor",pm);
+				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"lhsFactor"+(k+1),pm);
+				OWLClassAssertionAxiom LhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(lhsFactorClass, lhsFactorInd);
+				manager.addAxiom(ont, LhsFactorAssertion);
+				
+				OWLObjectProperty hasFactor= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactor"));
+				OWLClassExpression hasFactorAllLhsTermB = dataFactory.getOWLObjectAllValuesFrom(hasFactor, lhsFactorClass);
+				OWLSubClassOfAxiom axF = dataFactory.getOWLSubClassOfAxiom(LhsTermBClass, hasFactorAllLhsTermB);
+				AddAxiom addAxF = new AddAxiom(ont, axF);
+				manager.applyChange(addAxF);
+				
+				
+				OWLObjectProperty hasVar = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasVar"));
+				OWLIndividual Varind = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
+				OWLObjectPropertyAssertionAxiom assertionVar = dataFactory.getOWLObjectPropertyAssertionAxiom(hasVar, lhsFactorInd, Varind);
+				AddAxiom VarAxiom = new AddAxiom(ont, assertionVar);
+				manager.applyChange(VarAxiom);
+				
+				OWLDataProperty hasBindingDataProperty = dataFactory.getOWLDataProperty(IRI.create(base + "#hasBindingDataProperty"));
+				OWLDataPropertyAssertionAxiom assertionBindingDataProperty = dataFactory.getOWLDataPropertyAssertionAxiom(hasBindingDataProperty, lhsFactorInd, con.getLhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty());
+				AddAxiom BindingDataPropertyAxiom = new AddAxiom(ont, assertionBindingDataProperty);
+				manager.applyChange(BindingDataPropertyAxiom);
+				
+				// lhsTermBInd->hasFactor->lhsFactorInd
+				OWLObjectPropertyAssertionAxiom facAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactor, lhsTermBInd, lhsFactorInd);
+				AddAxiom addFaxAx = new AddAxiom(ont,facAx);
+				manager.applyChange(addFaxAx);
 			}
 			
 			
@@ -1200,14 +1241,37 @@ this.variablesList = totalVariablesList;
 
 				}
 			}
+			
 			// factor 가져가기
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
-				OWLObjectProperty hasFactors = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactors"));
-				OWLIndividual find = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
-				OWLObjectPropertyAssertionAxiom assertionFactors = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactors, rhsTermBInd, find);
-				AddAxiom FactorsAxiom = new AddAxiom(ont, assertionFactors);
-				manager.applyChange(FactorsAxiom);
-
+				
+				OWLClass rhsFactorClass= dataFactory.getOWLClass("#RhsFactor",pm);
+				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"rhsFactor"+(k+1),pm);
+				OWLClassAssertionAxiom RhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(rhsFactorClass, rhsFactorInd);
+				manager.addAxiom(ont, RhsFactorAssertion);
+				
+				OWLObjectProperty hasFactor= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactor"));
+				OWLClassExpression hasFactorAllRhsTermB = dataFactory.getOWLObjectAllValuesFrom(hasFactor, rhsFactorClass);
+				OWLSubClassOfAxiom axF = dataFactory.getOWLSubClassOfAxiom(RhsTermBClass, hasFactorAllRhsTermB);
+				AddAxiom addAxF = new AddAxiom(ont, axF);
+				manager.applyChange(addAxF);
+				
+				
+				OWLObjectProperty hasVar = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasVar"));
+				OWLIndividual Varind = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
+				OWLObjectPropertyAssertionAxiom assertionVar = dataFactory.getOWLObjectPropertyAssertionAxiom(hasVar, rhsFactorInd, Varind);
+				AddAxiom VarAxiom = new AddAxiom(ont, assertionVar);
+				manager.applyChange(VarAxiom);
+				
+				OWLDataProperty hasBindingDataProperty = dataFactory.getOWLDataProperty(IRI.create(base + "#hasBindingDataProperty"));
+				OWLDataPropertyAssertionAxiom assertionBindingDataProperty = dataFactory.getOWLDataPropertyAssertionAxiom(hasBindingDataProperty, rhsFactorInd, con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty());
+				AddAxiom BindingDataPropertyAxiom = new AddAxiom(ont, assertionBindingDataProperty);
+				manager.applyChange(BindingDataPropertyAxiom);
+			
+				// lhsTermBInd->hasFactor->lhsFactorInd
+				OWLObjectPropertyAssertionAxiom facAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactor, rhsTermBInd, rhsFactorInd);
+				AddAxiom addFaxAx = new AddAxiom(ont,facAx);
+				manager.applyChange(addFaxAx);
 			}
 			
 		}
@@ -1240,39 +1304,39 @@ this.variablesList = totalVariablesList;
 			}		
 		}	
 		
-		// NEED UPDATE,OK event
+		// OK event
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
 			this.abstractSyntax = getSWCLAbstractSyntax(con);
 			abstractSyntaxArea.setText(abstractSyntax);
-
+			
 		}
 		
 		// submit action
 		if(e.getActionCommand().equals("Submit")){
+			
 			int rowCount = this.tableModel.getRowCount();// =no. of constraints 
+			
 			for(int i=0;i<rowCount;i++){
 				if (i==(rowCount-1)){
 					this.tableModel.setValueAt(this.abstractSyntax,i,2);
 					this.tableModel.setValueAt(this.con.getName(), i, 1);
 				}
 			}
+			
+			// write variables to ontology
 			writeVariablesToOnt();
-			// 이연
+			// write constraint to ontology
 			writeConstraintToOnt();
 			
 			// add varibaleList to totalVariablesList
 			this.totalVariablesList = this.variablesList;
+			
+			this.dispose();
 
 		}
 	}
-
-
-
-
-
-
 } 
  	
 	
