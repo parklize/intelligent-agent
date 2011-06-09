@@ -31,8 +31,12 @@ import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.model.Constraint;
+import org.protege.editor.owl.swcl.model.LHS;
 import org.protege.editor.owl.swcl.model.Operator;
+import org.protege.editor.owl.swcl.model.Parameter;
 import org.protege.editor.owl.swcl.model.Qualifier;
+import org.protege.editor.owl.swcl.model.RHS;
+import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
@@ -253,9 +257,13 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasLhs"));
 			Set lhsSet = (Set) indObjProperty.get(hasLhs);
 			Iterator itLhs = lhsSet.iterator();
+			ArrayList<TermBlock> ltbList = new ArrayList<TermBlock>();
 			
 			String lhsStr = null;
 			while(itLhs.hasNext()){
+				
+				TermBlock tb = new TermBlock();
+				
 				// get lhs termblock individual
 				OWLNamedIndividualImpl lhs = (OWLNamedIndividualImpl) itLhs.next();
 				HashMap lhsDataProperty = (HashMap) lhs.getDataPropertyValues(owl);
@@ -268,11 +276,13 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 				
 				String signStr = null;
 				while(signIt.hasNext()){
+					
 					OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
 					signStr = sign.getLiteral();
 					signStr = signStr.replaceAll("\"", "");
 					signStr = signStr.replaceAll("^^xsd:string", "");
 //System.out.println("LHS signStr is:"+signStr);
+					tb.setSign(signStr);
 				}
 				
 				// get hasAggregateOperation value
@@ -288,9 +298,42 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 						aggStr = aggStr.replaceAll("\"", "");
 						aggStr = aggStr.replaceAll("^^xsd:string", "");
 //System.out.println("LHS aggStr is:"+aggStr);
+						tb.setAggregateOppertor(aggStr);
 					}
 				}
-
+				
+				// get parameter value
+				OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
+				Set parSet = (Set) lhsObjectProperty.get(hasPar);
+				
+				if(parSet != null){
+					
+					// parameters list
+					ArrayList<Parameter> parList = new ArrayList<Parameter>();
+					Iterator parIt = parSet.iterator();
+					
+					String parStr = null;
+					while(parIt.hasNext()){
+						
+						Parameter p = new Parameter();
+						OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
+						parStr = parameter.toString();
+						parStr = parStr.replaceAll("<"+prefix+"#", "");
+						parStr = parStr.replaceAll(">", "");
+System.out.println("LHS parameter is:" + parStr);
+						Variable v = Utils.findVariableWithName(variablesList, parStr);
+						p.setV(v);
+						parList.add(p);
+					}
+					
+					tb.setParameters(parList);
+				}
+				
+				// get factors
+				
+				// add to tb list
+				ltbList.add(tb);
+				
 			}
 			
 			// get operator to constraint
@@ -313,9 +356,12 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasRhs"));
 			Set rhsSet = (Set) indObjProperty.get(hasRhs);
 			Iterator itRhs = rhsSet.iterator();
+			ArrayList<TermBlock> rtbList = new ArrayList<TermBlock>();
 			
 			String rhsStr = null;
 			while(itRhs.hasNext()){
+				
+				TermBlock tb = new TermBlock();
 				// get rhs termblock individual
 				OWLNamedIndividualImpl rhs = (OWLNamedIndividualImpl) itRhs.next();
 				HashMap rhsDataProperty = (HashMap) rhs.getDataPropertyValues(owl);
@@ -333,6 +379,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 					signStr = signStr.replaceAll("\"", "");
 					signStr = signStr.replaceAll("^^xsd:string", "");
 //System.out.println("RHS singStr is:"+signStr);
+					tb.setSign(signStr);
 				}
 				
 				// get hasAggregateOperation value
@@ -348,12 +395,47 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 						aggStr = aggStr.replaceAll("\"", "");
 						aggStr = aggStr.replaceAll("^^xsd:string", "");
 //System.out.println("RHS aggStr is:"+aggStr);
+						tb.setAggregateOppertor(aggStr);
 					}
 				}
 				
+				// get parameter value
+				OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
+				Set parSet = (Set) rhsObjectProperty.get(hasPar);
+				
+				if(parSet != null){
+					
+					Iterator parIt = parSet.iterator();
+					// parameters list
+					ArrayList<Parameter> parList = new ArrayList<Parameter>();
+					String parStr = null;
+					
+					while(parIt.hasNext()){
+						
+						Parameter p = new Parameter();
+						OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
+						parStr = parameter.toString();
+						parStr = parStr.replaceAll("<"+prefix+"#", "");
+						parStr = parStr.replaceAll(">", "");
+System.out.println("RHS parameter is:" + parStr);
+						Variable v = Utils.findVariableWithName(variablesList, parStr);
+						p.setV(v);
+						parList.add(p);
+					}
+					
+					tb.setParameters(parList);
+				}
+				
+				// get factors
+				
+				// add to tb list
+				rtbList.add(tb);
 			}
-
 			
+			// add to constraint
+			RHS rhs = new RHS();
+			rhs.setTermblocks(rtbList);
+			con.setRhs(rhs);
 		}
 	}
 	
