@@ -1,6 +1,7 @@
 package org.protege.editor.owl.swcl.tab;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -154,6 +155,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 	    	for(Constraint c:constraintsList){
 	    		Utils.printConstraint(c);
 	    		System.out.println(Utils.getSWCLAbstractSyntax(variablesList, c));
+				JCheckBox jb = new JCheckBox();
+				jb.setHorizontalAlignment(SwingConstants.CENTER);
+	    		tableModel.addRow(new Object[]{jb,c.getName(),Utils.getSWCLAbstractSyntax(variablesList, c)});
 	    	}
 	    	
 
