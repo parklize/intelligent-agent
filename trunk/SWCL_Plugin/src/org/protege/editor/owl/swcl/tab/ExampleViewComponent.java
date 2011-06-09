@@ -147,6 +147,10 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 	    	
 	    	// get all constraints to constraintsList
 	    	getAllConstraints();
+	    	
+	    	// insert all constraints to SWCl tab
+	    	
+	    	
 
 	}
 
@@ -232,6 +236,11 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			HashMap indDataProperty = (HashMap) ind.getDataPropertyValues(owl);
 			HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(owl);
 			
+			// get name to constraint
+			String indStr = ind.toString();
+			indStr = indStr.replaceAll("<"+prefix+"#", "");
+			indStr = indStr.replaceAll(">", "");
+			con.setName(indStr);
 			
 			// get qualifier to constriant
 			OWLObjectPropertyImpl hasQualifier = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasQualifier"));
@@ -265,9 +274,9 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 				TermBlock tb = new TermBlock();
 				
 				// get lhs termblock individual
-				OWLNamedIndividualImpl lhs = (OWLNamedIndividualImpl) itLhs.next();
-				HashMap lhsDataProperty = (HashMap) lhs.getDataPropertyValues(owl);
-				HashMap lhsObjectProperty = (HashMap) lhs.getObjectPropertyValues(owl);
+				OWLNamedIndividualImpl lhsInd = (OWLNamedIndividualImpl) itLhs.next();
+				HashMap lhsDataProperty = (HashMap) lhsInd.getDataPropertyValues(owl);
+				HashMap lhsObjectProperty = (HashMap) lhsInd.getObjectPropertyValues(owl);
 				
 				// get hasSign value
 				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
@@ -334,6 +343,11 @@ System.out.println("LHS parameter is:" + parStr);
 				// add to tb list
 				ltbList.add(tb);
 				
+				// add to constraint
+				LHS lhs = new LHS();
+				lhs.setTermblocks(ltbList);
+				con.setLhs(lhs);
+				
 			}
 			
 			// get operator to constraint
@@ -363,9 +377,9 @@ System.out.println("LHS parameter is:" + parStr);
 				
 				TermBlock tb = new TermBlock();
 				// get rhs termblock individual
-				OWLNamedIndividualImpl rhs = (OWLNamedIndividualImpl) itRhs.next();
-				HashMap rhsDataProperty = (HashMap) rhs.getDataPropertyValues(owl);
-				HashMap rhsObjectProperty = (HashMap) rhs.getObjectPropertyValues(owl);
+				OWLNamedIndividualImpl rhsInd = (OWLNamedIndividualImpl) itRhs.next();
+				HashMap rhsDataProperty = (HashMap) rhsInd.getDataPropertyValues(owl);
+				HashMap rhsObjectProperty = (HashMap) rhsInd.getObjectPropertyValues(owl);
 				
 				// get hasSign value
 				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
@@ -430,12 +444,15 @@ System.out.println("RHS parameter is:" + parStr);
 				
 				// add to tb list
 				rtbList.add(tb);
+				
+				// add to constraint
+				RHS rhs = new RHS();
+				rhs.setTermblocks(rtbList);
+				con.setRhs(rhs);
 			}
 			
-			// add to constraint
-			RHS rhs = new RHS();
-			rhs.setTermblocks(rtbList);
-			con.setRhs(rhs);
+			// add con to consList
+			constraintsList.add(con);
 		}
 	}
 	
