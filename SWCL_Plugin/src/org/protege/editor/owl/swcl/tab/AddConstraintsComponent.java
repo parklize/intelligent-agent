@@ -862,98 +862,6 @@ this.variablesList = totalVariablesList;
 		//==================end of set RHS==============
 		return con;
 	}
-	
-	public String getVariableList(){
-		DefaultTableModel tableModelVar = (DefaultTableModel)variablesTable.getModel();
-		String var="";
-		
-			for(Variable v:totalVariablesList){
-				var += "Variable(" + v.getName()+"  "+v.getDescription()+");\n";
-			}
-		return var;
-	}
-	
-	// get Abstract Syntax 
-	public String getSWCLAbstractSyntax(Constraint con){
-		
-		String str=getVariableList()+"Constraint ";
-		
-		//Qualifier 
-	
-		if (con.getQualifiers().size()!=0){				//만약 qualifier사이즈가 0이 아니면 실행
-			str+="( Qualifier (Variable (";
-			
-			for (int i=0; i<con.getQualifiers().size();i++){	// qualifier 사이즈만큼 
-				str+=" "+ con.getQualifiers().get(i).getV().getName();
-			}
-			str+=" ) )";
-		}
-		
-		
-		//LHS
-		
-		str+=" LHS ";
-		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
-			str+="( TermBlock ( "+ con.getLhs().getTermblocks().get(i).getSign();
-			
-			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
-				str+=" "+ con.getLhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";
-					
-				for (int j=0; j<con.getLhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
-					str+=	" "+ con.getLhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
-				}
-				str+=" ) )";
-			}
-			
-			str+=" Factor ( Variable(";
-			
-			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
-				str+=" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
-			
-			}
-			str+=" ) ) ) ) ";
-		}
-		
-		
-		//Operator
-		str+=con.getOpp().getOpp();
-		
-		//RHS
-		str+=" RHS ";
-		for (int i=0; i<con.getRhs().getTermblocks().size();i++){
-			str+="( TermBlock ( "+ con.getRhs().getTermblocks().get(i).getSign();
-			
-			if (con.getRhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
-				str+=" "+ con.getRhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";
-					
-				for (int j=0; j<con.getRhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
-					str+=	" "+ con.getRhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
-				}
-				str+=" ) )";
-			}
-			
-			str+=" Factor ( Variable(";
-			
-			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
-				str+=" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
-			
-			}
-			str+=" ) ) ) )";
-			
-		}
-
-//		System.out.println(str);
-	
-		return str;
-		
-//		int rowCount = tableModel.getRowCount();// =no. of constraints 
-//		for(int i=0;i<rowCount;i++){
-//			
-//			tableModel.setValueAt(str,i,2);
-//		}
-	}
-
-
 
 	// NEED UPDATE
 	private void writeVariablesToOnt() {
@@ -1308,7 +1216,7 @@ this.variablesList = totalVariablesList;
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
-			this.abstractSyntax = getSWCLAbstractSyntax(con);
+			this.abstractSyntax = Utils.getSWCLAbstractSyntax(variablesList, con);
 			abstractSyntaxArea.setText(abstractSyntax);
 			
 		}
