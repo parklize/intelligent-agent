@@ -2,6 +2,7 @@ package org.protege.editor.owl.swcl.tab;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,15 +22,24 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.coode.mdock.NodePanel;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.split.ViewSplitPaneDivider;
+import org.protege.editor.core.ui.view.View;
+import org.protege.editor.core.ui.view.ViewComponent;
+import org.protege.editor.core.ui.view.ViewsPane;
+import org.protege.editor.core.ui.workspace.views.ViewNodePanel;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.model.Constraint;
@@ -45,6 +55,7 @@ import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
@@ -122,6 +133,42 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
         
         // default codes
 //        log.info("Example View Component initialized");
+        
+        
+		// ow is constitute of ViewSplitePane and JPanel
+//		ViewSplitPane jp = (ViewSplitPane) ow.getComponent(0);
+////System.out.println(jp.getComponentCount());// 2
+//		ViewSplitPaneDivider vpd = (ViewSplitPaneDivider) jp.getComponent(0);//ViewSplitPaneDivider
+//		ViewSplitPane vsp = (ViewSplitPane) jp.getComponent(1);//ViewSplitPane
+////System.out.println(vsp.getComponentCount());// 2
+//		ViewSplitPaneDivider vsd1 = (ViewSplitPaneDivider) vsp.getComponent(0);
+//		JTabbedPane jtp = (JTabbedPane) vsp.getComponent(1);
+////System.out.println(jtp.getComponentCount());// 9
+//		OWLWorkspaceViewsTab ovt = (OWLWorkspaceViewsTab) jtp.getComponent(2);
+////System.out.println(ovt.getComponentCount());// 1
+//		ViewsPane vp = (ViewsPane) ovt.getComponent(0);
+////		vp.setVisible(false);
+////		vp.dispose();
+////System.out.println(vp.getComponentCount());// 1
+//		JPanel j = (JPanel) vp.getComponent(0);
+////System.out.println(j.getComponentCount());// 5
+//		JPanel j1 = (JPanel) j.getComponent(1);
+//		// this is left workspace of class tab
+//		JComponent j2 = (JComponent) j1.getComponent(0);
+////		j2.repaint();
+////		j2.setVisible(false);
+//		System.out.println(j2.getComponentCount());// 2
+//		System.out.println(j2.getComponent(0).getClass());
+//		System.out.println(j2.getComponent(1).getClass());
+//		
+//		View v1 = (View) j2.getComponent(0);
+//System.out.println(v1.getViewName());// Class hierarchy
+//		View v2 = (View) j2.getComponent(1);
+//System.out.println(v2.getViewName());// Class hierarchy (inferred)
+//
+//		ViewComponent vc = v1.getViewComponent();
+//		vc.repaint();
+		
     }
     
 
@@ -341,7 +388,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 			
 	}
 	
-	// NEED TO UPDATE..
+	// get all constraints from ontology
 	private void getAllConstraints() {
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -414,7 +461,7 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 					signStr = sign.getLiteral();
 					signStr = signStr.replaceAll("\"", "");
 					signStr = signStr.replaceAll("\\^\\^xsd:string", "");
-System.out.println("LHS signStr is:"+signStr);
+//System.out.println("LHS signStr is:"+signStr);
 					tb.setSign(signStr);
 				}
 				
@@ -430,7 +477,7 @@ System.out.println("LHS signStr is:"+signStr);
 						aggStr = agg.toString();
 						aggStr = aggStr.replaceAll("\"", "");
 						aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
-System.out.println("LHS aggStr is:"+aggStr);
+//System.out.println("LHS aggStr is:"+aggStr);
 						tb.setAggregateOppertor(aggStr);
 					}
 				}else{
@@ -457,7 +504,7 @@ System.out.println("LHS aggStr is:"+aggStr);
 						parStr = parameter.toString();
 						parStr = parStr.replaceAll("<"+prefix+"#", "");
 						parStr = parStr.replaceAll(">", "");
-System.out.println("LHS parameter is:" + parStr);
+//System.out.println("LHS parameter is:" + parStr);
 						Variable v = Utils.findVariableWithName(variablesList, parStr);
 						p.setV(v);
 						parList.add(p);
@@ -499,7 +546,7 @@ System.out.println("LHS parameter is:" + parStr);
 								hasBDPStr = hasBDP.toString();
 								hasBDPStr = hasBDPStr.replaceAll("\"", "");
 								hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
-System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
+//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
 								f.setOwlProperty(hasBDPStr);
 							}
 						}
@@ -518,7 +565,7 @@ System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
 								hasVarStr = var.toString();
 								hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
 								hasVarStr = hasVarStr.replaceAll(">", "");
-System.out.println("LHS var is:" + hasVarStr);
+//System.out.println("LHS var is:" + hasVarStr);
 								Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
 								f.setV(v);
 							}
@@ -597,7 +644,7 @@ System.out.println("LHS var is:" + hasVarStr);
 						aggStr = agg.toString();
 						aggStr = aggStr.replaceAll("\"", "");
 						aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
-System.out.println("RHS aggStr is:"+aggStr);
+//System.out.println("RHS aggStr is:"+aggStr);
 						tb.setAggregateOppertor(aggStr);
 					}
 				}else{
@@ -625,7 +672,7 @@ System.out.println("RHS aggStr is:"+aggStr);
 						parStr = parameter.toString();
 						parStr = parStr.replaceAll("<"+prefix+"#", "");
 						parStr = parStr.replaceAll(">", "");
-System.out.println("RHS parameter is:" + parStr);
+//System.out.println("RHS parameter is:" + parStr);
 						Variable v = Utils.findVariableWithName(variablesList, parStr);
 						p.setV(v);
 						parList.add(p);
@@ -666,7 +713,7 @@ System.out.println("RHS parameter is:" + parStr);
 								hasBDPStr = hasBDP.toString();
 								hasBDPStr = hasBDPStr.replaceAll("\"", "");
 								hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
-System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
+//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
 								f.setOwlProperty(hasBDPStr);
 							}
 						}
@@ -685,7 +732,7 @@ System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
 								hasVarStr = var.toString();
 								hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
 								hasVarStr = hasVarStr.replaceAll(">", "");
-System.out.println("RHS var is:" + hasVarStr);
+//System.out.println("RHS var is:" + hasVarStr);
 								Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
 								f.setV(v);
 							}
@@ -709,8 +756,6 @@ System.out.println("RHS var is:" + hasVarStr);
 			constraintsList.add(con);
 		}
 	}
-	
-
 	
 	// delete selected item from constrait table, and delete delete selected constraint at the same time
 	public void deleteItem(int rowCount,DefaultTableModel tableModel){
@@ -756,6 +801,7 @@ System.out.println("RHS var is:" + hasVarStr);
 		
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
+			
 			// set alignment of jcheckbox to center
 			JCheckBox jb = new JCheckBox();
 			jb.setHorizontalAlignment(SwingConstants.CENTER);
@@ -769,8 +815,10 @@ System.out.println("RHS var is:" + hasVarStr);
 		// the event of clicking the G button, generate the SWCL code
 		if(e.getActionCommand().equals("D")){
 			
-			int rowCount = tableModel.getRowCount();// =no. of constraints 
+			// =no. of constraints 
+			int rowCount = tableModel.getRowCount();
 			
+			// delete selected items
 			deleteItem(rowCount, tableModel);
 			
 		}

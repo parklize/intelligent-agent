@@ -11,10 +11,12 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -24,6 +26,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.split.ViewSplitPaneDivider;
+import org.protege.editor.core.ui.view.View;
+import org.protege.editor.core.ui.view.ViewComponent;
+import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.model.Constraint;
@@ -37,7 +44,9 @@ import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLRenderer;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -174,7 +183,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.ow = ow;
 		this.owlModelManager = owlModelManager;
 		this.totalVariablesList = totalVariablesList;
-this.variablesList = totalVariablesList;
+		this.variablesList = totalVariablesList;
 		this.ont = owlModelManager.getActiveOntology();
 //		this.oc = oc;
 //		this.oek = oek;
@@ -330,38 +339,10 @@ this.variablesList = totalVariablesList;
 					model.addRow(new Object[]{v.getName(),v.getDescription()});
 				}
 			}
-//			variablesTable.addMouseListener(new MouseListener() {
-//				
-//				@Override
-//				public void mouseReleased(MouseEvent e) {
-//				}
-//				
-//				@Override
-//				public void mousePressed(MouseEvent e) {
-//				}
-//				
-//				@Override
-//				public void mouseExited(MouseEvent e) {}
-//				
-//				@Override
-//				public void mouseEntered(MouseEvent e) {}
-//				
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					int selectedRow = variablesTable.getSelectedRow();
-//					int selectedColumn = variablesTable.getSelectedColumn();
-//					if(selectedColumn == 1){
-//						// get class description from variablesTable 
-////						getClassExpressionPane().setText((String) variablesTable.getValueAt(selectedRow, selectedColumn));
-//					}
-//					
-//				}
-//			});
-//			TableColumn hasValue = variablesTable.getColumnModel().getColumn(1);
 
-/*
- * cell value changed listener			
- */
+			/*
+			 * cell value changed listener			
+			 */
 			variablesTable.getModel().addTableModelListener(new TableModelListener(){
 
 				public void tableChanged(TableModelEvent e) {
@@ -777,7 +758,7 @@ this.variablesList = totalVariablesList;
 			DefaultTableModel tModel = (DefaultTableModel) parameterTable.getModel();
 			
 			for(int u=0;u<tModel.getRowCount();u++){
-				String valName = (String)tableModel.getValueAt(u, 0);
+				String valName = (String)tModel.getValueAt(u, 0);
 				Parameter p = new Parameter();
 				p.setV(Utils.findVariableWithName(totalVariablesList, valName));
 				pList.add(p);
@@ -831,7 +812,7 @@ this.variablesList = totalVariablesList;
 			DefaultTableModel tModel = (DefaultTableModel) parameterTable.getModel();
 			
 			for(int u=0;u<tModel.getRowCount();u++){
-				String valName = (String)tableModel.getValueAt(u, 0);
+				String valName = (String)tModel.getValueAt(u, 0);
 				Parameter p = new Parameter();
 				p.setV(Utils.findVariableWithName(totalVariablesList, valName));
 				pList.add(p);
@@ -883,7 +864,7 @@ this.variablesList = totalVariablesList;
 
 			for(Variable v:variablesList){
 				
-				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
+//				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
 				// create subclass axiom
 //				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
 //				AddAxiom addAxiom = new AddAxiom(ont,axiom);
@@ -891,11 +872,51 @@ this.variablesList = totalVariablesList;
 				
 				// get the reference to the y instance 
 				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
+				
 				// create class assertion that y is the instance of the Variable
 				OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(variable, individual);
 				
 				// add axiom to ontology
-				manager.addAxiom(ont, classAssertion);
+				AddAxiom addAxiomChange = new AddAxiom(ont,classAssertion);
+				manager.applyChange(addAxiomChange);
+				
+				// ow is constitute of ViewSplitePane and JPanel
+//				ViewSplitPane jp = (ViewSplitPane) ow.getComponent(0);
+//		//System.out.println(jp.getComponentCount());// 2
+//				ViewSplitPaneDivider vpd = (ViewSplitPaneDivider) jp.getComponent(0);//ViewSplitPaneDivider
+//				ViewSplitPane vsp = (ViewSplitPane) jp.getComponent(1);//ViewSplitPane
+//		//System.out.println(vsp.getComponentCount());// 2
+//				ViewSplitPaneDivider vsd1 = (ViewSplitPaneDivider) vsp.getComponent(0);
+//				JTabbedPane jtp = (JTabbedPane) vsp.getComponent(1);
+//		//System.out.println(jtp.getComponentCount());// 9
+//				OWLWorkspaceViewsTab ovt = (OWLWorkspaceViewsTab) jtp.getComponent(2);
+//		//System.out.println(ovt.getComponentCount());// 1
+//				ViewsPane vp = (ViewsPane) ovt.getComponent(0);
+////				vp.setVisible(false);
+////				vp.dispose();
+//		//System.out.println(vp.getComponentCount());// 1
+//				JPanel j = (JPanel) vp.getComponent(0);
+//		//System.out.println(j.getComponentCount());// 5
+//				JPanel j1 = (JPanel) j.getComponent(1);
+//				// this is left workspace of class tab
+//				JComponent j2 = (JComponent) j1.getComponent(0);
+//				j2.repaint();
+//				
+////				j2.setVisible(false);
+//				System.out.println(j2.getComponentCount());// 2
+//				System.out.println(j2.getComponent(0).getClass());
+//				System.out.println(j2.getComponent(1).getClass());
+//				
+//				View v1 = (View) j2.getComponent(0);
+//System.out.println(v1.getViewName());// Class hierarchy
+//				View v2 = (View) j2.getComponent(1);
+//System.out.println(v2.getViewName());// Class hierarchy (inferred)
+//
+//				ViewComponent vc = v1.getViewComponent();
+//				vc.repaint();
+			}
+			
+			for(Variable v:variablesList){
 
 				String[] str = v.getDescription().split(" ");
 				// class
