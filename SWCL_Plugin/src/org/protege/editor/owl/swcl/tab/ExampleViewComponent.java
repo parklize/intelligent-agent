@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -59,6 +60,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
@@ -160,9 +162,122 @@ public class ExampleViewComponent extends AbstractOWLViewComponent implements Ac
 	    		tableModel.addRow(new Object[]{jb,c.getName(),Utils.getSWCLAbstractSyntax(variablesList, c)});
 	    	}
 	    	
-
 	}
 
+	// initialize the menu panel
+    private JPanel getMenuPanel(){
+    	
+    	if(menuPanel == null){
+    		
+    	   menuPanel = new JPanel();
+    	   menuPanel.setLayout(new BorderLayout());
+    	   menuPanel.setPreferredSize(new Dimension(0,20));
+    	   menuPanel.add(getButtonsPanel(),BorderLayout.EAST);
+    	   
+    	}
+    	
+    	return menuPanel;
+    	
+    }
+    
+    // initialize the buttons panel
+    private JPanel getButtonsPanel(){
+    	
+    	if(buttonsPanel == null){
+    		
+    		buttonsPanel = new JPanel();
+    		buttonsPanel.setLayout(new GridLayout());
+    		buttonsPanel.setPreferredSize(new Dimension(60,0));
+    		buttonsPanel.add(getAddConstraintButton());
+    		buttonsPanel.add(getGenerateSWCLButton());
+    	}
+    	
+    	return buttonsPanel;
+    	
+    }
+    
+	// initialize the add constraint button
+	private JButton getAddConstraintButton(){
+		
+		if(addConstraintButton == null){
+			
+			addConstraintButton = new JButton();
+			addConstraintButton.setText("+");
+			addConstraintButton.addActionListener(this);// add event listener
+		}
+		
+		return addConstraintButton;
+		
+	}
+	
+	// initialize the generate SWCL code button
+	private JButton getGenerateSWCLButton(){
+		
+		if(generateSWCLButton == null){
+			
+			generateSWCLButton = new JButton();
+			generateSWCLButton.setText("D");
+			generateSWCLButton.addActionListener(this);// add event listener
+			
+		}
+		
+		return generateSWCLButton;
+	}
+
+    // initialize the constraints panel
+    private JPanel getConstraintsPanel(){
+    	
+    	if(constraintsPanel == null){
+    		
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.fill = GridBagConstraints.BOTH;
+			gridBagConstraints.gridy = 0;
+			gridBagConstraints.weightx = 1.0;
+			gridBagConstraints.weighty = 1.0;
+			gridBagConstraints.gridx = 0;
+			constraintsPanel = new JPanel();
+			constraintsPanel.setLayout(new GridBagLayout());
+			constraintsPanel.add(getConstraintsScrollPane(), gridBagConstraints);
+			
+    	}
+    	
+    	return constraintsPanel;
+    	
+    }
+  
+    // initialize the constraints scroll pane
+    private JScrollPane getConstraintsScrollPane(){
+    	if(constraintsScrollPane == null){
+    	   constraintsScrollPane = new JScrollPane();
+    	   constraintsScrollPane.setViewportView(getConstraintsTable());
+    	}
+    	return constraintsScrollPane;
+    }
+   
+    // initialize the constraints table
+	private JTable getConstraintsTable() {
+		
+		if (constraintsTable == null) {
+			// Initialize column headings
+			final String[] colHeads = {"Enabled","Constraint Name", "Constraint"};
+			// Initialize data with null
+			final Object[][] data = null;
+			
+			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+			constraintsTable = new JTable(model);
+			
+			TableColumn tableColumn = constraintsTable.getColumn("Enabled");
+			tableColumn.setMaxWidth(50);
+			tableColumn.setMinWidth(50);
+			tableColumn.setCellEditor(new CheckButtonEditor(new JCheckBox()));
+			tableColumn.setCellRenderer(new CheckBoxRenderer());// renderer for displaying the checkbox component in the cell
+			
+		}
+		
+		return constraintsTable;
+		
+	}
+    
 	private void getAllVariables() {
 		try {   
 			ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
@@ -595,117 +710,42 @@ System.out.println("RHS var is:" + hasVarStr);
 		}
 	}
 	
-	// initialize the menu panel
-    private JPanel getMenuPanel(){
-    	
-    	if(menuPanel == null){
-    		
-    	   menuPanel = new JPanel();
-    	   menuPanel.setLayout(new BorderLayout());
-    	   menuPanel.setPreferredSize(new Dimension(0,20));
-    	   menuPanel.add(getButtonsPanel(),BorderLayout.EAST);
-    	   
-    	}
-    	
-    	return menuPanel;
-    	
-    }
-    
-    // initialize the buttons panel
-    private JPanel getButtonsPanel(){
-    	
-    	if(buttonsPanel == null){
-    		
-    		buttonsPanel = new JPanel();
-    		buttonsPanel.setLayout(new GridLayout());
-    		buttonsPanel.setPreferredSize(new Dimension(60,0));
-    		buttonsPanel.add(getAddConstraintButton());
-    		buttonsPanel.add(getGenerateSWCLButton());
-    	}
-    	
-    	return buttonsPanel;
-    	
-    }
-    
-	// initialize the add constraint button
-	private JButton getAddConstraintButton(){
+
+	
+	// delete selected item from constrait table, and delete delete selected constraint at the same time
+	public void deleteItem(int rowCount,DefaultTableModel tableModel){
 		
-		if(addConstraintButton == null){
-			
-			addConstraintButton = new JButton();
-			addConstraintButton.setText("+");
-			addConstraintButton.addActionListener(this);// add event listener
+		for(int i=0;i<rowCount;i++){
+	
+			JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+
+			if(jcb.isSelected()){
+				
+				// delete selected constraint
+				String conName = (String) tableModel.getValueAt(i, 1);
+				deleteConstraint(conName);
+				
+				// remove from table
+				tableModel.removeRow(i);
+				
+				rowCount--;
+				deleteItem(rowCount, tableModel);
+				
+				return;
+			}
 		}
-		
-		return addConstraintButton;
-		
 	}
 	
-	// initialize the generate SWCL code button
-	private JButton getGenerateSWCLButton(){
+	// delete delete selected constraint 
+	private void deleteConstraint(String conName) {
 		
-		if(generateSWCLButton == null){
-			
-			generateSWCLButton = new JButton();
-			generateSWCLButton.setText("D");
-			generateSWCLButton.addActionListener(this);// add event listener
-			
-		}
+		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(getOWLDataFactory(), IRI.create(prefix+"#"+conName));
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		
-		return generateSWCLButton;
-	}
-
-    // initialize the constraints panel
-    private JPanel getConstraintsPanel(){
-    	
-    	if(constraintsPanel == null){
-    		
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.gridy = 0;
-			gridBagConstraints.weightx = 1.0;
-			gridBagConstraints.weighty = 1.0;
-			gridBagConstraints.gridx = 0;
-			constraintsPanel = new JPanel();
-			constraintsPanel.setLayout(new GridBagLayout());
-			constraintsPanel.add(getConstraintsScrollPane(), gridBagConstraints);
-			
-    	}
-    	
-    	return constraintsPanel;
-    	
-    }
-  
-    // initialize the constraints scroll pane
-    private JScrollPane getConstraintsScrollPane(){
-    	if(constraintsScrollPane == null){
-    	   constraintsScrollPane = new JScrollPane();
-    	   constraintsScrollPane.setViewportView(getConstraintsTable());
-    	}
-    	return constraintsScrollPane;
-    }
-   
-    // initialize the constraints table
-	private JTable getConstraintsTable() {
+		OWLEntityRemover remover = new OWLEntityRemover(manager,Collections.singleton(owl));
+		ind.accept(remover);
 		
-		if (constraintsTable == null) {
-			// Initialize column headings
-			final String[] colHeads = {"Enabled","Constraint Name", "Constraint"};
-			// Initialize data with null
-			final Object[][] data = null;
-			
-			DefaultTableModel model = new DefaultTableModel(data,colHeads);
-			constraintsTable = new JTable(model);
-			
-			TableColumn tableColumn = constraintsTable.getColumn("Enabled");
-			tableColumn.setMaxWidth(50);
-			tableColumn.setMinWidth(50);
-			tableColumn.setCellEditor(new CheckButtonEditor(new JCheckBox()));
-			tableColumn.setCellRenderer(new CheckBoxRenderer());// renderer for displaying the checkbox component in the cell
-			
-		}
-		
-		return constraintsTable;
+		manager.applyChanges(remover.getChanges());
 		
 	}
 
@@ -728,23 +768,15 @@ System.out.println("RHS var is:" + hasVarStr);
 		
 		// the event of clicking the G button, generate the SWCL code
 		if(e.getActionCommand().equals("D")){
+			
 			int rowCount = tableModel.getRowCount();// =no. of constraints 
 			
-			for(int i=0;i<rowCount;i++){
-				JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
-
-				if(jcb.isSelected()){
-					// delete selected row
-					tableModel.removeRow(i);
-					// NEED UPDATE... delete info in the ontology
-					
-				}
-				
-			}
-			
+			deleteItem(rowCount, tableModel);
 			
 		}
 		
 	}
+	
+
 
 }
