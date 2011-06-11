@@ -486,6 +486,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			menuPanel.setLayout(null);
 			menuPanel.setPreferredSize(new Dimension(0,50));
 			menuPanel.add(getOkButton(), null);
+			menuPanel.add(getJButton(),null);
 			menuPanel.add(getADD(), null);
 			menuPanel.add(getOptionsComboBox(), null);
 		}
@@ -502,7 +503,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			abstractSyntaxPanel.setBounds(new Rectangle(0, 749, 673, 180));
 			abstractSyntaxPanel.add(abstractSyntaxLabel, null);
 			abstractSyntaxPanel.add(getJTextArea(), null);
-			abstractSyntaxPanel.add(getJButton(), null);
+//			abstractSyntaxPanel.add(getJButton(), null);
 		}
 		return abstractSyntaxPanel;
 	}
@@ -521,7 +522,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton getJButton() {
 		if (submitButton == null) {
 			submitButton = new JButton();
-			submitButton.setBounds(new Rectangle(559, 142, 88, 24));
+			submitButton.setBounds(new Rectangle(592, 9, 51, 24));
 			submitButton.setText("Submit");
 			submitButton.addActionListener(this);
 		}
@@ -544,7 +545,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (okButton == null) {
 			okButton = new JButton();
 			okButton.setText("OK");
-			okButton.setBounds(new Rectangle(592, 9, 51, 24));
+			okButton.setBounds(new Rectangle(532, 9, 51, 24));
 			okButton.addActionListener(this);
 		}
 		return okButton;

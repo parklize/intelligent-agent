@@ -32,7 +32,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-import org.coode.mdock.NodePanel;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.split.ViewSplitPaneDivider;
