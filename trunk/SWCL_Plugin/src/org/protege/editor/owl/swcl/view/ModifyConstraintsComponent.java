@@ -172,19 +172,20 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	// initialing...
 	public ModifyConstraintsComponent(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
 		super();
-		preinitialize(ow, owlModelManager,totalVariablesList,tableModel);
+		preinitialize(con, ow, owlModelManager,totalVariablesList,tableModel);
 		initialize();
 //		this.classExpressionTextPane = getClassExpressionPane();
 
 	}
 	
-	private void preinitialize(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
+	private void preinitialize(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
 		 // get variables already announced
 		this.ow = ow;
 		this.owlModelManager = owlModelManager;
 		this.totalVariablesList = totalVariablesList;
 		this.variablesList = totalVariablesList;
 		this.ont = owlModelManager.getActiveOntology();
+		this.con = con;
 //		this.oc = oc;
 //		this.oek = oek;
 //		ocfe = new OWLComponentFactoryImplExtension(oek);
@@ -218,7 +219,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
 			jContentPane.add(getJScrollPane(), null);
-			jContentPane.add(getJPanel2(), null);
+			jContentPane.add(getAbstractSyntaxPanel(), null);
 		}
 		return jContentPane;
 	}
@@ -232,6 +233,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		}
 		return containerScrollPane;
 	}
+	
 	// containter panel
 	private JPanel getContainerPanel() {
 		if (containerPanel == null) {
@@ -285,12 +287,16 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	
 	// constraint name field
 	private JTextField getJTextField() {
+		
 		if (constraintNameField == null) {
 			constraintNameField = new JTextField();
 			constraintNameField.setBounds(new Rectangle(141, 17, 211, 18));
+			constraintNameField.setText(con.getName());
 		}
+		
 		return constraintNameField;
 	}
+	
 	// variableScrollPane
 	private JScrollPane getVariableScrollPane() {
 		if (variableScrollPane == null) {
@@ -456,6 +462,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		}
 		return addVariableButton;
 	}
+	
 /*	
 	// class expression change apply button
 	private JButton getClassExpressionApplyButton() {
@@ -475,6 +482,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			final String[] operatorList = {"equal","notEqual","lessThan","lessThanOrEqual","greaterThan","greaterThanOrEqual"};
 			operatorComboBox = new JComboBox(operatorList);
 			operatorComboBox.setBounds(new Rectangle(140, 530, 140, 23));
+			operatorComboBox.setSelectedItem(con.getOpp().getOpp());
 		}
 		return operatorComboBox;
 	}
@@ -486,14 +494,15 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			menuPanel.setLayout(null);
 			menuPanel.setPreferredSize(new Dimension(0,50));
 			menuPanel.add(getOkButton(), null);
-			menuPanel.add(getJButton(),null);
+			menuPanel.add(getSubmitButton(),null);
 			menuPanel.add(getADD(), null);
 			menuPanel.add(getOptionsComboBox(), null);
 		}
 		return menuPanel;
 	}
 
-	private JPanel getJPanel2() {
+	// abstract syntax panel
+	private JPanel getAbstractSyntaxPanel() {
 		if (abstractSyntaxPanel == null) {
 			abstractSyntaxLabel = new JLabel();
 			abstractSyntaxLabel.setText("Abstract Syntax:");
@@ -508,7 +517,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		return abstractSyntaxPanel;
 	}
 
-	
+	// abstract syntax area
 	private JTextArea getJTextArea() {
 		if (abstractSyntaxArea == null) {
 			abstractSyntaxArea = new JTextArea();
@@ -518,8 +527,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		return abstractSyntaxArea;
 	}
 
-	
-	private JButton getJButton() {
+	// submit button
+	private JButton getSubmitButton() {
 		if (submitButton == null) {
 			submitButton = new JButton();
 			submitButton.setBounds(new Rectangle(592, 9, 51, 24));
@@ -571,6 +580,44 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			lhsScrollPane = new JScrollPane();
 			lhsScrollPane.setBounds(new Rectangle(142, 400, 500, 114));
 			lhsScrollPane.setViewportView(getLhsPanel());
+			
+			// add lhs termblocks from constraint
+			ArrayList<TermBlock> lhsTBList = con.getLhs().getTermblocks();
+			
+			for(TermBlock tb:lhsTBList){
+				
+				TermBlockComponent tbc = (TermBlockComponent) getLHSTermblockPanel(lhsTermblockNumber);
+				
+				// set sign
+				tbc.getSignComboBox().setSelectedItem(tb.getSign());
+				
+				// set agg 
+				tbc.getAggOppComboBox().setSelectedItem(tb.getAggregateOppertor());
+				
+				// set Parameter
+				DefaultTableModel dtmPar = (DefaultTableModel) tbc.getParametersTable().getModel();
+				ArrayList<Parameter> parList = tb.getParameters();
+				if(parList != null){
+					for(Parameter p:parList){
+						dtmPar.addRow(new Object[]{p.getV().getName()});
+					}
+				}
+				
+				// set Factor
+				DefaultTableModel dtmFactor = (DefaultTableModel) tbc.getFactorsTable().getModel();
+				ArrayList<Factor> facList = tb.getFactors();
+				if(facList != null){
+					for(Factor f:facList){
+						dtmFactor.addRow(new Object[]{f.getV().getName(),f.getOwlProperty()});
+					}
+				}
+				
+				lhsPanel.add(tbc,null);
+				lhsPanel.repaint();
+				lhsTermblockNumber++;
+
+			}
+			
 		}
 		return lhsScrollPane;
 	}
@@ -649,6 +696,12 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			// refresh variable combobox
 //			Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
 			Utils.refreshComboBox(variablesList, qualifierVariable);
+			
+			// get qualifiers from constraint
+			ArrayList<Qualifier> quaList = con.getQualifiers();
+			for(Qualifier q:quaList){
+				model.addRow(new Object[]{q.getV().getName()});
+			}
 		}
 		return qualifiersTable;
 	}
@@ -683,6 +736,44 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			rhsScrollPane = new JScrollPane();
 			rhsScrollPane.setBounds(new Rectangle(141, 570, 500, 114));
 			rhsScrollPane.setViewportView(getRhsPanel());
+			
+			// add rhs termblocks from constraint
+			ArrayList<TermBlock> rhsTBList = con.getRhs().getTermblocks();
+			
+			for(TermBlock tb:rhsTBList){
+				
+				TermBlockComponent tbc = (TermBlockComponent) getRHSTermblockPanel(rhsTermblockNumber);
+				
+				// set sign
+				tbc.getSignComboBox().setSelectedItem(tb.getSign());
+				
+				// set agg 
+				tbc.getAggOppComboBox().setSelectedItem(tb.getAggregateOppertor());
+				
+				// set Parameter
+				DefaultTableModel dtmPar = (DefaultTableModel) tbc.getParametersTable().getModel();
+				ArrayList<Parameter> parList = tb.getParameters();
+				if(parList != null){
+					for(Parameter p:parList){
+						dtmPar.addRow(new Object[]{p.getV().getName()});
+					}
+				}
+				
+				// set Factor
+				DefaultTableModel dtmFactor = (DefaultTableModel) tbc.getFactorsTable().getModel();
+				ArrayList<Factor> facList = tb.getFactors();
+				if(facList != null){
+					for(Factor f:facList){
+						dtmFactor.addRow(new Object[]{f.getV().getName(),f.getOwlProperty()});
+					}
+				}
+				
+				rhsPanel.add(tbc,null);
+				rhsPanel.repaint();
+				rhsTermblockNumber++;
+
+			}
+			
 		}
 		return rhsScrollPane;
 	}
@@ -1210,13 +1301,13 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) {
 		
-		// Class expression change apply event
-		if(e.getActionCommand().equals("Apply")){
-			int selectedRow = variablesTable.getSelectedRow();
-			int selectedColumn = variablesTable.getSelectedColumn();
-			variablesTable.getModel().setValueAt(classExpressionTextPane.getText(), selectedRow, selectedColumn);
-//System.out.println(variablesTable.getModel().getValueAt(selectedRow, selectedColumn));			
-		}
+//		// Class expression change apply event
+//		if(e.getActionCommand().equals("Apply")){
+//			int selectedRow = variablesTable.getSelectedRow();
+//			int selectedColumn = variablesTable.getSelectedColumn();
+//			variablesTable.getModel().setValueAt(classExpressionTextPane.getText(), selectedRow, selectedColumn);
+////System.out.println(variablesTable.getModel().getValueAt(selectedRow, selectedColumn));			
+//		}
 		
 		// ADD event
 		if(e.getActionCommand().equals("ADD")){
@@ -1224,13 +1315,17 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			String selectedItem = (String) optionsComboBox.getSelectedItem();
 			
 			if(selectedItem.equals("LHS Termblock")){
+				
 				lhsPanel.add(getLHSTermblockPanel(lhsTermblockNumber),null);
 				lhsPanel.repaint();
 				lhsTermblockNumber++;
+				
 			}else if(selectedItem.equals("RHS Termblock")){
+				
 				rhsPanel.add(getRHSTermblockPanel(rhsTermblockNumber),null);
 				rhsPanel.repaint();
 				rhsTermblockNumber++;
+				
 			}		
 		}	
 		
