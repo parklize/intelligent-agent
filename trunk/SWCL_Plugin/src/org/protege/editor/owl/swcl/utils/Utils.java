@@ -211,7 +211,7 @@ public class Utils {
 		
 		System.out.println("===opp===");
 		Operator op = con.getOpp();
-		System.out.println(op);
+		System.out.println(op.getOpp());
 		
 		System.out.println("===RHS===");
 		RHS rhs = con.getRhs();

@@ -170,7 +170,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	
     
 	// initialing...
-	public ModifyConstraintsComponent(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
+	public ModifyConstraintsComponent(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
 		super();
 		preinitialize(ow, owlModelManager,totalVariablesList,tableModel);
 		initialize();

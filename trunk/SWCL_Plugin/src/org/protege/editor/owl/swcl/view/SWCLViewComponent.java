@@ -770,6 +770,32 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		}
 	}
 	
+	// get selected constraint
+	public Constraint getSelectedConstraint(DefaultTableModel tableModel){
+		
+		// =no. of constraints 
+		int rowCount = tableModel.getRowCount();
+		
+		for(int i=0;i<rowCount;i++){
+			
+			JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+			
+			if(jcb.isSelected()){
+			
+				// delete selected constraint
+				String conName = (String) tableModel.getValueAt(i, 1);
+				for(Constraint c:constraintsList){
+					if(c.getName().equals(conName)){
+						return c;
+					}
+				}
+			}
+			
+		}
+		return null;
+		
+	}
+	
 	// delete selected item from constrait table, and delete delete selected constraint at the same time
 	public void deleteItem(int rowCount,DefaultTableModel tableModel){
 		
@@ -815,17 +841,27 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){
 			
+			// create add constraint component
+			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel);
+			acc.setVisible(true);
+			
 			// set alignment of jcheckbox to center
 			JCheckBox jb = new JCheckBox();
 			jb.setHorizontalAlignment(SwingConstants.CENTER);
 			tableModel.addRow(new Object[]{jb,"",""});
-			
-			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel);
-			acc.setVisible(true);
 		}
 		
-		// the event of clicking the G button, generate the SWCL code
+		// the event of clicking the M button, modify the selected constraint
+		if(e.getActionCommand().equals("M")){
+			
+			Constraint con = getSelectedConstraint(tableModel);
+			Utils.printConstraint(con);
+			ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
+			mcc.setVisible(true);
+			
+		}
+		
+		// the event of clicking the D button, delete selected constraint
 		if(e.getActionCommand().equals("D")){
 			
 			// =no. of constraints 
