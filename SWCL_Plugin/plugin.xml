@@ -5,7 +5,7 @@
    <extension id="ExampleViewComponent"
               point="org.protege.editor.core.application.ViewComponent">
       <label value="Example View Component"/>
-      <class value="org.protege.editor.owl.swcl.view.ExampleViewComponent"/>
+      <class value="org.protege.editor.owl.swcl.view.SWCLViewComponent"/>
       <category value="@org.protege.ontologycategory"/>
    </extension>
    <extension id="ExampleWorkspaceTab"

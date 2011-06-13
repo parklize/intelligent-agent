@@ -89,11 +89,11 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
  * 
  */
 
-public class ExampleViewComponent extends AbstractOWLViewComponent implements ActionListener{
+public class SWCLViewComponent extends AbstractOWLViewComponent implements ActionListener{
 	
 	// default codes
     private static final long serialVersionUID = -4515710047558710080L;
-    private static final Logger log = Logger.getLogger(ExampleViewComponent.class);
+    private static final Logger log = Logger.getLogger(SWCLViewComponent.class);
     
     // components for our view
     private JPanel menuPanel = null; // menu panel located in top
