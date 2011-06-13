@@ -429,22 +429,24 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			// get qualifier to constriant
 			OWLObjectPropertyImpl hasQualifier = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasQualifier"));
 			Set qua = (Set) indObjProperty.get(hasQualifier);
-			Iterator ito = qua.iterator();
 			
-			String quaStr = null;
-			ArrayList<Qualifier> quaList = new ArrayList<Qualifier>();
-			while(ito.hasNext()){
-				OWLNamedIndividualImpl qualifier = (OWLNamedIndividualImpl) ito.next();
-				quaStr = qualifier.toString();
-				quaStr = quaStr.replaceAll("<"+prefix+"#", "");
-				quaStr = quaStr.replaceAll(">", "");
-//System.out.println("quaStr is:"+quaStr);
-				Variable v = Utils.findVariableWithName(variablesList, quaStr);
-				Qualifier q = new Qualifier(v);
-				quaList.add(q);	
+			if(qua != null){
+				Iterator ito = qua.iterator();
+				
+				String quaStr = null;
+				ArrayList<Qualifier> quaList = new ArrayList<Qualifier>();
+				while(ito.hasNext()){
+					OWLNamedIndividualImpl qualifier = (OWLNamedIndividualImpl) ito.next();
+					quaStr = qualifier.toString();
+					quaStr = quaStr.replaceAll("<"+prefix+"#", "");
+					quaStr = quaStr.replaceAll(">", "");
+	//System.out.println("quaStr is:"+quaStr);
+					Variable v = Utils.findVariableWithName(variablesList, quaStr);
+					Qualifier q = new Qualifier(v);
+					quaList.add(q);	
+				}
+				con.setQualifiers(quaList);
 			}
-			con.setQualifiers(quaList);
-			
 			// MEED UPDATE...
 			// get LHS to constraint
 			OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasLhs"));
