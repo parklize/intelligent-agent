@@ -65,6 +65,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -822,13 +823,60 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		}
 	}
 	
-	// delete delete selected constraint 
+	// delete delete selected constraint  NEED UPDATE....
 	private void deleteConstraint(String conName) {
-		
-		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(getOWLDataFactory(), IRI.create(prefix+"#"+conName));
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		
 		OWLEntityRemover remover = new OWLEntityRemover(manager,Collections.singleton(owl));
+		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(getOWLDataFactory(), IRI.create(prefix+"#"+conName));
+		HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(owl);
+		
+		// LHS part of removement
+		OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasLhs"));
+		Set lhsInd = (Set) indObjProperty.get(hasLhs);
+		if(lhsInd != null){
+			Iterator lhsIndIt = lhsInd.iterator();
+			while(lhsIndIt.hasNext()){
+				OWLNamedIndividual lhs = (OWLNamedIndividual) lhsIndIt.next();
+				HashMap lhsObjProperty = (HashMap) lhs.getObjectPropertyValues(owl);
+				OWLObjectPropertyImpl hasFactor = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasFactor"));
+				Set lhsFactor = (Set) lhsObjProperty.get(hasFactor);
+				if(lhsFactor != null){
+					Iterator lhsFactorIt = lhsFactor.iterator();
+					while(lhsFactorIt.hasNext()){
+						OWLNamedIndividual factor = (OWLNamedIndividual) lhsFactorIt.next();
+						// remove LHS factor
+						factor.accept(remover);
+					}
+				}
+				// remove LHS TermBlock
+				lhs.accept(remover);
+			}
+		}
+		
+		// RHS part of removement
+		OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasRhs"));
+		Set rhsInd = (Set) indObjProperty.get(hasRhs);
+		if(rhsInd != null){
+			Iterator rhsIndIt = rhsInd.iterator();
+			while(rhsIndIt.hasNext()){
+				OWLNamedIndividual rhs = (OWLNamedIndividual) rhsIndIt.next();
+				HashMap rhsObjProperty = (HashMap) rhs.getObjectPropertyValues(owl);
+				OWLObjectPropertyImpl hasFactor = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasFactor"));
+				Set rhsFactor = (Set) rhsObjProperty.get(hasFactor);
+				if(rhsFactor != null){
+					Iterator rhsFactorIt = rhsFactor.iterator();
+					while(rhsFactorIt.hasNext()){
+						OWLNamedIndividual factor = (OWLNamedIndividual) rhsFactorIt.next();
+						// remove LHS factor
+						factor.accept(remover);
+					}
+				}
+				// remove LHS TermBlock
+				rhs.accept(remover);
+			}
+		}
+		
+		// remove constraint individual
 		ind.accept(remover);
 		
 		manager.applyChanges(remover.getChanges());
