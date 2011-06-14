@@ -153,6 +153,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private String abstractSyntax = null;
 	private Constraint con = null;
+	private Constraint oldCon = null;
 	
 	// create ontology manager to work with
 	private OWLOntologyManager manager = null;  //  @jve:decl-index=0:
@@ -176,6 +177,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		this.variablesList = totalVariablesList;
 		this.ont = owlModelManager.getActiveOntology();
 		this.con = con;
+		this.oldCon = con;
 		this.tableModel = tableModel;
 		this.soh = new SWCLOntologyController(ont);
 		// set base
@@ -973,9 +975,10 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			
 			// write variables to ontology
 			this.controller.writeVariablesToOnt(this.variablesList);
-			
+	
+System.out.println("old constraint name is:" + this.oldCon.getName());
 			// delete constraint first
-			this.controller.deleteConstraint(getConstraint().getName());
+			this.controller.deleteConstraint(this.oldCon.getName());
 			
 			// write constraint to ontology
 			this.controller.writeConstraintToOnt(this.con);

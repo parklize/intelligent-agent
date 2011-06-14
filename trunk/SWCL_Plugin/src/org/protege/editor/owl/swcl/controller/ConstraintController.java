@@ -38,6 +38,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 
@@ -49,6 +50,7 @@ public class ConstraintController {
 	private String base = null;
 	private PrefixManager pm = null; 
 	private OWLOntology ont = null;
+	private OWLEntityRemover remover = null;
 	
 	public ConstraintController(OWLModelManager owlModelManager,SWCLOntologyController soh){
 		
@@ -58,6 +60,7 @@ public class ConstraintController {
 		this.base = soh.getPrefix();
 		this.pm = new DefaultPrefixManager(base);
 		this.ont = owlModelManager.getActiveOntology();
+		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
 	}
 	
 	// NEED UPDATE
@@ -426,8 +429,6 @@ public class ConstraintController {
 	// delete delete selected constraint  NEED UPDATE....
 	public void deleteConstraint(String conName) {
 		
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		OWLEntityRemover remover = new OWLEntityRemover(manager,Collections.singleton(this.ont));
 		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(this.dataFactory, IRI.create(this.base+"#"+conName));
 		HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(this.ont);
 		
@@ -482,5 +483,11 @@ public class ConstraintController {
 		
 		manager.applyChanges(remover.getChanges());
 		
+	}
+
+	// delete all variables in the ontology
+	public void deleteVariables(){
+		
+		OWLClass variable = new OWLClassImpl(this.dataFactory, IRI.create(base+"#Variable"));
 	}
 }

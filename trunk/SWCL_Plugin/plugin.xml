@@ -4,7 +4,7 @@
 <plugin>
    <extension id="ExampleViewComponent"
               point="org.protege.editor.core.application.ViewComponent">
-      <label value="Example View Component"/>
+      <label value="SWCL View"/>
       <class value="org.protege.editor.owl.swcl.view.SWCLViewComponent"/>
       <category value="@org.protege.ontologycategory"/>
    </extension>
