@@ -780,7 +780,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// =no. of constraints 
 		int rowCount = tableModel.getRowCount();
-		
+System.out.println("row count is :" + rowCount);		
 		for(int i=0;i<rowCount;i++){
 			
 			JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
@@ -836,7 +836,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		if(e.getActionCommand().equals("+")){
 			
 			// create add constraint component
-			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel);
+			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel, constraintsList);
 			acc.setVisible(true);
 			
 			// set alignment of jcheckbox to center
@@ -849,7 +849,8 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		if(e.getActionCommand().equals("M")){
 			
 			Constraint con = getSelectedConstraint(tableModel);
-Utils.printConstraint(con);
+System.out.println(con==null);
+//Utils.printConstraint(con);
 			ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
 			mcc.setVisible(true);
 			

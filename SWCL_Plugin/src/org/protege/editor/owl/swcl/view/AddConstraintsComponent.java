@@ -151,6 +151,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private String abstractSyntax = null;
 	private Constraint con = null;
+	private ArrayList<Constraint> constraintList = null;
 	
 	// create ontology manager to work with
 	private SWCLOntologyController soh = null;
@@ -165,16 +166,16 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
     
 	// initialing...
-	public AddConstraintsComponent(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
+	public AddConstraintsComponent(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel, ArrayList<Constraint> constraintList) {
 	
 		super();
-		preinitialize(ow, owlModelManager,totalVariablesList,tableModel);
+		preinitialize(ow, owlModelManager,totalVariablesList,tableModel,constraintList);
 		initialize();
 //		this.classExpressionTextPane = getClassExpressionPane();
 
 	}
 	
-	private void preinitialize(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
+	private void preinitialize(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel, ArrayList<Constraint> constraintList){
 		
 		// get variables already announced
 		this.totalVariablesList = totalVariablesList;
@@ -182,6 +183,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		this.ont = owlModelManager.getActiveOntology();
 		this.tableModel = tableModel;
 		this.soh = new SWCLOntologyController(ont);
+		this.constraintList = constraintList;
 		
 		// get controller
 		this.controller = new ConstraintController(owlModelManager, soh);
@@ -885,6 +887,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// write constraint to ontology
 			controller.writeConstraintToOnt(this.con);
+			
+			this.constraintList.add(con);
 			
 			// add varibaleList to totalVariablesList
 			this.totalVariablesList = this.variablesList;
