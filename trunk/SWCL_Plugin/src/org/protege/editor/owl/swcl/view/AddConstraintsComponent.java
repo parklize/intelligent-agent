@@ -166,6 +166,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
     
 	// initialing...
 	public AddConstraintsComponent(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
+	
 		super();
 		preinitialize(ow, owlModelManager,totalVariablesList,tableModel);
 		initialize();
