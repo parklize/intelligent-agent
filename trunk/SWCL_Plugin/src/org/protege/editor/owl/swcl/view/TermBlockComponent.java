@@ -9,8 +9,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
+
+import org.protege.editor.owl.swcl.controller.SWCLOntologyController;
 import org.protege.editor.owl.swcl.model.*;
-import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -48,7 +49,7 @@ public class TermBlockComponent extends JPanel {
 	private TableColumn factorVariableColumn = null;
 	private JButton addFactorButton = null;
 	private OWLOntology ont = null;
-	private SWCLOntologyHelper swclOntologyHelper = null;
+	private SWCLOntologyController swclOntologyHelper = null;
 
 	// default constructor
 	public TermBlockComponent() {
@@ -60,7 +61,7 @@ public class TermBlockComponent extends JPanel {
 		super();
 		this.variablesList = variablesList;
 		this.ont = ont;
-		this.swclOntologyHelper = new SWCLOntologyHelper(ont);
+		this.swclOntologyHelper = new SWCLOntologyController(ont);
 		initialize();
 	}
 

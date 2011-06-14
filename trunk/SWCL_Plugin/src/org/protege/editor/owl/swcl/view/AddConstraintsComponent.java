@@ -33,6 +33,8 @@ import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.swcl.controller.ConstraintController;
+import org.protege.editor.owl.swcl.controller.SWCLOntologyController;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Factor;
 import org.protege.editor.owl.swcl.model.LHS;
@@ -42,7 +44,6 @@ import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.RHS;
 import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
-import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -148,25 +149,19 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private ArrayList<Variable> totalVariablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
-	private OWLClassExpression oc = null;
 	private String abstractSyntax = null;
 	private Constraint con = null;
 	
 	// create ontology manager to work with
-	private OWLWorkspace ow = null;
-	private OWLModelManager owlModelManager = null;
-	private OWLOntologyManager manager = null;  //  @jve:decl-index=0:
-	private OWLDataFactory dataFactory = null;  //  @jve:decl-index=0:
-	private String base = null;  //  @jve:decl-index=0:
-	private PrefixManager pm = null;  //  @jve:decl-index=0:
-	private SWCLOntologyHelper soh = null;
+	private SWCLOntologyController soh = null;
 
 
 //    private OWLClassHelper owlClassHelper = null;
 //    private OWLEditorKit oek = null;
 //    private OWLComponentFactoryImplExtension ocfe = null;
 
-
+	// controller
+	ConstraintController controller = null;
 	
     
 	// initialing...
@@ -179,24 +174,16 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	}
 	
 	private void preinitialize(OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
-		 // get variables already announced
-		this.ow = ow;
-		this.owlModelManager = owlModelManager;
+		
+		// get variables already announced
 		this.totalVariablesList = totalVariablesList;
 		this.variablesList = totalVariablesList;
 		this.ont = owlModelManager.getActiveOntology();
-//		this.oc = oc;
-//		this.oek = oek;
-//		ocfe = new OWLComponentFactoryImplExtension(oek);
 		this.tableModel = tableModel;
-		// create ontology manager to work with
-		this.manager = OWLManager.createOWLOntologyManager(); 
-		this.dataFactory = manager.getOWLDataFactory();  
-		this.soh = new SWCLOntologyHelper(ont);
-		// set base
-		this.base = soh.getPrefix();
-		this.pm = new DefaultPrefixManager(base);  //  @jve:decl-index=0:
-
+		this.soh = new SWCLOntologyController(ont);
+		
+		// get controller
+		this.controller = new ConstraintController(owlModelManager, soh);
 	}
 	
 	// for test purpose
@@ -845,369 +832,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return con;
 	}
 
-	// NEED UPDATE
-	private void writeVariablesToOnt() {
-		
-//Utils.printVariablesList("variablesList:", variablesList);
-		
-		String prefix = soh.getPrefix();
-		
-		// get the reference to the Variable class(create)
-		OWLClass variable = dataFactory.getOWLClass("#Variable",pm);
-		
-		// save temporary
-		WriterDocumentTarget wdt;
-		FileWriter fw = null;
-
-		try {
-			
-//System.out.println("Prefix:"+prefix);
-
-			for(Variable v:variablesList){
-				
-//				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
-				// create subclass axiom
-//				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
-//				AddAxiom addAxiom = new AddAxiom(ont,axiom);
-//				manager.applyChange(addAxiom);
-				
-				// get the reference to the y instance 
-				OWLIndividual individual = dataFactory.getOWLNamedIndividual("#"+v.getName(),pm);
-				
-				// create class assertion that y is the instance of the Variable
-				OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(variable, individual);
-				
-				// add axiom to ontology
-				AddAxiom addAxiomChange = new AddAxiom(ont,classAssertion);
-				manager.applyChange(addAxiomChange);
-				
-				// ow is constitute of ViewSplitePane and JPanel
-//				ViewSplitPane jp = (ViewSplitPane) ow.getComponent(0);
-//		//System.out.println(jp.getComponentCount());// 2
-//				ViewSplitPaneDivider vpd = (ViewSplitPaneDivider) jp.getComponent(0);//ViewSplitPaneDivider
-//				ViewSplitPane vsp = (ViewSplitPane) jp.getComponent(1);//ViewSplitPane
-//		//System.out.println(vsp.getComponentCount());// 2
-//				ViewSplitPaneDivider vsd1 = (ViewSplitPaneDivider) vsp.getComponent(0);
-//				JTabbedPane jtp = (JTabbedPane) vsp.getComponent(1);
-//		//System.out.println(jtp.getComponentCount());// 9
-//				OWLWorkspaceViewsTab ovt = (OWLWorkspaceViewsTab) jtp.getComponent(2);
-//		//System.out.println(ovt.getComponentCount());// 1
-//				ViewsPane vp = (ViewsPane) ovt.getComponent(0);
-////				vp.setVisible(false);
-////				vp.dispose();
-//		//System.out.println(vp.getComponentCount());// 1
-//				JPanel j = (JPanel) vp.getComponent(0);
-//		//System.out.println(j.getComponentCount());// 5
-//				JPanel j1 = (JPanel) j.getComponent(1);
-//				// this is left workspace of class tab
-//				JComponent j2 = (JComponent) j1.getComponent(0);
-//				j2.repaint();
-//				
-////				j2.setVisible(false);
-//				System.out.println(j2.getComponentCount());// 2
-//				System.out.println(j2.getComponent(0).getClass());
-//				System.out.println(j2.getComponent(1).getClass());
-//				
-//				View v1 = (View) j2.getComponent(0);
-//System.out.println(v1.getViewName());// Class hierarchy
-//				View v2 = (View) j2.getComponent(1);
-//System.out.println(v2.getViewName());// Class hierarchy (inferred)
-//
-//				ViewComponent vc = v1.getViewComponent();
-//				vc.repaint();
-			}
-			
-			for(Variable v:variablesList){
-
-				String[] str = v.getDescription().split(" ");
-				// class
-				for(int i=0;i<str.length;i++){
-					// if s is property,individual or class, then add prefix
-					for(String cls:soh.getClassList()){
-						if(str[i].equals(cls)){
-							str[i] = "<" + prefix + "#" + str[i] +">";
-						}
-					}
-					for(String pro:soh.getObjectPropertyList()){
-						if(str[i].equals(pro)){
-							str[i] = "<" + prefix + "#" + str[i] +">";
-						}
-					}
-					for(String ind:soh.getIndividualsList()){
-						if(str[i].equals(ind)){
-							str[i] = "<" + prefix + "#" + str[i] +">";
-						}
-					}
-				}
-				
-				String newDes = "";
-				for(String s:str){
-					newDes = newDes + " " + s;
-				}
-				
-				v.setDescription(newDes);
-//System.out.println(newDes);
-			}
-			
-			// temporary save at current directory as manchester owl syntax
-			String presentDir = System.getProperty("user.dir");
-			wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp.owl"));
-			manager.saveOntology(ont, new ManchesterOWLSyntaxOntologyFormat(), wdt);
-			
-			// get all variables and dump to ontology
-			for(Variable v:variablesList){
-//System.out.println("Description:"+v.getDescription());
-				fw = (FileWriter) wdt.getWriter();
-				char[] cs = ("Class: " + "<" + prefix + "#ClassFor" + v.getName() + ">\n\n" +
-						"    EquivalentTo:\n"+
-						"        "+v.getDescription()+"\n\n").toCharArray();
-				for(char c: cs){
-					fw.write(c);
-				}
-				fw.flush();
-			}
-			
-			// read temp ontology to ont
-			File file = new File(presentDir + "//temp.owl");
-			OWLOntology tempOnt = manager.loadOntologyFromOntologyDocument(file);
-
-			// read classes created from temp ontology to ont
-			SWCLOntologyHelper tempSoh = new SWCLOntologyHelper(tempOnt);
-			ArrayList<String> classList = tempSoh.getClassList();
-			for(String str:classList){
-				for(Variable v:variablesList){
-					if(str.equals("ClassFor"+v.getName())){
-//System.out.println("new class: "+str);
-						// property
-						OWLDataProperty bindingClass = dataFactory.getOWLDataProperty(IRI.create(this.base+"#bindingClass"));
-						// binding class
-						OWLClass owlClass = tempSoh.getOWLClass(str);
-						// get axioms to ont
-						Set axioms = tempOnt.getAxioms(owlClass);
-						Iterator it = axioms.iterator();
-						while(it.hasNext()){
-//System.out.println("axioms: "+it.next().toString());
-							manager.addAxiom(ont, (OWLAxiom) it.next());
-							
-						}
-						OWLNamedIndividual owlInd = (OWLNamedIndividual) soh.getOWLIndividual(v.getName());
-//System.out.println("owlInd:"+owlInd.toString());
-						OWLDataPropertyAssertionAxiom assertion = dataFactory.getOWLDataPropertyAssertionAxiom(bindingClass, owlInd, str);
-						
-						manager.addAxiom(ont, assertion);
-//						manager.saveOntology(ont,new SystemOutDocumentTarget());
-					}
-				}
-			}
-		} catch (IOException e) {e.printStackTrace();
-		} catch (OWLOntologyStorageException e) {e.printStackTrace();
-		} catch (OWLOntologyCreationException e) {e.printStackTrace();
-		} finally {
-			if(fw != null){
-				try {
-					fw.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		// set description with manchester syntax back
-		for(Variable v:variablesList){
-			
-			String des = v.getDescription();
-			des = des.replaceAll("<"+prefix+"#", "");
-			des = des.replaceAll(">", "");
-			v.setDescription(des);
-		}
-	}
-	
-	// add constraint part to ontology
-	private void writeConstraintToOnt() {
-		// add constraint axiom
-		OWLClass conClass = dataFactory.getOWLClass("#Constraint",pm);
-		OWLIndividual conInd = dataFactory.getOWLNamedIndividual("#"+con.getName(),pm);
-		OWLClassAssertionAxiom classAssertion = dataFactory.getOWLClassAssertionAxiom(conClass, conInd);
-		manager.addAxiom(ont, classAssertion);
-		
-		// add has qualifier axiom
-		OWLObjectProperty hasQualifier = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasQualifier"));
-		ArrayList<Qualifier> qualifierList = con.getQualifiers();
-		for(Qualifier q:qualifierList){
-			OWLIndividual ind = soh.getOWLIndividual(q.getV().getName());
-			OWLObjectPropertyAssertionAxiom assertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasQualifier, conInd, ind);
-			AddAxiom addAxiomChange = new AddAxiom(ont,assertion);
-			manager.applyChange(addAxiomChange);
-		}
-		
-		// add LHS axiom NEED UPDATE...
-		//LHSTermBlock 가져가기
-		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
-			
-			OWLClass LhsTermBClass= dataFactory.getOWLClass("#LhsTermBlock",pm);
-			OWLIndividual lhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"lhsTermBlock"+(i+1),pm);
-			OWLClassAssertionAxiom LhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(LhsTermBClass, lhsTermBInd);
-			manager.addAxiom(ont, LhsTermBAssertion);
-			
-			OWLObjectProperty hasLhs= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasLhs"));
-			OWLClassExpression hasTermBlockAllLhs = dataFactory.getOWLObjectAllValuesFrom(hasLhs, LhsTermBClass);
-			OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(conClass, hasTermBlockAllLhs);
-			AddAxiom addAx = new AddAxiom(ont, ax);
-			manager.applyChange(addAx);
-			
-			// constraint->hasLhs->lhsTermblockInd
-			OWLObjectPropertyAssertionAxiom hasLhsAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasLhs, conInd, lhsTermBInd);
-			AddAxiom hasLhsAddAx = new AddAxiom(ont,hasLhsAx);
-			manager.applyChange(hasLhsAddAx);
-			
-			
-			//sign 가져가기
-
-			OWLDataProperty hasSign = dataFactory.getOWLDataProperty(IRI.create(base + "#hasSign"));
-			OWLDataPropertyAssertionAxiom assertionSign = dataFactory.getOWLDataPropertyAssertionAxiom(hasSign, lhsTermBInd, con.getLhs().getTermblocks().get(i).getSign());
-			AddAxiom SignAxiom = new AddAxiom(ont, assertionSign);
-			manager.applyChange(SignAxiom);
-
-			
-			//aggregateOperation 가져가기  (AggreOper 있으면 parameter도 가져가요)
-			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){	
-				OWLDataProperty hasAggregateOperation = dataFactory.getOWLDataProperty(IRI.create(base + "#hasAggregateOperation"));
-				OWLDataPropertyAssertionAxiom assertionAggreO = dataFactory.getOWLDataPropertyAssertionAxiom(hasAggregateOperation, lhsTermBInd, con.getLhs().getTermblocks().get(i).getAggregateOppertor());
-				AddAxiom AggreOAxiom = new AddAxiom(ont, assertionAggreO);
-				manager.applyChange(AggreOAxiom);
-
-				
-				for (int j=0; j<con.getLhs().getTermblocks().get(i).getParameters().size();j++){
-					OWLObjectProperty hasParameters = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasParameters"));
-					OWLIndividual Pind = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getParameters().get(j).getV().getName());
-					OWLObjectPropertyAssertionAxiom assertionParameters = dataFactory.getOWLObjectPropertyAssertionAxiom(hasParameters, lhsTermBInd, Pind);
-					AddAxiom ParametersAxiom = new AddAxiom(ont, assertionParameters);
-					manager.applyChange(ParametersAxiom);
-
-				}
-			}
-			
-			// factor 가져가기
-			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
-				OWLClass lhsFactorClass= dataFactory.getOWLClass("#LhsFactor",pm);
-				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"lhsFactor"+(k+1),pm);
-				OWLClassAssertionAxiom LhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(lhsFactorClass, lhsFactorInd);
-				manager.addAxiom(ont, LhsFactorAssertion);
-				
-				OWLObjectProperty hasFactor= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactor"));
-				OWLClassExpression hasFactorAllLhsTermB = dataFactory.getOWLObjectAllValuesFrom(hasFactor, lhsFactorClass);
-				OWLSubClassOfAxiom axF = dataFactory.getOWLSubClassOfAxiom(LhsTermBClass, hasFactorAllLhsTermB);
-				AddAxiom addAxF = new AddAxiom(ont, axF);
-				manager.applyChange(addAxF);
-				
-				
-				OWLObjectProperty hasVar = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasVar"));
-				OWLIndividual Varind = soh.getOWLIndividual(con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
-				OWLObjectPropertyAssertionAxiom assertionVar = dataFactory.getOWLObjectPropertyAssertionAxiom(hasVar, lhsFactorInd, Varind);
-				AddAxiom VarAxiom = new AddAxiom(ont, assertionVar);
-				manager.applyChange(VarAxiom);
-				
-				OWLDataProperty hasBindingDataProperty = dataFactory.getOWLDataProperty(IRI.create(base + "#hasBindingDataProperty"));
-				OWLDataPropertyAssertionAxiom assertionBindingDataProperty = dataFactory.getOWLDataPropertyAssertionAxiom(hasBindingDataProperty, lhsFactorInd, con.getLhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty());
-				AddAxiom BindingDataPropertyAxiom = new AddAxiom(ont, assertionBindingDataProperty);
-				manager.applyChange(BindingDataPropertyAxiom);
-				
-				// lhsTermBInd->hasFactor->lhsFactorInd
-				OWLObjectPropertyAssertionAxiom facAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactor, lhsTermBInd, lhsFactorInd);
-				AddAxiom addFaxAx = new AddAxiom(ont,facAx);
-				manager.applyChange(addFaxAx);
-			}
-			
-			
-		}
-		
-		// add operator axiom
-		OWLDataProperty hasOperator = dataFactory.getOWLDataProperty(IRI.create(base + "#hasOperator"));
-		OWLDataPropertyAssertionAxiom assertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasOperator, conInd, con.getOpp().getOpp());
-		AddAxiom oppAxiom = new AddAxiom(ont, assertion);
-		manager.applyChange(oppAxiom);
-		
-		// add RHS axiom NEED UPDATE...
-		//RHSTermBlock 가져가기
-		for (int i=0; i<con.getRhs().getTermblocks().size();i++){
-			
-			OWLClass RhsTermBClass= dataFactory.getOWLClass("#RhsTermBlock",pm);
-			OWLIndividual rhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"rhsTermBlock"+(i+1),pm);
-			OWLClassAssertionAxiom RhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(RhsTermBClass, rhsTermBInd);
-			manager.addAxiom(ont, RhsTermBAssertion);
-			
-			OWLObjectProperty hasRhs= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasRhs"));
-			OWLClassExpression hasTermBlockAllRhs = dataFactory.getOWLObjectAllValuesFrom(hasRhs, RhsTermBClass);
-			OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(conClass, hasTermBlockAllRhs);
-			AddAxiom addAx = new AddAxiom(ont, ax);
-			manager.applyChange(addAx);
-			
-			// constraint->hasLhs->lhsTermblockInd
-			OWLObjectPropertyAssertionAxiom hasRhsAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasRhs, conInd, rhsTermBInd);
-			AddAxiom hasRhsAddAx = new AddAxiom(ont,hasRhsAx);
-			manager.applyChange(hasRhsAddAx);
-			
-			//sign 가져가기
-			OWLDataProperty hasSign = dataFactory.getOWLDataProperty(IRI.create(base + "#hasSign"));
-			OWLDataPropertyAssertionAxiom assertionSign = dataFactory.getOWLDataPropertyAssertionAxiom(hasSign, rhsTermBInd, con.getRhs().getTermblocks().get(i).getSign());
-			AddAxiom SignAxiom = new AddAxiom(ont, assertionSign);
-			manager.applyChange(SignAxiom);
-
-			
-			//aggregateOperation 가져가기  (AggreOper 있으면 parameter도 가져가요)
-			if (con.getRhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){	
-				OWLDataProperty hasAggregateOperation = dataFactory.getOWLDataProperty(IRI.create(base + "#hasAggregateOperation"));
-				OWLDataPropertyAssertionAxiom assertionAggreO = dataFactory.getOWLDataPropertyAssertionAxiom(hasAggregateOperation, rhsTermBInd, con.getRhs().getTermblocks().get(i).getAggregateOppertor());
-				AddAxiom AggreOAxiom = new AddAxiom(ont, assertionAggreO);
-				manager.applyChange(AggreOAxiom);
-
-				
-				for (int j=0; j<con.getRhs().getTermblocks().get(i).getParameters().size();j++){
-					OWLObjectProperty hasParameters = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasParameters"));
-					OWLIndividual Pind = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getParameters().get(j).getV().getName());
-					OWLObjectPropertyAssertionAxiom assertionParameters = dataFactory.getOWLObjectPropertyAssertionAxiom(hasParameters, rhsTermBInd, Pind);
-					AddAxiom ParametersAxiom = new AddAxiom(ont, assertionParameters);
-					manager.applyChange(ParametersAxiom);
-
-				}
-			}
-			
-			// factor 가져가기
-			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
-				
-				OWLClass rhsFactorClass= dataFactory.getOWLClass("#RhsFactor",pm);
-				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"rhsFactor"+(k+1),pm);
-				OWLClassAssertionAxiom RhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(rhsFactorClass, rhsFactorInd);
-				manager.addAxiom(ont, RhsFactorAssertion);
-				
-				OWLObjectProperty hasFactor= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactor"));
-				OWLClassExpression hasFactorAllRhsTermB = dataFactory.getOWLObjectAllValuesFrom(hasFactor, rhsFactorClass);
-				OWLSubClassOfAxiom axF = dataFactory.getOWLSubClassOfAxiom(RhsTermBClass, hasFactorAllRhsTermB);
-				AddAxiom addAxF = new AddAxiom(ont, axF);
-				manager.applyChange(addAxF);
-				
-				
-				OWLObjectProperty hasVar = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasVar"));
-				OWLIndividual Varind = soh.getOWLIndividual(con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName());
-				OWLObjectPropertyAssertionAxiom assertionVar = dataFactory.getOWLObjectPropertyAssertionAxiom(hasVar, rhsFactorInd, Varind);
-				AddAxiom VarAxiom = new AddAxiom(ont, assertionVar);
-				manager.applyChange(VarAxiom);
-				
-				OWLDataProperty hasBindingDataProperty = dataFactory.getOWLDataProperty(IRI.create(base + "#hasBindingDataProperty"));
-				OWLDataPropertyAssertionAxiom assertionBindingDataProperty = dataFactory.getOWLDataPropertyAssertionAxiom(hasBindingDataProperty, rhsFactorInd, con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty());
-				AddAxiom BindingDataPropertyAxiom = new AddAxiom(ont, assertionBindingDataProperty);
-				manager.applyChange(BindingDataPropertyAxiom);
-			
-				// lhsTermBInd->hasFactor->lhsFactorInd
-				OWLObjectPropertyAssertionAxiom facAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactor, rhsTermBInd, rhsFactorInd);
-				AddAxiom addFaxAx = new AddAxiom(ont,facAx);
-				manager.applyChange(addFaxAx);
-			}
-			
-		}
-	}
-	
-	
 	public void actionPerformed(ActionEvent e) {
 		
 		// Class expression change apply event
@@ -1256,13 +880,13 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			}
 			
 			// write variables to ontology
-			writeVariablesToOnt();
+			controller.writeVariablesToOnt(this.variablesList);
+			
 			// write constraint to ontology
-			writeConstraintToOnt();
+			controller.writeConstraintToOnt(this.con);
 			
 			// add varibaleList to totalVariablesList
 			this.totalVariablesList = this.variablesList;
-			
 			this.dispose();
 
 		}

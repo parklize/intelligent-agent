@@ -1,4 +1,4 @@
-package org.protege.editor.owl.swcl.utils;
+package org.protege.editor.owl.swcl.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,13 +13,13 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLProperty;
 
-public class SWCLOntologyHelper {
+public class SWCLOntologyController {
 
 	private OWLOntology ont;
 	private OWLOntologyManager owlManager;
 	
 	
-	public SWCLOntologyHelper(OWLOntology ont){
+	public SWCLOntologyController(OWLOntology ont){
 		this.ont = ont;
 		this.owlManager = ont.getOWLOntologyManager();
 	}

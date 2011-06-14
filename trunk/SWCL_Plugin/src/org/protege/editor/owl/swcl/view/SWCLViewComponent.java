@@ -41,6 +41,8 @@ import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.workspace.views.ViewNodePanel;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.swcl.controller.ConstraintController;
+import org.protege.editor.owl.swcl.controller.SWCLOntologyController;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Factor;
 import org.protege.editor.owl.swcl.model.LHS;
@@ -52,7 +54,6 @@ import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
-import org.protege.editor.owl.swcl.utils.SWCLOntologyHelper;
 import org.protege.editor.owl.swcl.utils.Utils;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
@@ -108,13 +109,14 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
     private OWLModelManager owlModelManager = null;
     private OWLWorkspace ow = null;
     private OWLOntology owl = null;
-    private OWLClassExpression oc = null;
-    private SWCLOntologyHelper soh = null;
+    private SWCLOntologyController soh = null;
 	private String prefix = null;
     
     // global variables
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  
 	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
+	
+	private ConstraintController controller = null;
 
     @Override
     protected void disposeOWLView() {}
@@ -182,17 +184,17 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	        // get workspace
 	        ow = getOWLWorkspace();
 	        
-			// get selected class from workspace
-			oc = ow.getOWLSelectionModel().getLastSelectedClass();
-			
 			// get ontology
 			owl = owlModelManager.getActiveOntology();
 			
 	    	// new SWCL ontology helper
-	    	soh = new SWCLOntologyHelper(owl);
+	    	soh = new SWCLOntologyController(owl);
 	    	
 	    	// prefix 
 	    	prefix = soh.getPrefix();
+	    	
+	    	// controller
+	    	controller = new ConstraintController(owlModelManager, soh);
 	    	
 	    	// get all variables to variablesList
 	    	getAllVariables();
@@ -203,8 +205,8 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	// insert all constraints to SWCl tab
 	    	DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 	    	for(Constraint c:constraintsList){
-	    		Utils.printConstraint(c);
-	    		System.out.println(Utils.getSWCLAbstractSyntax(variablesList, c));
+//	    		Utils.printConstraint(c);
+//	    		System.out.println(Utils.getSWCLAbstractSyntax(variablesList, c));
 				JCheckBox jb = new JCheckBox();
 				jb.setHorizontalAlignment(SwingConstants.CENTER);
 	    		tableModel.addRow(new Object[]{jb,c.getName(),Utils.getSWCLAbstractSyntax(variablesList, c)});
@@ -810,7 +812,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 				
 				// delete selected constraint
 				String conName = (String) tableModel.getValueAt(i, 1);
-				deleteConstraint(conName);
+				this.controller.deleteConstraint(conName);
 				
 				// remove from table
 				tableModel.removeRow(i);
@@ -823,65 +825,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		}
 	}
 	
-	// delete delete selected constraint  NEED UPDATE....
-	private void deleteConstraint(String conName) {
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		OWLEntityRemover remover = new OWLEntityRemover(manager,Collections.singleton(owl));
-		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(getOWLDataFactory(), IRI.create(prefix+"#"+conName));
-		HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(owl);
-		
-		// LHS part of removement
-		OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasLhs"));
-		Set lhsInd = (Set) indObjProperty.get(hasLhs);
-		if(lhsInd != null){
-			Iterator lhsIndIt = lhsInd.iterator();
-			while(lhsIndIt.hasNext()){
-				OWLNamedIndividual lhs = (OWLNamedIndividual) lhsIndIt.next();
-				HashMap lhsObjProperty = (HashMap) lhs.getObjectPropertyValues(owl);
-				OWLObjectPropertyImpl hasFactor = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasFactor"));
-				Set lhsFactor = (Set) lhsObjProperty.get(hasFactor);
-				if(lhsFactor != null){
-					Iterator lhsFactorIt = lhsFactor.iterator();
-					while(lhsFactorIt.hasNext()){
-						OWLNamedIndividual factor = (OWLNamedIndividual) lhsFactorIt.next();
-						// remove LHS factor
-						factor.accept(remover);
-					}
-				}
-				// remove LHS TermBlock
-				lhs.accept(remover);
-			}
-		}
-		
-		// RHS part of removement
-		OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasRhs"));
-		Set rhsInd = (Set) indObjProperty.get(hasRhs);
-		if(rhsInd != null){
-			Iterator rhsIndIt = rhsInd.iterator();
-			while(rhsIndIt.hasNext()){
-				OWLNamedIndividual rhs = (OWLNamedIndividual) rhsIndIt.next();
-				HashMap rhsObjProperty = (HashMap) rhs.getObjectPropertyValues(owl);
-				OWLObjectPropertyImpl hasFactor = new OWLObjectPropertyImpl(getOWLDataFactory(), IRI.create(prefix+"#hasFactor"));
-				Set rhsFactor = (Set) rhsObjProperty.get(hasFactor);
-				if(rhsFactor != null){
-					Iterator rhsFactorIt = rhsFactor.iterator();
-					while(rhsFactorIt.hasNext()){
-						OWLNamedIndividual factor = (OWLNamedIndividual) rhsFactorIt.next();
-						// remove LHS factor
-						factor.accept(remover);
-					}
-				}
-				// remove LHS TermBlock
-				rhs.accept(remover);
-			}
-		}
-		
-		// remove constraint individual
-		ind.accept(remover);
-		
-		manager.applyChanges(remover.getChanges());
-		
-	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -905,7 +849,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		if(e.getActionCommand().equals("M")){
 			
 			Constraint con = getSelectedConstraint(tableModel);
-			Utils.printConstraint(con);
+Utils.printConstraint(con);
 			ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
 			mcc.setVisible(true);
 			
