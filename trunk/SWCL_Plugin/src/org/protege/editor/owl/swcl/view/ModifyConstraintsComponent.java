@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -161,6 +162,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private String base = null;  //  @jve:decl-index=0:
 	private PrefixManager pm = null;  //  @jve:decl-index=0:
 	private SWCLOntologyController soh = null;
+	private JScrollPane wholeContainerScrollPane = null;
+	private JPanel wholePanel = null;
 
 	// initialing...
 	public ModifyConstraintsComponent(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
@@ -193,20 +196,52 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	
 	// initializing frame
 	private void initialize() {
-		this.setSize(680, 963);
+		this.setSize(680, 770);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		// set location of the frame in the window
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = kit.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+	    int frameH=this.getHeight();
+		int frameW=this.getWidth();
+		this.setLocation((screenWidth-frameW) / 2, (screenHeight-frameH) / 2);
 	}
 
-	// jContentPane
+	// jContentPane,default
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(null);
-			jContentPane.add(getJScrollPane(), null);
-			jContentPane.add(getAbstractSyntaxPanel(), null);
+			jContentPane.setLayout(new BorderLayout());
+			jContentPane.add(getWholeContrainerScrollPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
+	}
+	
+	// whole scroll pane
+	private JScrollPane getWholeContrainerScrollPane(){
+		if(wholeContainerScrollPane == null){
+			wholeContainerScrollPane = new JScrollPane();
+			wholeContainerScrollPane.setViewportView(getConainerPane());
+			wholeContainerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			wholeContainerScrollPane.revalidate();
+		}
+		return wholeContainerScrollPane;
+	}
+	
+	// whole panel
+	private JPanel getConainerPane() {
+		if (wholePanel == null) {
+			wholePanel = new JPanel();
+			wholePanel.setPreferredSize(new Dimension(650,950));
+			wholePanel.setLayout(null);
+			wholePanel.add(getJScrollPane(), null);
+			wholePanel.add(getAbstractSyntaxPanel(), null);
+		}
+		return wholePanel;
 	}
 	
 	// content Scroll pane

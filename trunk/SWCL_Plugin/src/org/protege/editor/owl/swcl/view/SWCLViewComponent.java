@@ -839,10 +839,6 @@ System.out.println("row count is :" + rowCount);
 			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel, constraintsList);
 			acc.setVisible(true);
 			
-			// set alignment of jcheckbox to center
-			JCheckBox jb = new JCheckBox();
-			jb.setHorizontalAlignment(SwingConstants.CENTER);
-			tableModel.addRow(new Object[]{jb,"",""});
 		}
 		
 		// the event of clicking the M button, modify the selected constraint

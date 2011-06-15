@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -20,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -139,7 +142,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JLabel abstractSyntaxLabel = null;
 	private JTextArea abstractSyntaxArea = null;
 	private JButton submitButton = null;
-	private JScrollPane container = null;
+	private JScrollPane wholeContainerScrollPane = null;
+	private JPanel wholePanel = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
@@ -164,6 +168,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 	// controller
 	ConstraintController controller = null;
+
+
 	
     
 	// initialing...
@@ -198,20 +204,52 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
 	// initializing frame
 	private void initialize() {
-		this.setSize(680, 963);
+		this.setSize(680, 770);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		// set location of the frame in the window
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = kit.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+	    int frameH=this.getHeight();
+		int frameW=this.getWidth();
+		this.setLocation((screenWidth-frameW) / 2, (screenHeight-frameH) / 2);
 	}
 
-	// jContentPane
+	// jContentPane,default
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(null);
-			jContentPane.add(getJScrollPane(), null);
-			jContentPane.add(getJPanel2(), null);
+			jContentPane.setLayout(new BorderLayout());
+			jContentPane.add(getWholeContrainerScrollPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
+	}
+	
+	// whole scroll pane
+	private JScrollPane getWholeContrainerScrollPane(){
+		if(wholeContainerScrollPane == null){
+			wholeContainerScrollPane = new JScrollPane();
+			wholeContainerScrollPane.setViewportView(getConainerPane());
+			wholeContainerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			wholeContainerScrollPane.revalidate();
+		}
+		return wholeContainerScrollPane;
+	}
+	
+	// whole panel
+	private JPanel getConainerPane() {
+		if (wholePanel == null) {
+			wholePanel = new JPanel();
+			wholePanel.setPreferredSize(new Dimension(650,950));
+			wholePanel.setLayout(null);
+			wholePanel.add(getJScrollPane(), null);
+			wholePanel.add(getAbstractSyntaxPanel(), null);
+		}
+		return wholePanel;
 	}
 	
 	// content Scroll pane
@@ -282,6 +320,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return constraintNameField;
 	}
+	
 	// variableScrollPane
 	private JScrollPane getVariableScrollPane() {
 		if (variableScrollPane == null) {
@@ -484,7 +523,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return menuPanel;
 	}
 
-	private JPanel getJPanel2() {
+	private JPanel getAbstractSyntaxPanel() {
 		if (abstractSyntaxPanel == null) {
 			abstractSyntaxLabel = new JLabel();
 			abstractSyntaxLabel.setText("Abstract Syntax:");
@@ -873,6 +912,11 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		
 		// submit action
 		if(e.getActionCommand().equals("Submit")){
+			
+			// set alignment of jcheckbox to center
+			JCheckBox jb = new JCheckBox();
+			jb.setHorizontalAlignment(SwingConstants.CENTER);
+			tableModel.addRow(new Object[]{jb,"",""});
 			
 			int rowCount = this.tableModel.getRowCount();// =no. of constraints 
 			
