@@ -442,7 +442,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		if (addVariableButton == null) {
 			addVariableButton = new JButton();
 			addVariableButton.setText("+");
-			addVariableButton.setBounds(new Rectangle(422, 7, 49, 17));
+			addVariableButton.setBounds(new Rectangle(422, 7, 25, 18));
 			addVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -547,7 +547,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JButton getSubmitButton() {
 		if (submitButton == null) {
 			submitButton = new JButton();
-			submitButton.setBounds(new Rectangle(592, 9, 51, 24));
+			submitButton.setBounds(new Rectangle(592, 9, 51, 23));
 			submitButton.setText("Submit");
 			submitButton.addActionListener(this);
 		}
@@ -558,7 +558,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JButton getADD() {
 		if (add == null) {
 			add = new JButton();
-			add.setBounds(new Rectangle(190, 10, 69, 24));
+			add.setBounds(new Rectangle(190, 10, 69, 23));
 			add.setText("ADD");
 			add.addActionListener(this);
 		}
@@ -570,7 +570,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		if (okButton == null) {
 			okButton = new JButton();
 			okButton.setText("OK");
-			okButton.setBounds(new Rectangle(532, 9, 51, 24));
+			okButton.setBounds(new Rectangle(532, 9, 51, 23));
 			okButton.addActionListener(this);
 		}
 		return okButton;
@@ -581,7 +581,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		if (optionsComboBox == null) {
 			final String[] options = {"LHS Termblock","RHS Termblock"};
 			optionsComboBox = new JComboBox(options);
-			optionsComboBox.setBounds(new Rectangle(27, 10, 119, 28));
+			optionsComboBox.setBounds(new Rectangle(27, 10, 119, 23));
 		}
 		return optionsComboBox;
 	}
@@ -726,7 +726,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JButton getAddQualifierButton() {
 		if (addQualifierButton == null) {
 			addQualifierButton = new JButton();
-			addQualifierButton.setBounds(new Rectangle(149, 8, 49, 17));
+			addQualifierButton.setBounds(new Rectangle(138, 8, 25, 18));
 			addQualifierButton.setText("+");
 			addQualifierButton.addActionListener(new ActionListener(){
 

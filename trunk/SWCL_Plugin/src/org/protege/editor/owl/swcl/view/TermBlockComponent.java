@@ -68,13 +68,13 @@ public class TermBlockComponent extends JPanel {
 	// initializing..
 	private void initialize() {
 		factorLabel = new JLabel();
-		factorLabel.setBounds(new Rectangle(353, 18, 46, 18));
+		factorLabel.setBounds(new Rectangle(334, 18, 46, 18));
 		factorLabel.setText("factor");
 		parameterLabel = new JLabel();
-		parameterLabel.setBounds(new Rectangle(216, 18, 82, 18));
+		parameterLabel.setBounds(new Rectangle(190, 18, 82, 18));
 		parameterLabel.setText("Parameter");
 		aggregateOp = new JLabel();
-		aggregateOp.setBounds(new Rectangle(90, 18, 98, 18));
+		aggregateOp.setBounds(new Rectangle(80, 18, 98, 18));
 		aggregateOp.setText("aggregateOp");
 		signLabel = new JLabel();
 		signLabel.setBounds(new Rectangle(7, 18, 38, 18));
@@ -99,7 +99,7 @@ public class TermBlockComponent extends JPanel {
 			final String[] signs = {"+","-"};
 			
 			signComboBox = new JComboBox(signs);
-			signComboBox.setBounds(new Rectangle(7, 40, 49, 27));
+			signComboBox.setBounds(new Rectangle(7, 40, 40, 23));
 		}
 		return signComboBox;
 	}
@@ -109,7 +109,7 @@ public class TermBlockComponent extends JPanel {
 		if (aggOppComboBox == null) {
 			final String[] aggOpps = {"not use","sigma","production"};
 			aggOppComboBox = new JComboBox(aggOpps);
-			aggOppComboBox.setBounds(new Rectangle(90, 40, 103, 27));
+			aggOppComboBox.setBounds(new Rectangle(77, 40, 83, 23));
 		}
 		return aggOppComboBox;
 	}
@@ -122,7 +122,7 @@ public class TermBlockComponent extends JPanel {
 	private JScrollPane getParameterScrollPane() {
 		if (parametersScrollPane == null) {
 			parametersScrollPane = new JScrollPane();
-			parametersScrollPane.setBounds(new Rectangle(217, 40, 73, 62));
+			parametersScrollPane.setBounds(new Rectangle(190, 40, 115, 62));
 			parametersScrollPane.setViewportView(getParameterTable());
 		}
 		return parametersScrollPane;
@@ -148,7 +148,7 @@ public class TermBlockComponent extends JPanel {
 	private JButton getAddParameterButton() {
 		if (addParameterButton == null) {
 			addParameterButton = new JButton();
-			addParameterButton.setBounds(new Rectangle(290, 18, 43, 18));
+			addParameterButton.setBounds(new Rectangle(250, 18, 25, 18));
 			addParameterButton.setText("+");
 			addParameterButton.addActionListener(new ActionListener(){
 
@@ -204,7 +204,7 @@ public class TermBlockComponent extends JPanel {
 	private JButton getAddFactorButton() {
 		if (addFactorButton == null) {
 			addFactorButton = new JButton();
-			addFactorButton.setBounds(new Rectangle(406, 18, 43, 18));
+			addFactorButton.setBounds(new Rectangle(372, 18, 25, 18));
 			addFactorButton.setText("+");
 			addFactorButton.addActionListener(new ActionListener(){
 
