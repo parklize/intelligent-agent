@@ -845,7 +845,7 @@ System.out.println("row count is :" + rowCount);
 		if(e.getActionCommand().equals("M")){
 			
 			Constraint con = getSelectedConstraint(tableModel);
-System.out.println(con==null);
+//System.out.println(con==null);
 //Utils.printConstraint(con);
 			ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
 			mcc.setVisible(true);
