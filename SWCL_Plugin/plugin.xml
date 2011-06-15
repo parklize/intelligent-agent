@@ -4,10 +4,11 @@
 <plugin>
    <extension id="ExampleViewComponent"
               point="org.protege.editor.core.application.ViewComponent">
-      <label value="SWCL View"/>
+      <label value="Constraint View"/>
       <class value="org.protege.editor.owl.swcl.view.SWCLViewComponent"/>
       <category value="@org.protege.ontologycategory"/>
    </extension>
+   <!--
    <extension id="ExampleWorkspaceTab"
               point="org.protege.editor.core.application.WorkspaceTab">
       <label value="Example Tab"/>
@@ -16,4 +17,5 @@
       <editorKitId value="OWLEditorKit"/>
       <defaultViewConfigFileName value="viewconfig-exampleTab.xml"/>
    </extension>
+   -->
 </plugin>

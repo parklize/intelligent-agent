@@ -3,6 +3,7 @@ package org.protege.editor.owl.swcl.view;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,6 +24,9 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -845,21 +849,41 @@ System.out.println("row count is :" + rowCount);
 		if(e.getActionCommand().equals("M")){
 			
 			Constraint con = getSelectedConstraint(tableModel);
+			
+			if(con == null){
+				
+				// show msg when no constraint selected
+				JOptionPane.showMessageDialog (null, "Select constraint to modify!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+				
+			}else{
 //System.out.println(con==null);
 //Utils.printConstraint(con);
-			ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
-			mcc.setVisible(true);
+				ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
+				mcc.setVisible(true);
+			}
 			
 		}
 		
 		// the event of clicking the D button, delete selected constraint
 		if(e.getActionCommand().equals("D")){
 			
-			// =no. of constraints 
-			int rowCount = tableModel.getRowCount();
 			
-			// delete selected items
-			deleteItem(rowCount, tableModel);
+			Constraint con = getSelectedConstraint(tableModel);
+			
+			if(con == null){
+				
+				// show msg when no constraint selected
+				JOptionPane.showMessageDialog (null, "Select constraint to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+				
+			}else{
+				
+				// =no. of constraints 
+				int rowCount = tableModel.getRowCount();
+				
+				// delete selected items
+				deleteItem(rowCount, tableModel);
+				
+			}
 			
 		}
 	}
