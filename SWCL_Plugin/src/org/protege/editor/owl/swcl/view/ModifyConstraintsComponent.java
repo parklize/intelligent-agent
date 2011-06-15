@@ -157,10 +157,6 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private Constraint oldCon = null;
 	
 	// create ontology manager to work with
-	private OWLOntologyManager manager = null;  //  @jve:decl-index=0:
-	private OWLDataFactory dataFactory = null;  //  @jve:decl-index=0:
-	private String base = null;  //  @jve:decl-index=0:
-	private PrefixManager pm = null;  //  @jve:decl-index=0:
 	private SWCLOntologyController soh = null;
 	private JScrollPane wholeContainerScrollPane = null;
 	private JPanel wholePanel = null;
