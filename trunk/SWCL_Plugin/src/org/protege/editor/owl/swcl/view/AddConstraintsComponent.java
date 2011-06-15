@@ -139,6 +139,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JLabel abstractSyntaxLabel = null;
 	private JTextArea abstractSyntaxArea = null;
 	private JButton submitButton = null;
+	private JScrollPane container = null;
 	
 	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
 	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
