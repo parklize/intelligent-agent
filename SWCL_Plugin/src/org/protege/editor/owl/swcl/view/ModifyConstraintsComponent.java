@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -111,6 +112,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JPanel containerPanel = null;
 	private JPanel menuPanel = null;
 	private JButton add = null;
+	private JButton del = null;
 	private JComboBox optionsComboBox = null;
 	private JScrollPane lhsScrollPane = null;
 	private JPanel lhsPanel = null;
@@ -126,12 +128,13 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JScrollPane variableScrollPane = null;
 	private JPanel variablePanel = null;
 	private JButton addVariableButton = null;
+	private JButton removeVariableButton = null;
 	private JScrollPane variablesScrollPane = null;
 	private JTable variablesTable = null;
 	private JScrollPane qualifiersScrollPane = null;
 	private JTable qualifiersTable = null;
 	private JButton addQualifierButton = null;
-	private JTextPane classExpressionTextPane = null;
+	private JButton removeQualifierButton = null;
 	private TableColumn qualifierVariable = null;
     private DefaultTableModel tableModel = null;
 	private JLabel constraintName = null;
@@ -155,6 +158,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private String abstractSyntax = null;
 	private Constraint con = null;
 	private Constraint oldCon = null;
+	private ArrayList<Constraint> constraintList = null;
 	
 	// create ontology manager to work with
 	private SWCLOntologyController soh = null;
@@ -162,15 +166,15 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private JPanel wholePanel = null;
 
 	// initialing...
-	public ModifyConstraintsComponent(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel) {
+	public ModifyConstraintsComponent(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel,  ArrayList<Constraint> constraintList) {
 		super();
-		preinitialize(con, ow, owlModelManager,totalVariablesList,tableModel);
+		preinitialize(con, ow, owlModelManager,totalVariablesList,tableModel,constraintList);
 		initialize();
 //		this.classExpressionTextPane = getClassExpressionPane();
 
 	}
 	
-	private void preinitialize(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel){
+	private void preinitialize(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel,ArrayList<Constraint> constraintList){
 		 // get variables already announced
 		this.totalVariablesList = totalVariablesList;
 		this.variablesList = totalVariablesList;
@@ -179,6 +183,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		this.oldCon = con;
 		this.tableModel = tableModel;
 		this.soh = new SWCLOntologyController(ont);
+		this.constraintList = constraintList;
+		
 		// set base
 		this.controller = new ConstraintController(owlModelManager, soh);
 
@@ -329,6 +335,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			variablePanel = new JPanel();
 			variablePanel.setLayout(null);
 			variablePanel.add(getAddVariableButton());
+			variablePanel.add(getRemoveVariableButton());
 			variablePanel.add(getVariablesScrollPane(), null);
 //			variablePanel.add(getJPanel2(), null);
 //			variablePanel.add(getClassExpressionApplyButton(), null);
@@ -377,34 +384,49 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 					if(e.getType() == TableModelEvent.UPDATE){
 						
 						// get changed value
-						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());	
+						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());
 						
-						// set name if column 0 is changed, set description if column 1 is changed
-						if(e.getColumn() == 0){
-							variablesList.get(e.getLastRow()).setName(newValue);
-						}else if(e.getColumn() == 1){
-							variablesList.get(e.getLastRow()).setDescription(newValue);
+						// check rename variable
+						boolean checVariable = false;
+						for(Variable v:variablesList){
+							if(v.getName().equals(newValue) && !newValue.equals("")){
+								checVariable = true;
+							}
 						}
 						
-						// apply change to qualifierVariable table
-//						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
-						Utils.refreshComboBox(variablesList, qualifierVariable);
-						
-						// apply change to termblocks
-						for(int i=0;i<100;i++){
-							if(rhsTermblocks[i] != null){
-//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
-//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
-								Utils.refreshComboBox(variablesList, rhsTermblocks[i].getParameterColumn());
-								Utils.refreshComboBox(variablesList, rhsTermblocks[i].getFactorVariableColumn());
+						if(checVariable){
+							// show msg when no constraint selected
+							JOptionPane.showMessageDialog (null, "Variable name exist!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+							variablesTable.setValueAt("", e.getLastRow(), e.getColumn());
+							
+						}else{
+							// set name if column 0 is changed, set description if column 1 is changed
+							if(e.getColumn() == 0){
+								variablesList.get(e.getLastRow()).setName(newValue);
+							}else if(e.getColumn() == 1){
+								variablesList.get(e.getLastRow()).setDescription(newValue);
 							}
-							if(lhsTermblocks[i] != null){
-//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
-//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
-								Utils.refreshComboBox(variablesList, lhsTermblocks[i].getParameterColumn());
-								Utils.refreshComboBox(variablesList, lhsTermblocks[i].getFactorVariableColumn());
-							}
-						}				
+							
+							// apply change to qualifierVariable table
+	//						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+							Utils.refreshComboBox(variablesList, qualifierVariable);
+							
+							// apply change to termblocks
+							for(int i=0;i<100;i++){
+								if(rhsTermblocks[i] != null){
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+									Utils.refreshComboBox(variablesList, rhsTermblocks[i].getParameterColumn());
+									Utils.refreshComboBox(variablesList, rhsTermblocks[i].getFactorVariableColumn());
+								}
+								if(lhsTermblocks[i] != null){
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+									Utils.refreshComboBox(variablesList, lhsTermblocks[i].getParameterColumn());
+									Utils.refreshComboBox(variablesList, lhsTermblocks[i].getFactorVariableColumn());
+								}
+							}		
+						}
 					}
 				}
 			});
@@ -484,6 +506,54 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		return addVariableButton;
 	}
 	
+	// remove variable button
+	private JButton getRemoveVariableButton() {
+		
+		if (removeVariableButton == null) {
+			removeVariableButton = new JButton();
+			removeVariableButton.setText("-");
+			removeVariableButton.setBounds(new Rectangle(452, 7, 25, 18));
+			removeVariableButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+
+					DefaultTableModel model = (DefaultTableModel) variablesTable.getModel();
+					
+					// remove variable to variablesList
+					int index = model.getRowCount()-1;
+					if(index < 0){
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "No variable to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						variablesList.remove(index);
+
+						model.removeRow(model.getRowCount()-1);
+	
+						// apply change to qualifierVariable table
+	//					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+						Utils.refreshComboBox(variablesList, qualifierVariable);
+						
+						// apply change to termblocks
+						for(int i=0;i<100;i++){
+							if(rhsTermblocks[i] != null){
+	//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+	//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+								Utils.refreshComboBox(variablesList,rhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(variablesList,rhsTermblocks[i].getFactorVariableColumn());
+							}
+							if(lhsTermblocks[i] != null){
+	//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+	//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+								Utils.refreshComboBox(variablesList,lhsTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(variablesList,lhsTermblocks[i].getFactorVariableColumn());
+							}
+						}
+					}
+				}
+			});
+		}
+		return removeVariableButton;
+	}
 /*	
 	// class expression change apply button
 	private JButton getClassExpressionApplyButton() {
@@ -517,6 +587,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			menuPanel.add(getOkButton(), null);
 			menuPanel.add(getSubmitButton(),null);
 			menuPanel.add(getADD(), null);
+			menuPanel.add(getDEL(), null);
 			menuPanel.add(getOptionsComboBox(), null);
 		}
 		return menuPanel;
@@ -568,6 +639,17 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			add.addActionListener(this);
 		}
 		return add;
+	}
+	
+	// Del Button
+	private JButton getDEL() {
+		if (del == null) {
+			del = new JButton();
+			del.setBounds(new Rectangle(267, 10, 69, 23));
+			del.setText("DEL");
+			del.addActionListener(this);
+		}
+		return del;
 	}
 	
 	// OK button
@@ -691,6 +773,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 
 			qualifierPanel.add(getQualifiersScrollPane(), null);
 			qualifierPanel.add(getAddQualifierButton(), null);
+			qualifierPanel.add(getRemoveQualifierButton(), null);
 		}
 		return qualifierPanel;
 	}
@@ -747,6 +830,32 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		return addQualifierButton;
 	}
 	
+	// remove qualifier button
+	private JButton getRemoveQualifierButton() {
+		
+		if (removeQualifierButton == null) {
+			
+			removeQualifierButton = new JButton();
+			removeQualifierButton.setBounds(new Rectangle(168, 8, 25, 18));
+			removeQualifierButton.setText("-");
+			removeQualifierButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					
+					DefaultTableModel model = (DefaultTableModel) qualifiersTable.getModel();
+					int index = model.getRowCount()-1;
+					if(index < 0){
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "No qualifier to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						model.removeRow(index);
+					}
+				}
+				
+			});
+		}
+		return removeQualifierButton;
+	}
 	/*
 	 * RHS part
 	 */
@@ -988,42 +1097,123 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			}		
 		}	
 		
+		// DEL event
+		if(e.getActionCommand().equals("DEL")){
+			
+			String selectedItem = (String) optionsComboBox.getSelectedItem();
+			
+			if(selectedItem.equals("LHS Termblock")){
+				
+				if(lhsTermblockNumber < 1){
+					// show msg when no constraint selected
+					JOptionPane.showMessageDialog (null, "No termblock to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+				}else{
+					lhsPanel.remove(lhsPanel.getComponentCount()-1);
+					double lhsPanelHeight = lhsPanel.getPreferredSize().getHeight()-112;
+					// resize rhsPanel
+					lhsPanel.setPreferredSize(new Dimension(0,(int)lhsPanelHeight));
+					lhsPanel.revalidate();
+					lhsPanel.repaint();
+					lhsTermblockNumber--;
+				}
+				
+			}else if(selectedItem.equals("RHS Termblock")){
+				
+				if(rhsTermblockNumber < 1){
+					// show msg when no constraint selected
+					JOptionPane.showMessageDialog (null, "No termblock to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+				}else{
+					rhsPanel.remove(rhsPanel.getComponentCount()-1);
+					double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()-112;
+					// resize rhsPanel
+					rhsPanel.setPreferredSize(new Dimension(0,(int)rhsPanelHeight));
+					rhsPanel.revalidate();
+					rhsPanel.repaint();
+					rhsTermblockNumber--;
+				}
+				
+			}	
+		}	
+		
 		// OK event
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
-			this.abstractSyntax = Utils.getSWCLAbstractSyntax(variablesList, con);
-			abstractSyntaxArea.setText(abstractSyntax);
+			String newName = this.con.getName();
 			
+			// check the constraint name exist
+			boolean checkCon = false;
+			
+			// did not change the name
+			if(newName.equals(this.oldCon.getName())){
+				checkCon = false;
+			}else{
+				for(Constraint constraint:this.constraintList){
+					if(constraint.getName().equals(newName)){
+						checkCon = true;
+					}
+				}
+			}
+			
+			if(checkCon){
+				// show msg when no constraint selected
+				JOptionPane.showMessageDialog (null, "Constraint name exist!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+			}else{
+	
+				this.abstractSyntax = Utils.getSWCLAbstractSyntax(variablesList, con);
+				abstractSyntaxArea.setText(abstractSyntax);
+			}
 		}
 		
 		// submit action
 		if(e.getActionCommand().equals("Submit")){
 			
-			int rowCount = this.tableModel.getRowCount();// =no. of constraints 
 			
-			for(int i=0;i<rowCount;i++){
-				if (i==(rowCount-1)){
-					this.tableModel.setValueAt(this.abstractSyntax,i,2);
-					this.tableModel.setValueAt(this.con.getName(), i, 1);
+			String newName = this.con.getName();
+			
+			// check the constraint name exist
+			boolean checkCon = false;
+			
+			// did not change the name
+			if(newName.equals(this.oldCon.getName())){
+				checkCon = false;
+			}else{
+				for(Constraint constraint:this.constraintList){
+					if(constraint.getName().equals(newName)){
+						checkCon = true;
+					}
 				}
 			}
 			
-			// write variables to ontology
-			this.controller.writeVariablesToOnt(this.variablesList);
+			if(checkCon){
+				// show msg when no constraint selected
+				JOptionPane.showMessageDialog (null, "Constraint name exist!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+			}else{
 	
-System.out.println("old constraint name is:" + this.oldCon.getName());
-			// delete constraint first
-			this.controller.deleteConstraint(this.oldCon.getName());
-			
-			// write constraint to ontology
-			this.controller.writeConstraintToOnt(this.con);
-			
-			// add varibaleList to totalVariablesList
-			this.totalVariablesList = this.variablesList;
-			
-			this.dispose();
-
+				int rowCount = this.tableModel.getRowCount();// =no. of constraints 
+				
+				for(int i=0;i<rowCount;i++){
+					if (i==(rowCount-1)){
+						this.tableModel.setValueAt(this.abstractSyntax,i,2);
+						this.tableModel.setValueAt(this.con.getName(), i, 1);
+					}
+				}
+				
+				// write variables to ontology
+				this.controller.writeVariablesToOnt(this.variablesList);
+		
+	//System.out.println("old constraint name is:" + this.oldCon.getName());
+				// delete constraint first
+				this.controller.deleteConstraint(this.oldCon.getName());
+				
+				// write constraint to ontology
+				this.controller.writeConstraintToOnt(this.con);
+				
+				// add varibaleList to totalVariablesList
+				this.totalVariablesList = this.variablesList;
+				
+				this.dispose();
+			}
 		}
 	}
 } 
