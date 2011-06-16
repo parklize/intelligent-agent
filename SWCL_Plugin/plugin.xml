@@ -6,6 +6,7 @@
               point="org.protege.editor.core.application.ViewComponent">
       <label value="SWCL View"/>
       <class value="org.protege.editor.owl.swcl.view.SWCLViewComponent"/>
+      <headerColor value="@org.protege.classcolor"/>
       <category value="@org.protege.ontologycategory"/>
    </extension>
    <!--
