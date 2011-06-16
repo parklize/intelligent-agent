@@ -355,6 +355,11 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			variablesTable = new JTable(model);
 			
+			// set variable width
+			TableColumn tableColumn = variablesTable.getColumn("Variable");
+			tableColumn.setMaxWidth(60);
+			tableColumn.setMinWidth(60);
+			
 			// add variables from totalvariables list to display
 			if(totalVariablesList.size() != 0){
 				for(Variable v:totalVariablesList){
