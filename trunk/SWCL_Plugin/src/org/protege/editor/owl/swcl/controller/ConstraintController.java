@@ -14,6 +14,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.Variable;
+import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -82,7 +83,6 @@ public class ConstraintController {
 //System.out.println("Prefix:"+prefix);
 
 			for(Variable v:variablesList){
-				
 //				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
 				// create subclass axiom
 //				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
