@@ -26,12 +26,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -56,6 +58,7 @@ import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.RHS;
 import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
+import org.protege.editor.owl.swcl.utils.AbstractSyntaxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckBoxRenderer;
 import org.protege.editor.owl.swcl.utils.CheckButtonEditor;
 import org.protege.editor.owl.swcl.utils.Utils;
@@ -77,6 +80,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
+
 
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassExpressionImpl;
@@ -326,7 +330,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		if (constraintsTable == null) {
 			// Initialize column headings
-			final String[] colHeads = {"Enabled","Constraint Name", "Constraint"};
+			final String[] colHeads = {"Enabled","Constraint Name", "Abstract syntax of constraint"};
 			// Initialize data with null
 			final Object[][] data = null;
 			
@@ -339,6 +343,17 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			tableColumn.setCellEditor(new CheckButtonEditor(new JCheckBox()));
 			tableColumn.setCellRenderer(new CheckBoxRenderer());// renderer for displaying the checkbox component in the cell
 			
+			TableColumn cnTableColumn = constraintsTable.getColumn("Constraint Name");
+			DefaultTableCellRenderer dt = new DefaultTableCellRenderer();
+			dt.setHorizontalAlignment(JLabel.CENTER);
+			cnTableColumn.setCellRenderer(dt);
+			cnTableColumn = constraintsTable.getColumn("Constraint Name");
+			cnTableColumn.setMaxWidth(150);
+			cnTableColumn.setMinWidth(150);
+			
+			TableColumn asocTableColumn = constraintsTable.getColumn("Abstract syntax of constraint");
+			asocTableColumn.setCellRenderer(new AbstractSyntaxRenderer());
+
 		}
 		
 		return constraintsTable;
@@ -784,7 +799,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// =no. of constraints 
 		int rowCount = tableModel.getRowCount();
-System.out.println("row count is :" + rowCount);		
+//System.out.println("row count is :" + rowCount);		
 		for(int i=0;i<rowCount;i++){
 			
 			JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);

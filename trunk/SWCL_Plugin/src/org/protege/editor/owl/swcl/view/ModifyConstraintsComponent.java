@@ -7,32 +7,21 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.protege.editor.core.ui.split.ViewSplitPane;
-import org.protege.editor.core.ui.split.ViewSplitPaneDivider;
-import org.protege.editor.core.ui.view.View;
-import org.protege.editor.core.ui.view.ViewComponent;
-import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.swcl.controller.ConstraintController;
@@ -47,50 +36,12 @@ import org.protege.editor.owl.swcl.model.RHS;
 import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.Utils;
-import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.OWLRenderer;
-import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.io.WriterDocumentTarget;
-import org.semanticweb.owlapi.model.AddAxiom;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import javax.swing.BorderFactory;
 import java.awt.SystemColor;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JTextArea;
 /**
  * 
@@ -177,7 +128,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private void preinitialize(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel,ArrayList<Constraint> constraintList){
 		 // get variables already announced
 		this.totalVariablesList = totalVariablesList;
-		this.variablesList = totalVariablesList;
+Utils.printVariablesList("total at first:", this.totalVariablesList);
+		this.variablesList = (ArrayList<Variable>) totalVariablesList.clone();
 		this.ont = owlModelManager.getActiveOntology();
 		this.con = con;
 		this.oldCon = con;
@@ -527,7 +479,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 					}else{
 						variablesList.remove(index);
 
-						model.removeRow(model.getRowCount()-1);
+						model.removeRow(index);
 	
 						// apply change to qualifierVariable table
 	//					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
@@ -952,7 +904,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		
 		for(int i=0;i<tableModel.getRowCount();i++){
 			String valName = (String)tableModel.getValueAt(i, 0);
-			for(Variable v:totalVariablesList){
+			for(Variable v:variablesList){
 				if(valName.equals(v.getName())){
 					Qualifier qua = new Qualifier(v);
 					con.getQualifiers().add(qua);
@@ -982,7 +934,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			for(int u=0;u<tModel.getRowCount();u++){
 				String valName = (String)tModel.getValueAt(u, 0);
 				Parameter p = new Parameter();
-				p.setV(Utils.findVariableWithName(totalVariablesList, valName));
+				p.setV(Utils.findVariableWithName(variablesList, valName));
 				pList.add(p);
 			}
 			
@@ -999,7 +951,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 				// NEED UPDATE (set Factor's OWLProperty)
 				String pro = (String)fModel.getValueAt(q, 1);
 				
-				f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+				f.setV(Utils.findVariableWithName(variablesList, vName));
 				f.setOwlProperty(pro);
 				fList.add(f);
 			}
@@ -1036,7 +988,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 			for(int u=0;u<tModel.getRowCount();u++){
 				String valName = (String)tModel.getValueAt(u, 0);
 				Parameter p = new Parameter();
-				p.setV(Utils.findVariableWithName(totalVariablesList, valName));
+				p.setV(Utils.findVariableWithName(variablesList, valName));
 				pList.add(p);
 			}
 			
@@ -1052,7 +1004,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 				String vName = (String)fModel.getValueAt(q, 0);
 				// NEED UPDATE (set Factor's OWLProperty)
 				String pro = (String)fModel.getValueAt(q, 1);
-				f.setV(Utils.findVariableWithName(totalVariablesList, vName));
+				f.setV(Utils.findVariableWithName(variablesList, vName));
 				f.setOwlProperty(pro);
 				fList.add(f);
 			}
@@ -1210,8 +1162,10 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 				this.controller.writeConstraintToOnt(this.con);
 				
 				// add varibaleList to totalVariablesList
+
 				this.totalVariablesList = this.variablesList;
-				
+Utils.printVariablesList("total:", this.totalVariablesList);
+Utils.printVariablesList("variables:", variablesList);				
 				this.dispose();
 			}
 		}
