@@ -44,10 +44,12 @@ public class TermBlockComponent extends JPanel {
 	// swcl attrs
 	private ArrayList<Variable> variablesList = null;  //  @jve:decl-index=0:
 	private JButton addParameterButton = null;
+	private JButton removeParameterButton = null;
 	private JScrollPane factorScrollPane = null;
 	private JTable factorTable = null;
 	private TableColumn factorVariableColumn = null;
 	private JButton addFactorButton = null;
+	private JButton removeFactorButton = null;
 	private OWLOntology ont = null;
 	private SWCLOntologyController swclOntologyHelper = null;
 
@@ -89,8 +91,10 @@ public class TermBlockComponent extends JPanel {
 		this.add(factorLabel, null);
 		this.add(getParameterScrollPane(), null);
 		this.add(getAddParameterButton(), null);
+		this.add(getRemoveParameterButton(),null);
 		this.add(getFactorScrollPane(), null);
 		this.add(getAddFactorButton(), null);
+		this.add(getRemoveFactorButton(),null);
 	}
 
 	// sign combobox
@@ -146,7 +150,9 @@ public class TermBlockComponent extends JPanel {
 	
 	// add parameter button
 	private JButton getAddParameterButton() {
+		
 		if (addParameterButton == null) {
+			
 			addParameterButton = new JButton();
 			addParameterButton.setBounds(new Rectangle(250, 18, 25, 18));
 			addParameterButton.setText("+");
@@ -161,6 +167,27 @@ public class TermBlockComponent extends JPanel {
 				}});
 		}
 		return addParameterButton;
+	}
+	
+	// remove parameter button
+	private JButton getRemoveParameterButton() {
+		
+		if (removeParameterButton == null) {
+			
+			removeParameterButton = new JButton();
+			removeParameterButton.setBounds(new Rectangle(280, 18, 25, 18));
+			removeParameterButton.setText("-");
+			removeParameterButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					
+					DefaultTableModel model = (DefaultTableModel) parametersTable.getModel();
+					model.removeRow(model.getRowCount()-1);
+					
+				}});
+		}
+		return removeParameterButton;
 	}
 	/*
 	 * Factor
@@ -221,6 +248,26 @@ public class TermBlockComponent extends JPanel {
 		return addFactorButton;
 	}
 	
+	// remove factor button
+	private JButton getRemoveFactorButton() {
+		if (removeFactorButton == null) {
+			removeFactorButton = new JButton();
+			removeFactorButton.setBounds(new Rectangle(402, 18, 25, 18));
+			removeFactorButton.setText("-");
+			removeFactorButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+
+					DefaultTableModel model = (DefaultTableModel) factorTable.getModel();
+					model.removeRow(model.getRowCount()-1);
+					
+				}
+				
+			});
+		}
+		return removeFactorButton;
+	}
 	/*
 	 * getter & setter
 	 */

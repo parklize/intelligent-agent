@@ -128,11 +128,13 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane variableScrollPane = null;
 	private JPanel variablePanel = null;
 	private JButton addVariableButton = null;
+	private JButton removeVariableButton = null;
 	private JScrollPane variablesScrollPane = null;
 	private JTable variablesTable = null;
 	private JScrollPane qualifiersScrollPane = null;
 	private JTable qualifiersTable = null;
 	private JButton addQualifierButton = null;
+	private JButton removeQualifierButton = null;
 	private JTextPane classExpressionTextPane = null;
 	private TableColumn qualifierVariable = null;
     private DefaultTableModel tableModel = null;
@@ -337,6 +339,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			variablePanel = new JPanel();
 			variablePanel.setLayout(null);
 			variablePanel.add(getAddVariableButton());
+			variablePanel.add(getRemoveVariableButton(), null);
 			variablePanel.add(getVariablesScrollPane(), null);
 //			variablePanel.add(getJPanel2(), null);
 //			variablePanel.add(getClassExpressionApplyButton(), null);
@@ -362,6 +365,11 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
 			variablesTable = new JTable(model);
+			
+			// set variable width
+			TableColumn tableColumn = variablesTable.getColumn("Variable");
+			tableColumn.setMaxWidth(60);
+			tableColumn.setMinWidth(60);
 			
 			// add variables from totalvariables list to display
 			if(totalVariablesList.size() != 0){
@@ -484,7 +492,51 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 				}
 			});
 		}
-		return addVariableButton;
+		return addVariableButton; 
+	}
+	
+	// remove variable button
+	private JButton getRemoveVariableButton() {
+		
+		if (removeVariableButton == null) {
+			removeVariableButton = new JButton();
+			removeVariableButton.setText("-");
+			removeVariableButton.setBounds(new Rectangle(452, 7, 25, 18));
+			removeVariableButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+
+					DefaultTableModel model = (DefaultTableModel) variablesTable.getModel();
+					
+					// add variable to variablesList
+					variablesList.remove(model.getRowCount()-1);
+					
+					model.removeRow(model.getRowCount()-1);
+
+					// apply change to qualifierVariable table
+//					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+					Utils.refreshComboBox(variablesList, qualifierVariable);
+					
+					// apply change to termblocks
+					for(int i=0;i<100;i++){
+						if(rhsTermblocks[i] != null){
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+							Utils.refreshComboBox(variablesList,rhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(variablesList,rhsTermblocks[i].getFactorVariableColumn());
+						}
+						if(lhsTermblocks[i] != null){
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+//							Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+							Utils.refreshComboBox(variablesList,lhsTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(variablesList,lhsTermblocks[i].getFactorVariableColumn());
+						}
+					}
+					
+				}
+			});
+		}
+		return removeVariableButton;
 	}
 /*	
 	// class expression change apply button
@@ -653,6 +705,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 			qualifierPanel.add(getQualifiersScrollPane(), null);
 			qualifierPanel.add(getAddQualifierButton(), null);
+			qualifierPanel.add(getRemoveQualifierButton(),null);
 		}
 		return qualifierPanel;
 	}
@@ -685,7 +738,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 	// add qualifier button
 	private JButton getAddQualifierButton() {
+		
 		if (addQualifierButton == null) {
+			
 			addQualifierButton = new JButton();
 			addQualifierButton.setBounds(new Rectangle(138, 8, 25, 18));
 			addQualifierButton.setText("+");
@@ -701,6 +756,28 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			});
 		}
 		return addQualifierButton;
+	}
+	
+	// remove qualifier button
+	private JButton getRemoveQualifierButton() {
+		
+		if (removeQualifierButton == null) {
+			
+			removeQualifierButton = new JButton();
+			removeQualifierButton.setBounds(new Rectangle(168, 8, 25, 18));
+			removeQualifierButton.setText("-");
+			removeQualifierButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					
+					DefaultTableModel model = (DefaultTableModel) qualifiersTable.getModel();
+					model.removeRow(model.getRowCount()-1);
+					
+				}
+				
+			});
+		}
+		return removeQualifierButton;
 	}
 	
 	/*
