@@ -1151,6 +1151,7 @@ Utils.printVariablesList("total at first:", this.totalVariablesList);
 					}
 				}
 				
+				
 				// write variables to ontology
 				this.controller.writeVariablesToOnt(this.variablesList);
 		
@@ -1164,8 +1165,8 @@ Utils.printVariablesList("total at first:", this.totalVariablesList);
 				// add varibaleList to totalVariablesList
 
 				this.totalVariablesList = this.variablesList;
-Utils.printVariablesList("total:", this.totalVariablesList);
-Utils.printVariablesList("variables:", variablesList);				
+//Utils.printVariablesList("total:", this.totalVariablesList);
+//Utils.printVariablesList("variables:", variablesList);				
 				this.dispose();
 			}
 		}

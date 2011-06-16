@@ -799,6 +799,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// =no. of constraints 
 		int rowCount = tableModel.getRowCount();
+		
 //System.out.println("row count is :" + rowCount);		
 		for(int i=0;i<rowCount;i++){
 			
@@ -817,7 +818,6 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			
 		}
 		return null;
-		
 	}
 	
 	// delete selected item from constrait table, and delete delete selected constraint at the same time
@@ -852,8 +852,8 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 		
 		// the event of clicking the + button, add one row to constraints table
-		if(e.getActionCommand().equals("+")){
-			
+		if(e.getActionCommand().equals("+")){		
+	    	
 			// create add constraint component
 			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel, constraintsList);
 			acc.setVisible(true);
@@ -862,7 +862,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// the event of clicking the M button, modify the selected constraint
 		if(e.getActionCommand().equals("M")){
-			
+	    	
 			Constraint con = getSelectedConstraint(tableModel);
 			
 			if(con == null){
