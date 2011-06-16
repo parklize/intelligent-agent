@@ -858,7 +858,7 @@ System.out.println("row count is :" + rowCount);
 			}else{
 //System.out.println(con==null);
 //Utils.printConstraint(con);
-				ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel);
+				ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel,constraintsList);
 				mcc.setVisible(true);
 			}
 			

@@ -1,6 +1,7 @@
 package org.protege.editor.owl.swcl.view;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
@@ -161,8 +162,15 @@ public class TermBlockComponent extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					
-					DefaultTableModel model = (DefaultTableModel) parametersTable.getModel();
-					model.addRow(new Object[]{variablesList.get(0).getName()});
+					if(aggOppComboBox.getSelectedItem().equals("not use")){
+						
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "Select aggOpp!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+						
+					}else{
+						DefaultTableModel model = (DefaultTableModel) parametersTable.getModel();
+						model.addRow(new Object[]{variablesList.get(0).getName()});
+					}
 					
 				}});
 		}
@@ -183,7 +191,14 @@ public class TermBlockComponent extends JPanel {
 				public void actionPerformed(ActionEvent arg0) {
 					
 					DefaultTableModel model = (DefaultTableModel) parametersTable.getModel();
-					model.removeRow(model.getRowCount()-1);
+					int index = model.getRowCount()-1;
+					
+					if(index < 0){
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "No parameter to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						model.removeRow(index);
+					}
 					
 				}});
 		}
@@ -260,7 +275,13 @@ public class TermBlockComponent extends JPanel {
 				public void actionPerformed(ActionEvent arg0) {
 
 					DefaultTableModel model = (DefaultTableModel) factorTable.getModel();
-					model.removeRow(model.getRowCount()-1);
+					int index = model.getRowCount()-1;
+					if(index < 0){
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "No factor to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						model.removeRow(index);
+					}
 					
 				}
 				
