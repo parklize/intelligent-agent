@@ -128,7 +128,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 	private void preinitialize(Constraint con, OWLWorkspace ow, OWLModelManager owlModelManager, ArrayList<Variable> totalVariablesList, DefaultTableModel tableModel,ArrayList<Constraint> constraintList){
 		 // get variables already announced
 		this.totalVariablesList = totalVariablesList;
-Utils.printVariablesList("total at first:", this.totalVariablesList);
+//Utils.printVariablesList("total at first:", this.totalVariablesList);
 		this.variablesList = (ArrayList<Variable>) totalVariablesList.clone();
 		this.ont = owlModelManager.getActiveOntology();
 		this.con = con;
@@ -1151,19 +1151,32 @@ Utils.printVariablesList("total at first:", this.totalVariablesList);
 					}
 				}
 				
+				this.controller.deleteVariables();
+				
+Utils.printVariablesList("ddd", this.variablesList);
+
+//				this.variablesList = this.controller.getAllVariables();
+
+				
+//System.out.println("old constraint name is:" + this.oldCon.getName());
+				// delete constraint first
+				this.controller.deleteConstraint(this.oldCon.getName());
 				
 				// write variables to ontology
 				this.controller.writeVariablesToOnt(this.variablesList);
-		
-	//System.out.println("old constraint name is:" + this.oldCon.getName());
-				// delete constraint first
-				this.controller.deleteConstraint(this.oldCon.getName());
 				
 				// write constraint to ontology
 				this.controller.writeConstraintToOnt(this.con);
 				
+				for(Constraint c:constraintList){
+					if(c.getName().equals(this.oldCon.getName())){
+						c.setName(this.con.getName());
+					}
+				}
+				
+				
+				
 				// add varibaleList to totalVariablesList
-
 				this.totalVariablesList = this.variablesList;
 //Utils.printVariablesList("total:", this.totalVariablesList);
 //Utils.printVariablesList("variables:", variablesList);				

@@ -1,6 +1,8 @@
 package org.protege.editor.owl.swcl.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +85,7 @@ public class ConstraintController {
 //System.out.println("Prefix:"+prefix);
 
 			for(Variable v:variablesList){
+System.out.println("v:"+v.getName());
 //				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
 				// create subclass axiom
 //				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
@@ -253,7 +256,9 @@ public class ConstraintController {
 		OWLObjectProperty hasQualifier = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasQualifier"));
 		ArrayList<Qualifier> qualifierList = con.getQualifiers();
 		for(Qualifier q:qualifierList){
+//System.out.println("qualifier is:"+q.getV().getName());
 			OWLIndividual ind = soh.getOWLIndividual(q.getV().getName());
+System.out.println("ind is:"+ind.toString());
 			OWLObjectPropertyAssertionAxiom assertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasQualifier, conInd, ind);
 			AddAxiom addAxiomChange = new AddAxiom(ont,assertion);
 			manager.applyChange(addAxiomChange);
@@ -485,9 +490,86 @@ public class ConstraintController {
 		
 	}
 
+	public ArrayList<Variable> getAllVariables() {
+		
+		ArrayList<Variable> variablesList = new ArrayList<Variable>();
+		
+		try {   
+	    	Iterator it = null;
+			
+			// create Variable class
+			OWLClassImpl variableCls = new OWLClassImpl(dataFactory,IRI.create(base + "#Variable"));
+			
+			// temporary save at current directory as manchester owl syntax
+			String presentDir = System.getProperty("user.dir");
+			WriterDocumentTarget wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp1.owl"));
+	
+			OWLOntologyManager manager = ont.getOWLOntologyManager();
+			
+	//		manager.saveOntology(owl,new SystemOutDocumentTarget());
+			manager.saveOntology(ont, new ManchesterOWLSyntaxOntologyFormat(), wdt);
+			
+			// read temp ontology to ont
+			FileReader file = new FileReader(presentDir + "//temp1.owl");
+			BufferedReader br = new BufferedReader(file);
+	//		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
+	//		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
+	//		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
+	
+	
+			String readLine;
+	//System.out.println("indName:"+indName);
+			// get all variables
+			while((readLine = br.readLine()) != null){
+	//System.out.println("readLine:"+readLine);	
+				// get all variables from ontology
+				Set variablesSet = variableCls.getIndividuals(ont);
+				if(variablesSet != null){
+
+					it = variablesSet.iterator();
+					while(it.hasNext()){
+						OWLIndividual ind = (OWLIndividual) it.next();
+						String indName = soh.getIndividualName(ind);
+		//System.out.println("indName:"+indName);
+						Variable v = new Variable(indName,"");
+		//System.out.println("Class: " + "<" + prefix + "#ClassFor"+indName + ">");
+						if(readLine.contains("Class: " + "<" + base + "#ClassFor"+indName + ">")){
+							readLine = br.readLine();
+							readLine = br.readLine();
+							readLine = br.readLine();
+		//System.out.println("1:"+readLine);
+							readLine = readLine.replaceAll("        ", "");
+							readLine = readLine.replaceAll("<"+base+"#","");
+							readLine = readLine.replaceAll(">","");
+		//System.out.println("2:"+readLine);
+							
+							v.setDescription(readLine);
+							variablesList.add(v);
+						}
+					}
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (OWLOntologyStorageException e) {
+			e.printStackTrace();
+		}
+		return variablesList;
+			
+	}
+	
 	// delete all variables in the ontology
 	public void deleteVariables(){
 		
 		OWLClass variable = new OWLClassImpl(this.dataFactory, IRI.create(base+"#Variable"));
+		Set varSet = variable.getIndividuals(ont);
+		if(varSet != null){
+			Iterator it = varSet.iterator();
+			while(it.hasNext()){
+				OWLNamedIndividual var = (OWLNamedIndividual) it.next();
+				var.accept(remover);
+			}
+		}
 	}
 }

@@ -205,7 +205,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	controller = new ConstraintController(owlModelManager, soh);
 	    	
 	    	// get all variables to variablesList
-	    	getAllVariables();
+	    	this.variablesList = this.controller.getAllVariables();
 	    	
 	    	// get all constraints to constraintsList
 	    	getAllConstraints();
@@ -360,68 +360,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 	}
     
-	private void getAllVariables() {
-		try {   
-			ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
-	    	
-	    	Iterator it = null;
-			
-			// create Variable class
-			OWLClassImpl variableCls = new OWLClassImpl(getOWLDataFactory(),IRI.create(prefix + "#Variable"));
-			
-			// temporary save at current directory as manchester owl syntax
-			String presentDir = System.getProperty("user.dir");
-			WriterDocumentTarget wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp1.owl"));
-	
-			OWLOntologyManager manager = owl.getOWLOntologyManager();
-			
-	//		manager.saveOntology(owl,new SystemOutDocumentTarget());
-			manager.saveOntology(owl, new ManchesterOWLSyntaxOntologyFormat(), wdt);
-			
-			// read temp ontology to ont
-			FileReader file = new FileReader(presentDir + "//temp1.owl");
-			BufferedReader br = new BufferedReader(file);
-	//		OWLOntologyManager mng = OWLManager.createOWLOntologyManager();
-	//		OWLOntology tempOnt = mng.loadOntologyFromOntologyDocument(file);
-	//		mng.saveOntology(tempOnt,new SystemOutDocumentTarget());
-	
-	
-			String readLine;
-	//System.out.println("indName:"+indName);
-			// get all variables
-			while((readLine = br.readLine()) != null){
-	//System.out.println("readLine:"+readLine);	
-				// get all variables from ontology
-				Set variablesSet = variableCls.getIndividuals(owl);
-				it = variablesSet.iterator();
-				while(it.hasNext()){
-					OWLIndividual ind = (OWLIndividual) it.next();
-					String indName = soh.getIndividualName(ind);
-	//System.out.println("indName:"+indName);
-					Variable v = new Variable(indName,"");
-	//System.out.println("Class: " + "<" + prefix + "#ClassFor"+indName + ">");
-					if(readLine.contains("Class: " + "<" + prefix + "#ClassFor"+indName + ">")){
-						readLine = br.readLine();
-						readLine = br.readLine();
-						readLine = br.readLine();
-	//System.out.println("1:"+readLine);
-						readLine = readLine.replaceAll("        ", "");
-						readLine = readLine.replaceAll("<"+prefix+"#","");
-						readLine = readLine.replaceAll(">","");
-	//System.out.println("2:"+readLine);
-						
-						v.setDescription(readLine);
-						variablesList.add(v);
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (OWLOntologyStorageException e) {
-			e.printStackTrace();
-		}
-			
-	}
+
 	
 	// get all constraints from ontology
 	private void getAllConstraints() {
@@ -853,7 +792,10 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// the event of clicking the + button, add one row to constraints table
 		if(e.getActionCommand().equals("+")){		
-	    	
+			
+			// get variables list again
+	    	variablesList.clear();
+	    	this.variablesList = this.controller.getAllVariables();
 			// create add constraint component
 			AddConstraintsComponent acc = new AddConstraintsComponent(ow,owlModelManager,variablesList, tableModel, constraintsList);
 			acc.setVisible(true);
@@ -862,7 +804,11 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		
 		// the event of clicking the M button, modify the selected constraint
 		if(e.getActionCommand().equals("M")){
-	    	
+			
+			// get variables list again
+	    	variablesList.clear();
+	    	this.variablesList = this.controller.getAllVariables();
+//Utils.printVariablesList("v", this.variablesList);
 			Constraint con = getSelectedConstraint(tableModel);
 			
 			if(con == null){
