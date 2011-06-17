@@ -385,36 +385,6 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		}
 		return variablesTable;
 	}
-/*	
-	// class expression panel
-	private JPanel getJPanel2() {
-		if (jPanel == null) {
-			jPanel = new JPanel();
-			jPanel.setLayout(new BorderLayout());
-			jPanel.setBounds(new Rectangle(160, 14, 226, 126));
-	        jPanel.add(getClassExpressionComponent());
-	        jPanel.setVisible(false);
-		}
-		return jPanel;
-	}
-	*/
-/*	
-	// get class expression component
-	private JComponent getClassExpressionComponent(){
-		
-		com = ocfe.getOWLClassDescriptionEditor(oc).getEditorComponent();
-		
-		return com;
-	}
-	// get class expression text pane
-	private JTextPane getClassExpressionPane(){
-		
-		JTabbedPane tp = (JTabbedPane) com.getComponent(0);
-		JScrollPane jsp = (JScrollPane) tp.getComponentAt(0);
-		return (JTextPane) jsp.getViewport().getComponent(0);
-		
-	}
-*/
 	
 	// add variable button
 	private JButton getAddVariableButton() {
@@ -506,19 +476,7 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		}
 		return removeVariableButton;
 	}
-/*	
-	// class expression change apply button
-	private JButton getClassExpressionApplyButton() {
-		if (classExpressionApplyButton == null) {
-			classExpressionApplyButton = new JButton();
-			classExpressionApplyButton.setBounds(new Rectangle(396, 122, 65, 17));
-			classExpressionApplyButton.setText("Apply");
-			classExpressionApplyButton.addActionListener(this);
-			classExpressionApplyButton.setVisible(false);
-		}
-		return classExpressionApplyButton;
-	}
-*/	
+
 	// operator Combobox
 	private JComboBox getOperatorComboBox() {
 		if (operatorComboBox == null) {
