@@ -1067,6 +1067,8 @@ Utils.printConstraint(con);
 					}
 				}
 				
+				this.controller.deleteVariables();
+				
 				// write variables to ontology
 				controller.writeVariablesToOnt(this.variablesList);
 				
