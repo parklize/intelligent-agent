@@ -119,12 +119,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private SWCLOntologyController soh = null;
 
 
-//    private OWLClassHelper owlClassHelper = null;
-//    private OWLEditorKit oek = null;
-//    private OWLComponentFactoryImplExtension ocfe = null;
-
 	// controller
-	ConstraintController controller = null;
+	private ConstraintController controller = null;
 
 
 	
@@ -327,7 +323,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			tableColumn.setMinWidth(60);
 			
 			// add variables from totalvariables list to display
-			if(totalVariablesList.size() != 0){
+			if(totalVariablesList.size() != 0){                                                         
 				for(Variable v:totalVariablesList){
 					model.addRow(new Object[]{v.getName(),v.getDescription()});
 				}
@@ -392,36 +388,6 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return variablesTable;
 	}
-/*	
-	// class expression panel
-	private JPanel getJPanel2() {
-		if (jPanel == null) {
-			jPanel = new JPanel();
-			jPanel.setLayout(new BorderLayout());
-			jPanel.setBounds(new Rectangle(160, 14, 226, 126));
-	        jPanel.add(getClassExpressionComponent());
-	        jPanel.setVisible(false);
-		}
-		return jPanel;
-	}
-	*/
-/*	
-	// get class expression component
-	private JComponent getClassExpressionComponent(){
-		
-		com = ocfe.getOWLClassDescriptionEditor(oc).getEditorComponent();
-		
-		return com;
-	}
-	// get class expression text pane
-	private JTextPane getClassExpressionPane(){
-		
-		JTabbedPane tp = (JTabbedPane) com.getComponent(0);
-		JScrollPane jsp = (JScrollPane) tp.getComponentAt(0);
-		return (JTextPane) jsp.getViewport().getComponent(0);
-		
-	}
-*/
 	
 	// add variable button
 	private JButton getAddVariableButton() {
