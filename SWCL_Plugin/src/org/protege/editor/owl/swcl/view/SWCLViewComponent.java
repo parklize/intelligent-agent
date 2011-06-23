@@ -210,6 +210,9 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	// get all constraints to constraintsList
 	    	getAllConstraints();
 	    	
+for(Constraint c:this.constraintsList){
+	Utils.printConstraint(c);
+}
 	    	// insert all constraints to SWCl tab
 	    	DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 	    	for(Constraint c:constraintsList){
@@ -412,154 +415,156 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			// get LHS to constraint
 			OWLObjectPropertyImpl hasLhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasLhs"));
 			Set lhsSet = (Set) indObjProperty.get(hasLhs);
-			Iterator itLhs = lhsSet.iterator();
-			ArrayList<TermBlock> ltbList = new ArrayList<TermBlock>();
-			
-			String lhsStr = null;
-			while(itLhs.hasNext()){
+			if(lhsSet != null){
+				Iterator itLhs = lhsSet.iterator();
+				ArrayList<TermBlock> ltbList = new ArrayList<TermBlock>();
 				
-				TermBlock tb = new TermBlock();
-				
-				// get lhs termblock individual
-				OWLNamedIndividualImpl lhsInd = (OWLNamedIndividualImpl) itLhs.next();
-				HashMap lhsDataProperty = (HashMap) lhsInd.getDataPropertyValues(owl);
-				HashMap lhsObjectProperty = (HashMap) lhsInd.getObjectPropertyValues(owl);
-				
-				// get hasSign value
-				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
-				Set si = (Set) lhsDataProperty.get(hasSign);
-				Iterator signIt = si.iterator();
-				
-				String signStr = null;
-				while(signIt.hasNext()){
+				String lhsStr = null;
+				while(itLhs.hasNext()){
 					
-					OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
-					signStr = sign.getLiteral();
-					signStr = signStr.replaceAll("\"", "");
-					signStr = signStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("LHS signStr is:"+signStr);
-					tb.setSign(signStr);
-				}
-				
-				// get hasAggregateOperation value
-				OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
-				Set aggSet = (Set) lhsDataProperty.get(hasAgg);
-				if(aggSet != null){
-					Iterator aggIt = aggSet.iterator();
+					TermBlock tb = new TermBlock();
 					
-					String aggStr = null;
-					while(aggIt.hasNext()){
-						OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
-						aggStr = agg.toString();
-						aggStr = aggStr.replaceAll("\"", "");
-						aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("LHS aggStr is:"+aggStr);
-						tb.setAggregateOppertor(aggStr);
-					}
-				}else{
-					tb.setAggregateOppertor("not use");
-				}
-				
-				// get parameter value
-				OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
-				Set parSet = (Set) lhsObjectProperty.get(hasPar);
-				
-				if(parSet != null){
+					// get lhs termblock individual
+					OWLNamedIndividualImpl lhsInd = (OWLNamedIndividualImpl) itLhs.next();
+					HashMap lhsDataProperty = (HashMap) lhsInd.getDataPropertyValues(owl);
+					HashMap lhsObjectProperty = (HashMap) lhsInd.getObjectPropertyValues(owl);
 					
-					// parameters list
-					ArrayList<Parameter> parList = null;
-					Iterator parIt = parSet.iterator();
+					// get hasSign value
+					OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
+					Set si = (Set) lhsDataProperty.get(hasSign);
+					Iterator signIt = si.iterator();
 					
-					String parStr = null;
-					while(parIt.hasNext()){
+					String signStr = null;
+					while(signIt.hasNext()){
 						
-						parList = new ArrayList<Parameter>();
-						Parameter p = new Parameter();
-						
-						OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
-						parStr = parameter.toString();
-						parStr = parStr.replaceAll("<"+prefix+"#", "");
-						parStr = parStr.replaceAll(">", "");
-//System.out.println("LHS parameter is:" + parStr);
-						Variable v = Utils.findVariableWithName(variablesList, parStr);
-						p.setV(v);
-						parList.add(p);
+						OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
+						signStr = sign.getLiteral();
+						signStr = signStr.replaceAll("\"", "");
+						signStr = signStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("LHS signStr is:"+signStr);
+						tb.setSign(signStr);
 					}
 					
-					tb.setParameters(parList);
-				}
-				
-				// get factors
-				OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
-				Set facSet = (Set) lhsObjectProperty.get(hasFac);
-				
-				if(facSet != null){
+					// get hasAggregateOperation value
+					OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
+					Set aggSet = (Set) lhsDataProperty.get(hasAgg);
+					if(aggSet != null){
+						Iterator aggIt = aggSet.iterator();
+						
+						String aggStr = null;
+						while(aggIt.hasNext()){
+							OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
+							aggStr = agg.toString();
+							aggStr = aggStr.replaceAll("\"", "");
+							aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("LHS aggStr is:"+aggStr);
+							tb.setAggregateOppertor(aggStr);
+						}
+					}else{
+						tb.setAggregateOppertor("not use");
+					}
 					
-					Iterator facIt = facSet.iterator();
-					// factors list
-					ArrayList<Factor> facList = new ArrayList<Factor>();
+					// get parameter value
+					OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
+					Set parSet = (Set) lhsObjectProperty.get(hasPar);
 					
-					//factor name
-					String facStr = null;
-					while(facIt.hasNext()){
+					if(parSet != null){
 						
-						Factor f = new Factor();
-						OWLNamedIndividualImpl factor = (OWLNamedIndividualImpl) facIt.next();//rhsFactor
-						HashMap factorDataProperty = (HashMap) factor.getDataPropertyValues(owl);
-						HashMap factorObjProperty = (HashMap) factor.getObjectPropertyValues(owl);
+						// parameters list
+						ArrayList<Parameter> parList = null;
+						Iterator parIt = parSet.iterator();
 						
-						// has Binding Data property
-						OWLDataPropertyImpl hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
-						Set hasBDPSet = (Set) factorDataProperty.get(hasBindingDataProperty);
-						
-						if(hasBDPSet != null){
+						String parStr = null;
+						while(parIt.hasNext()){
 							
-							Iterator hasBDPSetIt = hasBDPSet.iterator();
+							parList = new ArrayList<Parameter>();
+							Parameter p = new Parameter();
 							
-							String hasBDPStr = null;
-							while(hasBDPSetIt.hasNext()){
-								OWLLiteral hasBDP = (OWLLiteralImpl)hasBDPSetIt.next();
-								hasBDPStr = hasBDP.toString();
-								hasBDPStr = hasBDPStr.replaceAll("\"", "");
-								hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
-								f.setOwlProperty(hasBDPStr);
-							}
+							OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
+							parStr = parameter.toString();
+							parStr = parStr.replaceAll("<"+prefix+"#", "");
+							parStr = parStr.replaceAll(">", "");
+	//System.out.println("LHS parameter is:" + parStr);
+							Variable v = Utils.findVariableWithName(variablesList, parStr);
+							p.setV(v);
+							parList.add(p);
 						}
 						
-						// has Variable
-						OWLObjectPropertyImpl hasVar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasVar"));
-						Set hasVarSet = (Set) factorObjProperty.get(hasVar);
-						
-						if(hasVarSet != null){
-							
-							Iterator hasVarSetIt = hasVarSet.iterator();
-							
-							String hasVarStr = null;
-							while(hasVarSetIt.hasNext()){
-								OWLNamedIndividualImpl var = (OWLNamedIndividualImpl) hasVarSetIt.next();
-								hasVarStr = var.toString();
-								hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
-								hasVarStr = hasVarStr.replaceAll(">", "");
-//System.out.println("LHS var is:" + hasVarStr);
-								Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
-								f.setV(v);
-							}
-						}
-						
-						facList.add(f);
+						tb.setParameters(parList);
 					}
-					tb.setFactors(facList);
+					
+					// get factors
+					OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
+					Set facSet = (Set) lhsObjectProperty.get(hasFac);
+					
+					if(facSet != null){
+						
+						Iterator facIt = facSet.iterator();
+						// factors list
+						ArrayList<Factor> facList = new ArrayList<Factor>();
+						
+						//factor name
+						String facStr = null;
+						while(facIt.hasNext()){
+							
+							Factor f = new Factor();
+							OWLNamedIndividualImpl factor = (OWLNamedIndividualImpl) facIt.next();//rhsFactor
+							HashMap factorDataProperty = (HashMap) factor.getDataPropertyValues(owl);
+							HashMap factorObjProperty = (HashMap) factor.getObjectPropertyValues(owl);
+							
+							// has Binding Data property
+							OWLDataPropertyImpl hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
+							Set hasBDPSet = (Set) factorDataProperty.get(hasBindingDataProperty);
+							
+							if(hasBDPSet != null){
+								
+								Iterator hasBDPSetIt = hasBDPSet.iterator();
+								
+								String hasBDPStr = null;
+								while(hasBDPSetIt.hasNext()){
+									OWLLiteral hasBDP = (OWLLiteralImpl)hasBDPSetIt.next();
+									hasBDPStr = hasBDP.toString();
+									hasBDPStr = hasBDPStr.replaceAll("\"", "");
+									hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
+									f.setOwlProperty(hasBDPStr);
+								}
+							}
+							
+							// has Variable
+							OWLObjectPropertyImpl hasVar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasVar"));
+							Set hasVarSet = (Set) factorObjProperty.get(hasVar);
+							
+							if(hasVarSet != null){
+								
+								Iterator hasVarSetIt = hasVarSet.iterator();
+								
+								String hasVarStr = null;
+								while(hasVarSetIt.hasNext()){
+									OWLNamedIndividualImpl var = (OWLNamedIndividualImpl) hasVarSetIt.next();
+									hasVarStr = var.toString();
+									hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
+									hasVarStr = hasVarStr.replaceAll(">", "");
+	//System.out.println("LHS var is:" + hasVarStr);
+									Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
+									f.setV(v);
+								}
+							}
+							
+							facList.add(f);
+						}
+						tb.setFactors(facList);
+					}
+					
+					// add to tb list
+					ltbList.add(tb);
+					
+					// add to constraint
+					LHS lhs = new LHS();
+					lhs.setTermblocks(ltbList);
+					con.setLhs(lhs);
+					
 				}
-				
-				// add to tb list
-				ltbList.add(tb);
-				
-				// add to constraint
-				LHS lhs = new LHS();
-				lhs.setTermblocks(ltbList);
-				con.setLhs(lhs);
-				
 			}
 			
 			// get operator to constraint
@@ -581,152 +586,154 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			// get RHS to constraint
 			OWLObjectPropertyImpl hasRhs = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasRhs"));
 			Set rhsSet = (Set) indObjProperty.get(hasRhs);
-			Iterator itRhs = rhsSet.iterator();
-			ArrayList<TermBlock> rtbList = new ArrayList<TermBlock>();
-			
-			String rhsStr = null;
-			while(itRhs.hasNext()){
+			if(rhsSet != null){
+				Iterator itRhs = rhsSet.iterator();
+				ArrayList<TermBlock> rtbList = new ArrayList<TermBlock>();
 				
-				TermBlock tb = new TermBlock();
-				// get rhs termblock individual
-				OWLNamedIndividualImpl rhsInd = (OWLNamedIndividualImpl) itRhs.next();
-				HashMap rhsDataProperty = (HashMap) rhsInd.getDataPropertyValues(owl);
-				HashMap rhsObjectProperty = (HashMap) rhsInd.getObjectPropertyValues(owl);
-				
-				// get hasSign value
-				OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
-				Set si = (Set) rhsDataProperty.get(hasSign);
-				Iterator signIt = si.iterator();
-				
-				String signStr = null;
-				while(signIt.hasNext()){
-					OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
-					signStr = sign.getLiteral();
-					signStr = signStr.replaceAll("\"", "");
-					signStr = signStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("RHS singStr is:"+signStr);
-					tb.setSign(signStr);
-				}
-				
-				// get hasAggregateOperation value
-				OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
-				Set aggSet = (Set) rhsDataProperty.get(hasAgg);
-				if(aggSet != null){
-					Iterator aggIt = aggSet.iterator();
+				String rhsStr = null;
+				while(itRhs.hasNext()){
 					
-					String aggStr = null;
-					while(aggIt.hasNext()){
-						OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
-						aggStr = agg.toString();
-						aggStr = aggStr.replaceAll("\"", "");
-						aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("RHS aggStr is:"+aggStr);
-						tb.setAggregateOppertor(aggStr);
+					TermBlock tb = new TermBlock();
+					// get rhs termblock individual
+					OWLNamedIndividualImpl rhsInd = (OWLNamedIndividualImpl) itRhs.next();
+					HashMap rhsDataProperty = (HashMap) rhsInd.getDataPropertyValues(owl);
+					HashMap rhsObjectProperty = (HashMap) rhsInd.getObjectPropertyValues(owl);
+					
+					// get hasSign value
+					OWLDataPropertyImpl hasSign = new OWLDataPropertyImpl(factory,IRI.create(prefix+"#hasSign"));
+					Set si = (Set) rhsDataProperty.get(hasSign);
+					Iterator signIt = si.iterator();
+					
+					String signStr = null;
+					while(signIt.hasNext()){
+						OWLLiteralImpl sign = (OWLLiteralImpl) signIt.next();
+						signStr = sign.getLiteral();
+						signStr = signStr.replaceAll("\"", "");
+						signStr = signStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("RHS singStr is:"+signStr);
+						tb.setSign(signStr);
 					}
-				}else{
-					tb.setAggregateOppertor("not use");
-				}
-				
-				// get parameter value
-				OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
-				Set parSet = (Set) rhsObjectProperty.get(hasPar);
-				
-				if(parSet != null){
 					
-					Iterator parIt = parSet.iterator();
-					// parameters list
-					ArrayList<Parameter> parList = null;
-					
-					// parameter name
-					String parStr = null;
-					while(parIt.hasNext()){
+					// get hasAggregateOperation value
+					OWLDataPropertyImpl hasAgg = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
+					Set aggSet = (Set) rhsDataProperty.get(hasAgg);
+					if(aggSet != null){
+						Iterator aggIt = aggSet.iterator();
 						
-						parList = new ArrayList<Parameter>();
-						Parameter p = new Parameter();
-						
-						OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
-						parStr = parameter.toString();
-						parStr = parStr.replaceAll("<"+prefix+"#", "");
-						parStr = parStr.replaceAll(">", "");
-//System.out.println("RHS parameter is:" + parStr);
-						Variable v = Utils.findVariableWithName(variablesList, parStr);
-						p.setV(v);
-						parList.add(p);
-					}
-					tb.setParameters(parList);
-				}
-				
-				// get factors
-				OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
-				Set facSet = (Set) rhsObjectProperty.get(hasFac);
-				
-				if(facSet != null){
-					
-					Iterator facIt = facSet.iterator();
-					// factors list
-					ArrayList<Factor> facList = new ArrayList<Factor>();
-					
-					//factor name
-					String facStr = null;
-					while(facIt.hasNext()){
-						
-						Factor f = new Factor();
-						OWLNamedIndividualImpl factor = (OWLNamedIndividualImpl) facIt.next();//rhsFactor
-						HashMap factorDataProperty = (HashMap) factor.getDataPropertyValues(owl);
-						HashMap factorObjProperty = (HashMap) factor.getObjectPropertyValues(owl);
-						
-						// has Binding Data property
-						OWLDataPropertyImpl hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
-						Set hasBDPSet = (Set) factorDataProperty.get(hasBindingDataProperty);
-						
-						if(hasBDPSet != null){
-							
-							Iterator hasBDPSetIt = hasBDPSet.iterator();
-							
-							String hasBDPStr = null;
-							while(hasBDPSetIt.hasNext()){
-								OWLLiteral hasBDP = (OWLLiteralImpl)hasBDPSetIt.next();
-								hasBDPStr = hasBDP.toString();
-								hasBDPStr = hasBDPStr.replaceAll("\"", "");
-								hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
-//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
-								f.setOwlProperty(hasBDPStr);
-							}
+						String aggStr = null;
+						while(aggIt.hasNext()){
+							OWLLiteralImpl agg = (OWLLiteralImpl) aggIt.next();
+							aggStr = agg.toString();
+							aggStr = aggStr.replaceAll("\"", "");
+							aggStr = aggStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("RHS aggStr is:"+aggStr);
+							tb.setAggregateOppertor(aggStr);
 						}
-						
-						// has Variable
-						OWLObjectPropertyImpl hasVar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasVar"));
-						Set hasVarSet = (Set) factorObjProperty.get(hasVar);
-						
-						if(hasVarSet != null){
-							
-							Iterator hasVarSetIt = hasVarSet.iterator();
-							
-							String hasVarStr = null;
-							while(hasVarSetIt.hasNext()){
-								OWLNamedIndividualImpl var = (OWLNamedIndividualImpl) hasVarSetIt.next();
-								hasVarStr = var.toString();
-								hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
-								hasVarStr = hasVarStr.replaceAll(">", "");
-//System.out.println("RHS var is:" + hasVarStr);
-								Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
-								f.setV(v);
-							}
-						}
-						
-						facList.add(f);
+					}else{
+						tb.setAggregateOppertor("not use");
 					}
-					tb.setFactors(facList);
+					
+					// get parameter value
+					OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
+					Set parSet = (Set) rhsObjectProperty.get(hasPar);
+					
+					if(parSet != null){
+						
+						Iterator parIt = parSet.iterator();
+						// parameters list
+						ArrayList<Parameter> parList = null;
+						
+						// parameter name
+						String parStr = null;
+						while(parIt.hasNext()){
+							
+							parList = new ArrayList<Parameter>();
+							Parameter p = new Parameter();
+							
+							OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
+							parStr = parameter.toString();
+							parStr = parStr.replaceAll("<"+prefix+"#", "");
+							parStr = parStr.replaceAll(">", "");
+	//System.out.println("RHS parameter is:" + parStr);
+							Variable v = Utils.findVariableWithName(variablesList, parStr);
+							p.setV(v);
+							parList.add(p);
+						}
+						tb.setParameters(parList);
+					}
+					
+					// get factors
+					OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
+					Set facSet = (Set) rhsObjectProperty.get(hasFac);
+					
+					if(facSet != null){
+						
+						Iterator facIt = facSet.iterator();
+						// factors list
+						ArrayList<Factor> facList = new ArrayList<Factor>();
+						
+						//factor name
+						String facStr = null;
+						while(facIt.hasNext()){
+							
+							Factor f = new Factor();
+							OWLNamedIndividualImpl factor = (OWLNamedIndividualImpl) facIt.next();//rhsFactor
+							HashMap factorDataProperty = (HashMap) factor.getDataPropertyValues(owl);
+							HashMap factorObjProperty = (HashMap) factor.getObjectPropertyValues(owl);
+							
+							// has Binding Data property
+							OWLDataPropertyImpl hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
+							Set hasBDPSet = (Set) factorDataProperty.get(hasBindingDataProperty);
+							
+							if(hasBDPSet != null){
+								
+								Iterator hasBDPSetIt = hasBDPSet.iterator();
+								
+								String hasBDPStr = null;
+								while(hasBDPSetIt.hasNext()){
+									OWLLiteral hasBDP = (OWLLiteralImpl)hasBDPSetIt.next();
+									hasBDPStr = hasBDP.toString();
+									hasBDPStr = hasBDPStr.replaceAll("\"", "");
+									hasBDPStr = hasBDPStr.replaceAll("\\^\\^xsd:string", "");
+	//System.out.println("RHS hasBindingDataProperty:"+hasBDPStr);
+									f.setOwlProperty(hasBDPStr);
+								}
+							}
+							
+							// has Variable
+							OWLObjectPropertyImpl hasVar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasVar"));
+							Set hasVarSet = (Set) factorObjProperty.get(hasVar);
+							
+							if(hasVarSet != null){
+								
+								Iterator hasVarSetIt = hasVarSet.iterator();
+								
+								String hasVarStr = null;
+								while(hasVarSetIt.hasNext()){
+									OWLNamedIndividualImpl var = (OWLNamedIndividualImpl) hasVarSetIt.next();
+									hasVarStr = var.toString();
+									hasVarStr = hasVarStr.replaceAll("<"+prefix+"#", "");
+									hasVarStr = hasVarStr.replaceAll(">", "");
+	//System.out.println("RHS var is:" + hasVarStr);
+									Variable v = Utils.findVariableWithName(variablesList, hasVarStr);
+									f.setV(v);
+								}
+							}
+							
+							facList.add(f);
+						}
+						tb.setFactors(facList);
+					}
+					
+					// add to tb list
+					rtbList.add(tb);
+					
+					// add to constraint
+					RHS rhs = new RHS();
+					rhs.setTermblocks(rtbList);
+					con.setRhs(rhs);
 				}
-				
-				// add to tb list
-				rtbList.add(tb);
-				
-				// add to constraint
-				RHS rhs = new RHS();
-				rhs.setTermblocks(rtbList);
-				con.setRhs(rhs);
-			}
+		}
 			
 			// add con to consList
 			constraintsList.add(con);
@@ -734,7 +741,9 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	}
 	
 	// get selected constraint
-	public Constraint getSelectedConstraint(DefaultTableModel tableModel){
+	public ArrayList<Constraint> getSelectedConstraint(DefaultTableModel tableModel){
+		
+		ArrayList<Constraint> conList = new ArrayList<Constraint>();
 		
 		// =no. of constraints 
 		int rowCount = tableModel.getRowCount();
@@ -750,13 +759,13 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 				String conName = (String) tableModel.getValueAt(i, 1);
 				for(Constraint c:constraintsList){
 					if(c.getName().equals(conName)){
-						return c;
+						conList.add(c);
 					}
 				}
 			}
 			
 		}
-		return null;
+		return conList;
 	}
 	
 	// delete selected item from constrait table, and delete delete selected constraint at the same time
@@ -809,17 +818,20 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	variablesList.clear();
 	    	this.variablesList = this.controller.getAllVariables();
 //Utils.printVariablesList("v", this.variablesList);
-			Constraint con = getSelectedConstraint(tableModel);
+			ArrayList<Constraint> conList = getSelectedConstraint(tableModel);
 			
-			if(con == null){
+			if(conList.size() == 0){
 				
 				// show msg when no constraint selected
 				JOptionPane.showMessageDialog (null, "Select constraint to modify!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
 				
+			}else if(conList.size() > 1){
+				// show msg when no constraint selected
+				JOptionPane.showMessageDialog (null, "Select one constraint to modify!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
 			}else{
 //System.out.println(con==null);
 //Utils.printConstraint(con);
-				ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(con, ow,owlModelManager,variablesList, tableModel,constraintsList);
+				ModifyConstraintsComponent mcc = new ModifyConstraintsComponent(conList.get(0), ow,owlModelManager,variablesList, tableModel,constraintsList);
 				mcc.setVisible(true);
 			}
 			
@@ -829,9 +841,9 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 		if(e.getActionCommand().equals("D")){
 			
 			
-			Constraint con = getSelectedConstraint(tableModel);
+			ArrayList<Constraint> conList = getSelectedConstraint(tableModel);
 			
-			if(con == null){
+			if(conList.size() == 0){
 				
 				// show msg when no constraint selected
 				JOptionPane.showMessageDialog (null, "Select constraint to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);

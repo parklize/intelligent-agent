@@ -258,7 +258,7 @@ System.out.println("v:"+v.getName());
 		for(Qualifier q:qualifierList){
 //System.out.println("qualifier is:"+q.getV().getName());
 			OWLIndividual ind = soh.getOWLIndividual(q.getV().getName());
-System.out.println("ind is:"+ind.toString());
+//System.out.println("ind is:"+ind.toString());
 			OWLObjectPropertyAssertionAxiom assertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasQualifier, conInd, ind);
 			AddAxiom addAxiomChange = new AddAxiom(ont,assertion);
 			manager.applyChange(addAxiomChange);
@@ -269,7 +269,7 @@ System.out.println("ind is:"+ind.toString());
 		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
 			
 			OWLClass LhsTermBClass= dataFactory.getOWLClass("#LhsTermBlock",pm);
-			OWLIndividual lhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"lhsTermBlock"+(i+1),pm);
+			OWLIndividual lhsTermBInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"lhsTermBlock"+(i+1),pm);
 			OWLClassAssertionAxiom LhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(LhsTermBClass, lhsTermBInd);
 			manager.addAxiom(ont, LhsTermBAssertion);
 			
@@ -314,7 +314,7 @@ System.out.println("ind is:"+ind.toString());
 			// factor 가져가기
 			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
 				OWLClass lhsFactorClass= dataFactory.getOWLClass("#LhsFactor",pm);
-				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"lhsFactor"+(k+1),pm);
+				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"lhsFactor"+(k+1),pm);
 				OWLClassAssertionAxiom LhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(lhsFactorClass, lhsFactorInd);
 				manager.addAxiom(ont, LhsFactorAssertion);
 				
@@ -356,7 +356,7 @@ System.out.println("ind is:"+ind.toString());
 		for (int i=0; i<con.getRhs().getTermblocks().size();i++){
 			
 			OWLClass RhsTermBClass= dataFactory.getOWLClass("#RhsTermBlock",pm);
-			OWLIndividual rhsTermBInd = dataFactory.getOWLNamedIndividual("#"+"rhsTermBlock"+(i+1),pm);
+			OWLIndividual rhsTermBInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"rhsTermBlock"+(i+1),pm);
 			OWLClassAssertionAxiom RhsTermBAssertion = dataFactory.getOWLClassAssertionAxiom(RhsTermBClass, rhsTermBInd);
 			manager.addAxiom(ont, RhsTermBAssertion);
 			
@@ -400,7 +400,7 @@ System.out.println("ind is:"+ind.toString());
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
 				
 				OWLClass rhsFactorClass= dataFactory.getOWLClass("#RhsFactor",pm);
-				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+"rhsFactor"+(k+1),pm);
+				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"rhsFactor"+(k+1),pm);
 				OWLClassAssertionAxiom RhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(rhsFactorClass, rhsFactorInd);
 				manager.addAxiom(ont, RhsFactorAssertion);
 				
