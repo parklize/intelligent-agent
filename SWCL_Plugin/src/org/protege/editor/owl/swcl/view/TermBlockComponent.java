@@ -233,7 +233,10 @@ public class TermBlockComponent extends JPanel {
 			JComboBox jb = new JComboBox();
 			ArrayList<String> propertyList = swclOntologyHelper.getPropertyList();
 			for(String str:propertyList){
-				jb.addItem(str);
+				// refine the properties about SWCL, do not display these properties 
+				if(!str.equals("bindingClass") && !str.equals("hasOperator") && !str.equals("hasAggregateOperation") && !str.equals("hasSign") && !str.equals("hasBindingDataProperty")){
+					jb.addItem(str);
+				}
 			}
 			TableColumn propertyColumn = factorTable.getColumnModel().getColumn(1);
 			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
