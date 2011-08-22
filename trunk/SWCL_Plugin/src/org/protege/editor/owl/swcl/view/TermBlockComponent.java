@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -115,6 +117,19 @@ public class TermBlockComponent extends JPanel {
 			final String[] aggOpps = {"not use","sigma","production"};
 			aggOppComboBox = new JComboBox(aggOpps);
 			aggOppComboBox.setBounds(new Rectangle(77, 40, 83, 23));
+			aggOppComboBox.addItemListener(new ItemListener(){
+
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					// TODO Auto-generated method stub
+					if(e.getItem().equals("not use")){
+						addParameterButton.setEnabled(false);
+						removeParameterButton.setEnabled(false);
+					}else{
+						addParameterButton.setEnabled(true);
+						removeParameterButton.setEnabled(true);
+					}
+				}});
 		}
 		return aggOppComboBox;
 	}
@@ -157,6 +172,7 @@ public class TermBlockComponent extends JPanel {
 			addParameterButton = new JButton();
 			addParameterButton.setBounds(new Rectangle(250, 18, 25, 18));
 			addParameterButton.setText("+");
+			addParameterButton.setEnabled(false);
 			addParameterButton.addActionListener(new ActionListener(){
 
 				@Override
@@ -185,6 +201,7 @@ public class TermBlockComponent extends JPanel {
 			removeParameterButton = new JButton();
 			removeParameterButton.setBounds(new Rectangle(280, 18, 25, 18));
 			removeParameterButton.setText("-");
+			removeParameterButton.setEnabled(false);
 			removeParameterButton.addActionListener(new ActionListener(){
 
 				@Override
