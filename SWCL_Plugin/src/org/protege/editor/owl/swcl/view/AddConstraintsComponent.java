@@ -982,8 +982,8 @@ System.out.println(j);
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
-Utils.printVariablesList("dddd", variablesList);
-Utils.printConstraint(con);
+//Utils.printVariablesList("dddd", variablesList);
+//Utils.printConstraint(con);
 
 			// check the constraint name exist
 			boolean checkCon = false;
