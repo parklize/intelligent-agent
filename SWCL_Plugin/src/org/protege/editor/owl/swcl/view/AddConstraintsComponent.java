@@ -809,9 +809,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		LHS lhs = new LHS();
 		
 		for(int j=0;j<lhsTermblockNumber;j++){
-System.out.println(lhsTermblockNumber);
+//System.out.println(lhsTermblockNumber);
 			TermBlock tb = new TermBlock();
-System.out.println(j);
+//System.out.println(j);
 			String sign = lhsTermblocks[j].getSignComboBox().getSelectedItem().toString();
 			tb.setSign(sign);
 			

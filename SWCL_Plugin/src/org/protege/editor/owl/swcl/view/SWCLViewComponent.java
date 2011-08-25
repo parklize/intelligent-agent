@@ -114,6 +114,8 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
     private JButton addConstraintButton = null; // add constraint button
     private JButton deleteButton = null; // button to delete constraint
     private JButton modifyButton = null; // button to modify
+    private JTabbedPane jTabbedPane = null;
+    
     private OWLModelManager owlModelManager = null;
     private OWLWorkspace ow = null;
     private OWLOntology owl = null;
@@ -136,12 +138,14 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
         setLayout(new BorderLayout());
         
         // add panels to the protege jPanel
-        add(getMenuPanel(),BorderLayout.NORTH);
-        add(getConstraintsPanel(),BorderLayout.CENTER);
+        add(getJTabbedPane(),BorderLayout.CENTER);
         
         // get info from ontology
         initializeSWCL();
         
+//        initializeObjectiveView();
+        
+
         // default codes
 //        log.info("Example View Component initialized");
         
@@ -210,10 +214,10 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	// get all constraints to constraintsList
 	    	getAllConstraints();
 	    	
-for(Constraint c:this.constraintsList){
-	Utils.printConstraint(c);
-}
-	    	// insert all constraints to SWCl tab
+//for(Constraint c:this.constraintsList){
+//	Utils.printConstraint(c);
+//}
+	    	// insert all constraints to SWCL tab
 	    	DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 	    	for(Constraint c:constraintsList){
 //	    		Utils.printConstraint(c);
@@ -225,6 +229,37 @@ for(Constraint c:this.constraintsList){
 	    	
 	}
 
+// TESTING tabbed pane
+	private JTabbedPane getJTabbedPane() {
+		
+		if (jTabbedPane == null) {
+			
+			jTabbedPane = new JTabbedPane();
+			
+			// construct constraint view panel, add to tabbed pane
+			JPanel constraintView = new JPanel();
+			constraintView.setLayout(new BorderLayout());
+			constraintView.add(getMenuPanel(),BorderLayout.NORTH);
+			constraintView.add(getConstraintsPanel(),BorderLayout.CENTER);
+			jTabbedPane.addTab("Constraint View", constraintView);
+			
+			// construct objective view panel, add to tabbed pane
+			JPanel objectiveView = new JPanel();
+// TESTING... need to del
+			objectiveView.add(new JLabel("updating.."));		
+			jTabbedPane.addTab("Objective View", objectiveView);
+			
+		}
+		
+		return jTabbedPane;
+	}
+	
+	// initialize objective view
+	private void initializeObjectiveView(){
+		JPanel objectiveView = new ObjectiveViewComponent(this.variablesList,this.owl);
+		jTabbedPane.addTab("Objective View", objectiveView);
+	}
+	
 	// initialize the menu panel
     private JPanel getMenuPanel(){
     	
