@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY polulation "http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#?" >
+    <!ENTITY ClassFor "http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#ClassFor?" >
+]>
+
+
+<rdf:RDF xmlns="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#"
+     xml:base="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:ClassFor="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#ClassFor?"
+     xmlns:polulation="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#?"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasFactor -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasFactor"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasLhs -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasLhs"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasParameters -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasParameters"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasPart -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasPart">
+        <owl:inverseOf rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasPart"/>
+                <owl:someValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Province"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasPart"/>
+                <owl:onClass rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:domain>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasQualifier -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasQualifier"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasRhs -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasRhs"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasVar -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasVar"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf">
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf"/>
+                <owl:onClass rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf"/>
+                <owl:someValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Province"/>
+            </owl:Restriction>
+        </rdfs:domain>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#bindingClass -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#bindingClass"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasAggregateOperation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasAggregateOperation"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasBindingDataProperty -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasBindingDataProperty"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasOperator -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasOperator"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasSign -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasSign"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#populationValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#populationValue">
+        <rdfs:domain rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country"/>
+        <rdfs:domain rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Province"/>
+        <rdfs:range rdf:resource="&xsd;positiveInteger"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#ClassFor?x -->
+
+    <owl:Class rdf:about="&ClassFor;x">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#partOf"/>
+                <owl:hasValue rdf:resource="&polulation;y"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#ClassFor?y -->
+
+    <owl:Class rdf:about="&ClassFor;y">
+        <owl:equivalentClass rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasRhs"/>
+                <owl:allValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsTermBlock"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasLhs"/>
+                <owl:allValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsTermBlock"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Country"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsFactor -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsFactor"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsTermBlock -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsTermBlock">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasFactor"/>
+                <owl:allValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsFactor"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Province -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Province"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsFactor -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsFactor"/>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsTermBlock -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsTermBlock">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#hasFactor"/>
+                <owl:allValuesFrom rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsFactor"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Variable -->
+
+    <owl:Class rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Variable"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#?x -->
+
+    <owl:NamedIndividual rdf:about="&polulation;x">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Variable"/>
+        <bindingClass rdf:datatype="&xsd;string">ClassFor?x</bindingClass>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#?y -->
+
+    <owl:NamedIndividual rdf:about="&polulation;y">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Variable"/>
+        <bindingClass rdf:datatype="&xsd;string">ClassFor?y</bindingClass>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint"/>
+        <hasOperator rdf:datatype="&xsd;string">equal</hasOperator>
+        <hasQualifier rdf:resource="&polulation;y"/>
+        <hasLhs rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsTermBlock1"/>
+        <hasRhs rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsTermBlock1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsFactor1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsFactor1">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsFactor"/>
+        <hasBindingDataProperty rdf:datatype="&xsd;string">populationValue</hasBindingDataProperty>
+        <hasVar rdf:resource="&polulation;y"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsTermBlock1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsTermBlock1">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#LhsTermBlock"/>
+        <hasSign rdf:datatype="&xsd;string">+</hasSign>
+        <hasFactor rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1lhsFactor1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsFactor1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsFactor1">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsFactor"/>
+        <hasBindingDataProperty rdf:datatype="&xsd;string">populationValue</hasBindingDataProperty>
+        <hasVar rdf:resource="&polulation;x"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsTermBlock1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsTermBlock1">
+        <rdf:type rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#RhsTermBlock"/>
+        <hasSign rdf:datatype="&xsd;string">+</hasSign>
+        <hasAggregateOperation rdf:datatype="&xsd;string">sigma</hasAggregateOperation>
+        <hasParameters rdf:resource="&polulation;x"/>
+        <hasFactor rdf:resource="http://www.iwec.yonsei.ac.kr/ontology/polulation.owl#Constraint1rhsFactor1"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1799) http://owlapi.sourceforge.net -->
+
