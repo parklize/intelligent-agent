@@ -7,7 +7,10 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -69,6 +72,8 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JButton add = null;
 	private JButton del = null;
 	private JComboBox optionsComboBox = null;
+	private JComboBox classesBox = null;
+	private JComboBox classesBox_02 = null;
 	private JScrollPane lhsScrollPane = null;
 	private JPanel lhsPanel = null;
 	private JLabel lhsLable = null;
@@ -311,7 +316,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	// variables table
 	private JTable getVariablesTable() {
 		if (variablesTable == null) {
-			final String[] colHeads = {"Variable","Description"};
+			final String[] colHeads = {"Variable","Description","Class Selector"};
 			final String[][] data = null;
 			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
@@ -328,6 +333,12 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 					model.addRow(new Object[]{v.getName(),v.getDescription()});
 				}
 			}
+			
+			// set jcombobox to third column
+			JComboBox jb = getClassesComboBox();
+			TableColumn propertyColumn = variablesTable.getColumnModel().getColumn(2);
+			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
+			
 
 			/*
 			 * cell value changed listener			
@@ -339,6 +350,14 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 						
 						// get changed value
 						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());
+						
+						if(e.getColumn() == 2){
+							if(!newValue.equals("Direct Input")){
+								variablesTable.setValueAt(newValue, e.getLastRow(), 1);
+							}else{
+								variablesTable.setValueAt("", e.getLastRow(), 1);
+							}
+						}
 						
 						// check rename variable
 						boolean checVariable = false;
@@ -399,7 +418,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 				public void actionPerformed(ActionEvent e) {
 
-					((DefaultTableModel) variablesTable.getModel()).addRow(new Object[]{"",""});
+					((DefaultTableModel) variablesTable.getModel()).addRow(new Object[]{"","","Direct Input"});
 
 					// add variable to variablesList
 					Variable variable = new Variable("","");
@@ -493,6 +512,20 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		return classExpressionApplyButton;
 	}
 */	
+	// class Combobox 
+	private JComboBox getClassesComboBox() {
+		if(classesBox == null){
+			classesBox = new JComboBox();
+			classesBox.addItem("Direct Input");
+			ArrayList<String> classesList = soh.getClassList();
+			for(String s:classesList){
+				classesBox.addItem(s);
+			}
+			
+		}
+		return classesBox;
+	}
+	
 	// operator Combobox
 	private JComboBox getOperatorComboBox() {
 		if (operatorComboBox == null) {
