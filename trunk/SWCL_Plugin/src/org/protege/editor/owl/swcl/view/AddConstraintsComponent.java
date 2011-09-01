@@ -219,6 +219,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		}
 		return containerScrollPane;
 	}
+	
 	// containter panel
 	private JPanel getContainerPanel() {
 		if (containerPanel == null) {
@@ -315,6 +316,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 	// variables table
 	private JTable getVariablesTable() {
+		
 		if (variablesTable == null) {
 			final String[] colHeads = {"Variable","Description","Class Selector"};
 			final String[][] data = null;
@@ -330,7 +332,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			// add variables from totalvariables list to display
 			if(totalVariablesList.size() != 0){                                                         
 				for(Variable v:totalVariablesList){
-					model.addRow(new Object[]{v.getName(),v.getDescription()});
+					model.addRow(new Object[]{v.getName(),v.getDescription(),"Direct Input"});
 				}
 			}
 			
