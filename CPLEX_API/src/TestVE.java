@@ -39,7 +39,9 @@ public class TestVE {
 			cplex.addEq(cplex.sum(y[0],y[1],y[2],y[3]), 10.0);
 			
 			cplex.addGe(cplex.sum(x[0],y[0]), 50);
-			cplex.addGe(cplex.sum(x[1],), arg1)
+			cplex.addGe(cplex.sum(x[1],x[4],y[1]), 60);
+			cplex.addGe(cplex.sum(x[2],x[5],x[7]), 65);
+			cplex.addGe(cplex.sum(x[3],x[6],x[8],x[9]), 60);
 		
 
 			if(cplex.solve()){
