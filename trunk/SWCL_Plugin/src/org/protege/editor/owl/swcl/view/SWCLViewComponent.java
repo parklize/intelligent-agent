@@ -245,9 +245,27 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 			
 			// construct objective view panel, add to tabbed pane
 			JPanel objectiveView = new JPanel();
+			
 // TESTING... need to del
-			objectiveView.add(new JLabel("updating.."));		
-			jTabbedPane.addTab("Objective View", objectiveView);
+//			objectiveView.add(new JLabel("updating.."));		
+//			jTabbedPane.addTab("Objective View", objectiveView);
+			
+	        // access to the ontologies, reasoners, search renderings, change management etc.
+	        owlModelManager = getOWLModelManager();
+	        
+			// get ontology
+			owl = owlModelManager.getActiveOntology();
+			
+	    	// new SWCL ontology helper
+	    	soh = new SWCLOntologyController(owl);
+	        
+	    	// controller
+	    	controller = new ConstraintController(owlModelManager, soh);
+	    	
+	    	// get all variables to variablesList
+	    	this.variablesList = this.controller.getAllVariables();
+	    	
+			initializeObjectiveView();
 			
 		}
 		
