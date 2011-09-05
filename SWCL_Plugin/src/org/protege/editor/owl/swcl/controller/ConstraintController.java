@@ -85,7 +85,7 @@ public class ConstraintController {
 //System.out.println("Prefix:"+prefix);
 
 			for(Variable v:variablesList){
-System.out.println("v:"+v.getName());
+//System.out.println("v:"+v.getName());
 //				OWLClass variableCls = dataFactory.getOWLClass("#"+v.getName(),pm);
 				// create subclass axiom
 //				OWLAxiom axiom = dataFactory.getOWLSubClassOfAxiom(variableCls, variable);
