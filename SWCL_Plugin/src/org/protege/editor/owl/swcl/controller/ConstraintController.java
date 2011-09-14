@@ -14,6 +14,7 @@ import java.util.Set;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.model.Constraint;
+import org.protege.editor.owl.swcl.model.OptModel;
 import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.Variable;
 import org.protege.editor.owl.swcl.utils.Utils;
@@ -29,6 +30,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -243,7 +245,107 @@ public class ConstraintController {
 		}
 	}
 	
-	
+	// add Optmodel part to ontology
+	public void writeOptModelToOnt(OptModel om){
+		
+		// add optmodel axiom
+		OWLClass optClass = dataFactory.getOWLClass("#OptModel",pm);
+		OWLIndividual optInd = dataFactory.getOWLNamedIndividual("#optModel",pm);
+		OWLClassAssertionAxiom optAssertion = dataFactory.getOWLClassAssertionAxiom(optClass, optInd);
+		manager.addAxiom(ont, optAssertion);
+		
+		// add objective axiom
+		OWLClass objClass = dataFactory.getOWLClass("#Objective",pm);
+		OWLIndividual objInd = dataFactory.getOWLNamedIndividual("#objective",pm);
+		OWLClassAssertionAxiom objAssertion = dataFactory.getOWLClassAssertionAxiom(objClass, objInd);
+		manager.addAxiom(ont, objAssertion);
+		
+		// OptModel hasObjective objective
+		OWLObjectProperty hasObjective = dataFactory.getOWLObjectProperty("#hasObjective",pm);
+		OWLObjectPropertyAssertionAxiom hasObjAss = dataFactory.getOWLObjectPropertyAssertionAxiom(hasObjective, optInd, objInd);
+		manager.addAxiom(ont, hasObjAss);
+		
+		// objective has OptInstruction Maximize or Minimize
+		OWLDataProperty hasOptIns = dataFactory.getOWLDataProperty("#hasOptInstruction",pm);
+		OWLDataPropertyAssertionAxiom hasOptInsAss = dataFactory.getOWLDataPropertyAssertionAxiom(hasOptIns, objInd, om.getObj().getOptimizationInstruction());
+		manager.addAxiom(ont, hasOptInsAss);
+		
+		// objective has objective termblocks 
+		OWLObjectProperty hasObjTerms = dataFactory.getOWLObjectProperty("#hasObjTerm",pm);
+		OWLClass objTermCls = dataFactory.getOWLClass("#ObjectiveTerm",pm);
+		
+		//LHSTermBlock 가져가기
+		for (int i=0; i<om.getObj().getObjectiveTerm().size();i++){
+			
+			OWLIndividual objTermBInd = dataFactory.getOWLNamedIndividual("#objTermBlock"+(i+1),pm);
+			OWLClassAssertionAxiom objTermBAssertion = dataFactory.getOWLClassAssertionAxiom(objTermCls, objTermBInd);
+			manager.addAxiom(ont, objTermBAssertion);
+			
+			
+			// constraint->hasLhs->lhsTermblockInd
+			OWLObjectPropertyAssertionAxiom hasObjTermAss = dataFactory.getOWLObjectPropertyAssertionAxiom(hasObjTerms, objInd, objTermBInd);
+			manager.addAxiom(ont, hasObjTermAss);
+			
+			//sign 가져가기
+			OWLDataProperty hasSign = dataFactory.getOWLDataProperty("#hasSign",pm);
+			OWLDataPropertyAssertionAxiom assertionSign = dataFactory.getOWLDataPropertyAssertionAxiom(hasSign, objTermBInd, om.getObj().getObjectiveTerm().get(i).getSign());
+			AddAxiom SignAxiom = new AddAxiom(ont, assertionSign);
+			manager.applyChange(SignAxiom);
+
+			
+			//aggregateOperation 가져가기  (AggreOper 있으면 parameter도 가져가요)
+			if (om.getObj().getObjectiveTerm().get(i).getAggregateOppertor()!="not use"){	
+				OWLDataProperty hasAggregateOperation = dataFactory.getOWLDataProperty(IRI.create(base + "#hasAggregateOperation"));
+				OWLDataPropertyAssertionAxiom assertionAggreO = dataFactory.getOWLDataPropertyAssertionAxiom(hasAggregateOperation, objTermBInd, om.getObj().getObjectiveTerm().get(i).getAggregateOppertor());
+				AddAxiom AggreOAxiom = new AddAxiom(ont, assertionAggreO);
+				manager.applyChange(AggreOAxiom);
+
+				
+				for (int j=0; j<om.getObj().getObjectiveTerm().get(i).getParameters().size();j++){
+					OWLObjectProperty hasParameters = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasParameters"));
+					OWLIndividual Pind = soh.getOWLIndividual(om.getObj().getObjectiveTerm().get(i).getParameters().get(j).getV().getName());
+					OWLObjectPropertyAssertionAxiom assertionParameters = dataFactory.getOWLObjectPropertyAssertionAxiom(hasParameters, objTermBInd, Pind);
+					AddAxiom ParametersAxiom = new AddAxiom(ont, assertionParameters);
+					manager.applyChange(ParametersAxiom);
+
+				}
+			}
+			
+			// factor 가져가기
+			for (int k=0; k<om.getObj().getObjectiveTerm().get(i).getFactors().size();k++){
+				OWLClass objFactorClass= dataFactory.getOWLClass("#ObjFactor",pm);
+				OWLIndividual objFactorInd = dataFactory.getOWLNamedIndividual("#objFactor"+(k+1),pm);
+				OWLClassAssertionAxiom objFactorAssertion = dataFactory.getOWLClassAssertionAxiom(objFactorClass, objFactorInd);
+				manager.addAxiom(ont, objFactorAssertion);
+				
+				OWLObjectProperty hasFactor= dataFactory.getOWLObjectProperty(IRI.create(base + "#hasFactor"));
+				OWLClassExpression hasFactorAllLhsTermB = dataFactory.getOWLObjectAllValuesFrom(hasFactor, objFactorClass);
+				OWLSubClassOfAxiom axF = dataFactory.getOWLSubClassOfAxiom(objTermCls, hasFactorAllLhsTermB);
+				AddAxiom addAxF = new AddAxiom(ont, axF);
+				manager.applyChange(addAxF);
+				
+				OWLObjectProperty hasVar = dataFactory.getOWLObjectProperty(IRI.create(base + "#hasVar"));
+				OWLIndividual Varind = soh.getOWLIndividual(om.getObj().getObjectiveTerm().get(i).getFactors().get(k).getV().getName());
+				OWLObjectPropertyAssertionAxiom assertionVar = dataFactory.getOWLObjectPropertyAssertionAxiom(hasVar, objFactorInd, Varind);
+				AddAxiom VarAxiom = new AddAxiom(ont, assertionVar);
+				manager.applyChange(VarAxiom);
+				
+				OWLDataProperty hasBindingDataProperty = dataFactory.getOWLDataProperty(IRI.create(base + "#hasBindingDataProperty"));
+				OWLDataPropertyAssertionAxiom assertionBindingDataProperty = dataFactory.getOWLDataPropertyAssertionAxiom(hasBindingDataProperty, objFactorInd, om.getObj().getObjectiveTerm().get(i).getFactors().get(k).getOwlProperty());
+				AddAxiom BindingDataPropertyAxiom = new AddAxiom(ont, assertionBindingDataProperty);
+				manager.applyChange(BindingDataPropertyAxiom);
+				
+				// objTermBInd->hasFactor->objFactorInd
+				OWLObjectPropertyAssertionAxiom facAx = dataFactory.getOWLObjectPropertyAssertionAxiom(hasFactor, objTermBInd, objFactorInd);
+				AddAxiom addFaxAx = new AddAxiom(ont,facAx);
+				manager.applyChange(addFaxAx);
+			}
+			
+
+			
+			
+		}
+	}
 	// add constraint part to ontology
 	public void writeConstraintToOnt(Constraint con) {
 		// add constraint axiom

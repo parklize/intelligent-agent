@@ -265,7 +265,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	// get all variables to variablesList
 	    	this.variablesList = this.controller.getAllVariables();
 	    	
-			initializeObjectiveView();
+			initializeObjectiveView(controller);
 			
 		}
 		
@@ -273,8 +273,8 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	}
 	
 	// initialize objective view
-	private void initializeObjectiveView(){
-		JPanel objectiveView = new ObjectiveViewComponent(this.variablesList,this.owl);
+	private void initializeObjectiveView(ConstraintController con){
+		JPanel objectiveView = new ObjectiveViewComponent(this.variablesList,this.owl,con);
 		jTabbedPane.addTab("Objective View", objectiveView);
 	}
 	

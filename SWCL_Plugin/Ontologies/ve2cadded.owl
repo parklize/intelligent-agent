@@ -247,6 +247,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#inventoryCost -->
+
+    <owl:DatatypeProperty rdf:about="&Ontology1314840683578;inventoryCost">
+        <rdfs:domain rdf:resource="&Ontology1314840683578;Inventory"/>
+        <rdfs:range rdf:resource="&xsd;int"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ownDemand -->
 
     <owl:DatatypeProperty rdf:about="&Ontology1314840683578;ownDemand">
@@ -673,6 +682,14 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;ve">
         <rdf:type rdf:resource="&Ontology1314840683578;Vendor"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_1"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_2"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_3"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_4"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_1"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_2"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_3"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_4"/>
     </owl:NamedIndividual>
     
 
