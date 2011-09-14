@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -16,8 +17,16 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 
+import org.protege.editor.owl.swcl.controller.ConstraintController;
+import org.protege.editor.owl.swcl.model.Factor;
+import org.protege.editor.owl.swcl.model.Objective;
+import org.protege.editor.owl.swcl.model.OptModel;
+import org.protege.editor.owl.swcl.model.Parameter;
+import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
+import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class ObjectiveViewComponent extends JPanel implements ActionListener{
@@ -34,13 +43,16 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
+	private JButton confirmButton = null;
+	
+	private ConstraintController con = null;
 
 	/**
 	 * This is the default constructor
 	 */
-	public ObjectiveViewComponent(ArrayList<Variable> variableList, OWLOntology ont) {
+	public ObjectiveViewComponent(ArrayList<Variable> variableList, OWLOntology ont, ConstraintController con) {
 		super();
-		initialize(variableList, ont);
+		initialize(variableList, ont, con);
 	}
 
 	/**
@@ -48,10 +60,11 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	 * 
 	 * @return void
 	 */
-	private void initialize(ArrayList<Variable> variableList, OWLOntology ont) {
+	private void initialize(ArrayList<Variable> variableList, OWLOntology ont, ConstraintController con) {
 		
 		this.variablesList = variableList;
 		this.ont = ont;
+		this.con = con;
 
 if(ont == null){
 	System.out.println("ont is null");
@@ -74,13 +87,10 @@ if(ont == null){
 		this.add(getInstructionComboBox(), null);
 		this.add(getRhsScrollPane(),null);
 		this.add(getJButton(), null);
+		this.add(getConfirmButton(), null);
 	}
 
-	/**
-	 * This method initializes jComboBox	
-	 * 	
-	 * @return javax.swing.JComboBox	
-	 */
+	// get instruction combobox
 	private JComboBox getInstructionComboBox() {
 		if (instructions == null) {
 			final String[] signs = {"Maximize","Minimize"};
@@ -92,10 +102,10 @@ if(ont == null){
 	}
 
 	/*
-	 * RHS part
+	 * Objective Term part
 	 */
 	
-	// RHS scroll pane
+	// Objective Term scroll pane
 	private JScrollPane getRhsScrollPane() {
 		if (termScrollPane == null) {
 			termScrollPane = new JScrollPane();
@@ -105,7 +115,7 @@ if(ont == null){
 		return termScrollPane;
 	}
 	
-	// RHS panel
+	// Objective Term panel
 	private JPanel getRhsPanel() {
 		if (termPanel == null) {
 			termPanel = new JPanel();
@@ -114,7 +124,7 @@ if(ont == null){
 		return termPanel;
 	}
 
-	// RHS Termblock panel 
+	// Objective Term panel 
 	private JPanel getRHSTermblockPanel(int termblockNumber) {
 
 			objectiveTermblocks[termblockNumber] =  new TermBlockComponent(variablesList,ont);
@@ -144,15 +154,82 @@ if(ont == null){
 		return jButton;
 	}
 
-	@Override
+	// confirm button
+	private JButton getConfirmButton() {
+		if (confirmButton == null) {
+			confirmButton = new JButton();
+			confirmButton.setBounds(new Rectangle(642, 268, 52, 22));
+			confirmButton.setText("Confirm");
+			confirmButton.addActionListener(this);
+		}
+		return confirmButton;
+	}
+	
+	private OptModel getOptModel() {
+		OptModel om = new OptModel();
+		Objective obj = new Objective();
+		// set instruction
+		obj.setOptimizationInstruction(instructions.getSelectedItem().toString());
+		
+		// set termblocks
+		for(int i=0;i<termblockNumber;i++){
+			
+			TermBlock tb = new TermBlock();
+			String sign = objectiveTermblocks[i].getSignComboBox().getSelectedItem().toString();
+			tb.setSign(sign);
+			String agg = objectiveTermblocks[i].getAggOppComboBox().getSelectedItem().toString();
+			tb.setAggregateOppertor(agg);
+			// parameter list
+			ArrayList<Parameter> pList = new ArrayList<Parameter>();
+			JTable parameterTable = objectiveTermblocks[i].getParametersTable();
+			DefaultTableModel tModel = (DefaultTableModel) parameterTable.getModel();
+			
+			for(int u=0;u<tModel.getRowCount();u++){
+				String valName = (String)tModel.getValueAt(u, 0);
+				Parameter p = new Parameter();
+				p.setV(Utils.findVariableWithName(variablesList, valName));
+				pList.add(p);
+			}
+			tb.setParameters(pList);
+			
+			// factoer list
+			ArrayList<Factor> fList = new ArrayList<Factor>();
+			JTable factorsTable = objectiveTermblocks[i].getFactorsTable();
+			DefaultTableModel fModel = (DefaultTableModel)factorsTable.getModel();
+			
+			for(int q=0;q<fModel.getRowCount();q++){
+				Factor f = new Factor();
+				String vName = (String)fModel.getValueAt(q, 0);
+				// NEED UPDATE (set Factor's OWLProperty)
+				String pro = (String)fModel.getValueAt(q, 1);
+				
+				f.setV(Utils.findVariableWithName(variablesList, vName));
+				f.setOwlProperty(pro);
+				fList.add(f);
+			}
+			tb.setFactors(fList);
+			obj.getObjectiveTerm().add(tb);
+		}
+		
+		om.setObj(obj);
+		return om;
+	}
+	
+	// action event
 	public void actionPerformed(ActionEvent e) {
-
-		if(e.getActionCommand().equals("+")){
+		
+		String actionCommand = e.getActionCommand();
+		if(actionCommand.equals("+")){
 			
 			termPanel.add(getRHSTermblockPanel(termblockNumber),null);
 			termPanel.repaint();
 			termblockNumber++;
+		}else if(actionCommand.equals("Confirm")){
+			OptModel om = getOptModel();
+			con.writeOptModelToOnt(om);
 		}
 		
 	}
+
+
 }
