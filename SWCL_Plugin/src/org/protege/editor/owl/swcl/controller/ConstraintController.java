@@ -104,40 +104,43 @@ public class ConstraintController {
 				AddAxiom addAxiomChange = new AddAxiom(ont,classAssertion);
 				manager.applyChange(addAxiomChange);
 				
+				/*
+				 * ontology에 반영되고 protege에 반영 안됨.
 				// ow is constitute of ViewSplitePane and JPanel
-//				ViewSplitPane jp = (ViewSplitPane) ow.getComponent(0);
-//		//System.out.println(jp.getComponentCount());// 2
-//				ViewSplitPaneDivider vpd = (ViewSplitPaneDivider) jp.getComponent(0);//ViewSplitPaneDivider
-//				ViewSplitPane vsp = (ViewSplitPane) jp.getComponent(1);//ViewSplitPane
-//		//System.out.println(vsp.getComponentCount());// 2
-//				ViewSplitPaneDivider vsd1 = (ViewSplitPaneDivider) vsp.getComponent(0);
-//				JTabbedPane jtp = (JTabbedPane) vsp.getComponent(1);
-//		//System.out.println(jtp.getComponentCount());// 9
-//				OWLWorkspaceViewsTab ovt = (OWLWorkspaceViewsTab) jtp.getComponent(2);
-//		//System.out.println(ovt.getComponentCount());// 1
-//				ViewsPane vp = (ViewsPane) ovt.getComponent(0);
-////				vp.setVisible(false);
-////				vp.dispose();
-//		//System.out.println(vp.getComponentCount());// 1
-//				JPanel j = (JPanel) vp.getComponent(0);
-//		//System.out.println(j.getComponentCount());// 5
-//				JPanel j1 = (JPanel) j.getComponent(1);
-//				// this is left workspace of class tab
-//				JComponent j2 = (JComponent) j1.getComponent(0);
-//				j2.repaint();
-//				
-////				j2.setVisible(false);
-//				System.out.println(j2.getComponentCount());// 2
-//				System.out.println(j2.getComponent(0).getClass());
-//				System.out.println(j2.getComponent(1).getClass());
-//				
-//				View v1 = (View) j2.getComponent(0);
-//System.out.println(v1.getViewName());// Class hierarchy
-//				View v2 = (View) j2.getComponent(1);
-//System.out.println(v2.getViewName());// Class hierarchy (inferred)
-//
-//				ViewComponent vc = v1.getViewComponent();
-//				vc.repaint();
+				ViewSplitPane jp = (ViewSplitPane) ow.getComponent(0);
+		//System.out.println(jp.getComponentCount());// 2
+				ViewSplitPaneDivider vpd = (ViewSplitPaneDivider) jp.getComponent(0);//ViewSplitPaneDivider
+				ViewSplitPane vsp = (ViewSplitPane) jp.getComponent(1);//ViewSplitPane
+		//System.out.println(vsp.getComponentCount());// 2
+				ViewSplitPaneDivider vsd1 = (ViewSplitPaneDivider) vsp.getComponent(0);
+				JTabbedPane jtp = (JTabbedPane) vsp.getComponent(1);
+		//System.out.println(jtp.getComponentCount());// 9
+				OWLWorkspaceViewsTab ovt = (OWLWorkspaceViewsTab) jtp.getComponent(2);
+		//System.out.println(ovt.getComponentCount());// 1
+				ViewsPane vp = (ViewsPane) ovt.getComponent(0);
+//				vp.setVisible(false);
+//				vp.dispose();
+		//System.out.println(vp.getComponentCount());// 1
+				JPanel j = (JPanel) vp.getComponent(0);
+		//System.out.println(j.getComponentCount());// 5
+				JPanel j1 = (JPanel) j.getComponent(1);
+				// this is left workspace of class tab
+				JComponent j2 = (JComponent) j1.getComponent(0);
+				j2.repaint();
+				
+//				j2.setVisible(false);
+				System.out.println(j2.getComponentCount());// 2
+				System.out.println(j2.getComponent(0).getClass());
+				System.out.println(j2.getComponent(1).getClass());
+				
+				View v1 = (View) j2.getComponent(0);
+System.out.println(v1.getViewName());// Class hierarchy
+				View v2 = (View) j2.getComponent(1);
+System.out.println(v2.getViewName());// Class hierarchy (inferred)
+
+				ViewComponent vc = v1.getViewComponent();
+				vc.repaint();
+				*/
 			}
 			
 			for(Variable v:variablesList){
