@@ -1,13 +1,21 @@
+import ilog.concert.IloException;
+import ilog.concert.IloNumExpr;
+import ilog.concert.IloNumVar;
+import ilog.cplex.IloCplex;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 
 import model.Constraint;
 import model.Factor;
 import model.LHS;
+import model.Objective;
 import model.Operator;
 import model.Parameter;
 import model.Qualifier;
@@ -17,12 +25,19 @@ import model.Variable;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import Utils.Utils;
 
@@ -39,43 +54,180 @@ import controller.SWCLOntologyController;
 public class TestOWL {
 
 	public static void main(String[] args) {
+		
+//		ArrayList<OWLNamedIndividual> indInA = new ArrayList<OWLNamedIndividual>();
+//		ArrayList<IloNumVar> valsInB = new ArrayList<IloNumVar>();
 
 		try {
+			File file = new File("Ontology/ve2addedObj.owl");
+			
+			IloCplex cplex = new IloCplex();
+			IloNumVar[] x = cplex.numVarArray(10, 0.0, Double.MAX_VALUE);
+			IloNumVar[] y = cplex.numVarArray(4, 0.0, Double.MAX_VALUE);
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-			
-			File file = new File("Ontology/ve2cadded.owl");
-			
+			OWLDataFactory dataFactory = manager.getOWLDataFactory();
 			// Load the local copy
 			OWLOntology ve = manager.loadOntologyFromOntologyDocument(file);
+			
 			SWCLOntologyController soc = new SWCLOntologyController(ve);
+			String prefix = soc.getPrefix();
+			PrefixManager pm = new DefaultPrefixManager(prefix);
 			
-			ConstraintController con = new ConstraintController(ve, soc);
-			ArrayList<Variable> varList = con.getAllVariables();
+//			ConstraintController con = new ConstraintController(ve, soc);
+//			ArrayList<Variable> varList = con.getAllVariables();
 			
-//			Utils.printVariablesList("variable:", varList);
-//			
-//			for(Variable v:varList){
-//				
-//			}
-
 //			System.out.println(soc.getPrefix());
 			TestOWL towl = new TestOWL();
 			ArrayList<Constraint> consList = towl.getAllConstraints(ve);
+towl.getObjective(ve);
 			
 			for(Constraint c:consList){
+System.out.println("Constraint Name:"+c.getName());
+				// get qualifiers's list
+				ArrayList<Qualifier> qualifierList = c.getQualifiers();
+				Iterator it = qualifierList.iterator();
 				
-				// parse every constraint
-				Utils.printConstraint(c);
-			
+				while(it.hasNext()){
+					// get qualifier
+					Qualifier q = (Qualifier) it.next();
+System.out.println("qualifier:"+q.getV().getName());
+					/*
+					 *  get qualifier's class, 
+					 *  NEED TO UPDATE description은 manchester syntax이 될수 있으므로 parsing해야 함
+					 */
+					OWLClass vendor = dataFactory.getOWLClass("#"+q.getV().getDescription(),pm);
+					Set vendorList =  vendor.getIndividuals(ve);
+					Iterator vendorIt = vendorList.iterator();
+					while(vendorIt.hasNext()){
+						OWLNamedIndividual vendorInd = (OWLNamedIndividual) vendorIt.next();
+System.out.println("ind:"+vendorInd);
+
+					// LHS part
+					ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
+					Iterator termblockIt = termblocks.iterator();
+					while(termblockIt.hasNext()){
+						TermBlock tb = (TermBlock) termblockIt.next();
+						
+System.out.println("Termblock sign:"+tb.getSign());
+System.out.println("Agg Opp:"+tb.getAggregateOppertor());
+						ArrayList<Factor> facList = tb.getFactors();
+						Iterator facIt = facList.iterator();
+						while(facIt.hasNext()){
+							Factor f = (Factor) facIt.next();
+System.out.println("Factor Variable:"+f.getV().getName());
+System.out.println("Variable Description:"+f.getV().getDescription());
+System.out.println("Factor Property:"+f.getOwlProperty());
+						}
+					}
+					
+					// NEED UPDATE...변수 a에 들어있는 인스턴스들 추출
+					OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#produceWeekOf"));
+					OWLObjectPropertyImpl hasProduceWeek = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#hasProduceWeek"));
+//					OWLObjectPropertyExpression hasFacInverse = hasFac.getInverseProperty();
+//System.out.println(hasFac+"\n"+hasFacInverse);
+					HashMap vendorObjectPorperties = (HashMap) vendorInd.getObjectPropertyValues(ve);
+					Set value = (Set) vendorObjectPorperties.get(hasProduceWeek);
+					if(value !=null){
+						Iterator valueIt = value.iterator();
+						while(valueIt.hasNext()){
+							// 하나하나의 ProduceWeek 객체
+							OWLNamedIndividual ind = (OWLNamedIndividual) valueIt.next();
+System.out.println("ind"+ind);
+							// NEED UPDATE... factor에서 가져와야 함.
+							OWLDataPropertyImpl dp = new OWLDataPropertyImpl(dataFactory, IRI.create(prefix+"#produceCapability"));
+							HashMap produceWeek = (HashMap) ind.getDataPropertyValues(ve);
+System.out.println("procudeCapability:"+produceWeek.get(dp).toString());
+							// produceCapability값을 가져옴
+							int produceWeekVal = Integer.parseInt((produceWeek.get(dp).toString()).substring(2, 4));
+
+							// 변수 b에 있는 인스턴스,b는 a에 의해 결정되는 것들이므로 a를 백터로 저장했다가 꺼내면서
+							// 속하는 b를 하나하나씩 꺼내야 함.
+							OWLObjectPropertyImpl produce = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#produce"));
+							HashMap indOPValues = (HashMap) ind.getObjectPropertyValues(ve);
+							Set produceVal = (Set) indOPValues.get(produce);
+							// 매개 produceweek의 supplying객체들의 개수를 가져옴. 
+							int supplyingNum = produceVal.size();
+							
+							IloNumExpr rexpr = null;
+							// 4개의 supplying을 가지고 있으면 
+							if(supplyingNum == 4){
+								rexpr = cplex.sum(x[0],x[1],x[2],x[3]);
+							}else if(supplyingNum == 3){
+								rexpr = cplex.sum(x[4],x[5],x[6]);
+							}else if(supplyingNum == 2){
+								rexpr = cplex.sum(x[7],x[8]);
+							}else{
+								rexpr = x[9];
+							}
+							
+							// Opp
+							String Opp = c.getOpp().getOpp();
+System.out.println("Opp:"+Opp);
+							if(Opp.equals("greaterThan")){
+								cplex.addGe(produceWeekVal, rexpr);
+							}
+						}
+					}
+					
+						// RHS
+						ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
+						Iterator rtermblockIt = rtermblocks.iterator();
+						while(rtermblockIt.hasNext()){
+							TermBlock tb = (TermBlock) rtermblockIt.next();
+							
+	System.out.println("Termblock sign:"+tb.getSign());
+	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
+							ArrayList<Factor> facList = tb.getFactors();
+							Iterator facIt = facList.iterator();
+							while(facIt.hasNext()){
+								Factor f = (Factor) facIt.next();
+	System.out.println("Factor Variable:"+f.getV().getName());
+	System.out.println("Variable Description:"+f.getV().getDescription());
+	System.out.println("Factor Property:"+f.getOwlProperty());
+							}
+						}
+					}
+				}
 			}
 			
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IloException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
+	// get all individuals in a variable
+	/*
+	private Set<OWLIndividual> indsInVal(Variable v,OWLOntology owl){
+		// individuals list in v
+		Set<OWLNamedIndividual> indList = new HashSet<OWLNamedIndividual>();
+		
+		OWLDataFactory df = OWLManager.createOWLOntologyManager().getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
+		PrefixManager pm = new DefaultPrefixManager(prefix);
+
+		String des = v.getDescription();
+		StringTokenizer st = new StringTokenizer(des);
+		int tkNum = st.countTokens();
+		if(tkNum == 1){
+			// token 이 하나면 클래스임. 그 클래스에 속하는 객체들 가져오기.
+			OWLClass cls = df.getOWLClass(IRI.create("#"+st.nextToken()));
+			return cls.getIndividuals(owl);
+		}else if(tkNum == 3){
+			
+			OWLObjectProperty op = df.getOWLObjectProperty(IRI.create("#"+st.nextToken()));
+			st.nextToken();
+			
+			return indList;
+		}
+	
+	}
+	*/
 	// get all constraints from ontology
 	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
 		
@@ -464,5 +616,109 @@ public class TestOWL {
 		return constraintsList;
 	}
 	
-	
+	// get objective from ontology
+	private Objective getObjective(OWLOntology owl){
+		
+		Objective obj = new Objective();
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
+    	// controller
+    	ConstraintController controller = new ConstraintController(owl, soc);
+    	// get all variables to variablesList
+    	ArrayList<Variable> variablesList = controller.getAllVariables();
+		
+		OWLNamedIndividual objInd = new OWLNamedIndividualImpl(factory,IRI.create(prefix+"#objective"));
+		
+		// get instruction
+		OWLDataProperty hasOptInstruction = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasOptInstruction"));
+		HashMap objIndDP = (HashMap) objInd.getDataPropertyValues(owl);
+		Set objIndDPV = (Set)objIndDP.get(hasOptInstruction);
+		Iterator objIndDPVIt = objIndDPV.iterator();
+		obj.setOptimizationInstruction(objIndDPVIt.next().toString().substring(1,9));
+		
+		// get Obj Term
+		ArrayList<TermBlock> objTerm = new ArrayList<TermBlock>();
+		OWLObjectProperty hasObjTerm = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasObjTerm"));
+		HashMap objIndOP = (HashMap)objInd.getObjectPropertyValues(owl);
+		Set objIndOPV = (Set)objIndOP.get(hasObjTerm);
+		Iterator objIndOPVIt = objIndOPV.iterator();
+		
+		while(objIndOPVIt.hasNext()){
+			TermBlock t = new TermBlock();
+			// Term block
+			OWLNamedIndividual ind = (OWLNamedIndividual) objIndOPVIt.next();
+			HashMap indDP = (HashMap) ind.getDataPropertyValues(owl);
+			HashMap indOP = (HashMap) ind.getObjectPropertyValues(owl);
+			
+			// get sign
+			OWLDataProperty hasSign = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasSign"));
+			Set hasSignV = (Set)indDP.get(hasSign);
+			Iterator hasSignVIt = hasSignV.iterator();
+			t.setSign(hasSignVIt.next().toString().substring(1,2));
+			
+			// get Agg Opp
+			OWLDataProperty hasAggOpp = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasAggregateOperation"));
+			Set hasAggOppV = (Set)indDP.get(hasAggOpp);
+			Iterator hasAggOppVIt = hasAggOppV.iterator();
+			t.setAggregateOppertor(hasAggOppVIt.next().toString().substring(1,6));// need update, 1,6
+			
+			// get parameters
+			ArrayList<Parameter> paraList = new ArrayList<Parameter>();
+			OWLObjectProperty hasPara = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasParameters"));
+			Set hasParaV = (Set) indOP.get(hasPara);
+			Iterator hasParaVIt = hasParaV.iterator();
+			while(hasParaVIt.hasNext()){
+				Parameter p = new Parameter();
+				// variable ind
+				OWLNamedIndividual v = (OWLNamedIndividual) hasParaVIt.next();
+				String vName = soc.getWithoutPrefix(v.toString(), prefix).substring(1);
+				Variable via = Utils.findVariableWithName(variablesList, vName);
+				p.setV(via);
+				paraList.add(p);
+			}
+			t.setParameters(paraList);
+			
+			// get factors
+			ArrayList<Factor> facList = new ArrayList<Factor>();
+			OWLObjectProperty hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
+			Set hasFacV = (Set) indOP.get(hasFac);
+			Iterator hasFacVIt = hasFacV.iterator();
+			while(hasFacVIt.hasNext()){
+				Factor f = new Factor();
+				// Factor ind
+				OWLNamedIndividual fac = (OWLNamedIndividual) hasFacVIt.next();
+				HashMap facDP = (HashMap) fac.getDataPropertyValues(owl);
+				HashMap facOP = (HashMap) fac.getObjectPropertyValues(owl);
+				OWLDataProperty hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
+				Set hasBindingDPV = (Set) facDP.get(hasBindingDataProperty);
+				Iterator hasBindingDPVIt = hasBindingDPV.iterator();
+				while(hasBindingDPVIt.hasNext()){
+					String orgStr = hasBindingDPVIt.next().toString();
+					String trimOrgStr = orgStr.substring(1);
+					int index = trimOrgStr.indexOf("\"");
+					// get owlproperty  without prefix
+					String str = trimOrgStr.substring(0,index);
+					f.setOwlProperty(str);
+				}
+				// get v
+				OWLObjectProperty hasVar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasVar"));
+				Set hasVarOPV = (Set) facOP.get(hasVar);
+				Iterator hasVarOPVIt = hasVarOPV.iterator();
+				while(hasVarOPVIt.hasNext()){
+					OWLNamedIndividual v = (OWLNamedIndividual) hasVarOPVIt.next();
+					String vName = soc.getWithoutPrefix(v.toString(), prefix).substring(1);
+					Variable via = Utils.findVariableWithName(variablesList, vName);
+					f.setV(via);
+				}
+				facList.add(f);
+			}
+			t.setFactors(facList);
+			
+			objTerm.add(t);
+		}
+
+		return obj;
+	}
 }
