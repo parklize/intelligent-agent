@@ -66,6 +66,9 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>
     
     
+ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasObjective>
+
+    
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendWeekOf>
 
     Domain: 
@@ -107,6 +110,9 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683
     InverseOf: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendInventory>
     
+    
+ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasObjTerm>
+
     
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>
 
@@ -180,22 +186,10 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683
 DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#bindingClass>
 
     
-DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasOperator>
-
-    
 DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>
 
     Domain: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
-    
-    Range: 
-        xsd:int
-    
-    
-DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasAmount>
-
-    Domain: 
-        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Inventory>
     
     Range: 
         xsd:int
@@ -210,6 +204,15 @@ DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology131484068357
         xsd:int
     
     
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>
+
+    Domain: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ProduceWeek>
+    
+    Range: 
+        xsd:int
+    
+    
 DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>
 
     Domain: 
@@ -219,10 +222,28 @@ DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology131484068357
         xsd:int
     
     
-DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>
+
+    
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#inventoryCost>
 
     Domain: 
-        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ProduceWeek>
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Inventory>
+    
+    Range: 
+        xsd:int
+    
+    
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSign>
+
+    
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasOperator>
+
+    
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasAmount>
+
+    Domain: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Inventory>
     
     Range: 
         xsd:int
@@ -237,13 +258,13 @@ DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology131484068357
         xsd:int
     
     
-DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>
-
-    
 DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasAggregateOperation>
 
     
-DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSign>
+DataProperty: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasOptInstruction>
+
+    
+Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Objective>
 
     
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Vendor>
@@ -267,6 +288,9 @@ Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#I
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#RhsFactor>
 
     
+Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#OptModel>
+
+    
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#SpendWeek>
 
     
@@ -275,6 +299,9 @@ Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#R
     SubClassOf: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor> only <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#RhsFactor>
     
+    
+Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
+
     
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?a>
 
@@ -306,20 +333,26 @@ Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#C
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
 
     
+Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ProduceWeek>
+
+    
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?d>
 
     EquivalentTo: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy> value <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?c>
     
     
-Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ProduceWeek>
-
-    
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Constraint>
 
     SubClassOf: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasRhs> only <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#RhsTermBlock>,
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasLhs> only <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#LhsTermBlock>
+    
+    
+Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjectiveTerm>
+
+    SubClassOf: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor> only <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
     
     
 Class: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#LhsTermBlock>
@@ -381,12 +414,33 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSign>  "+"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb2objFactor2>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?e>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "inventoryCost"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb2objFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?e>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "hasAmount"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_4>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
@@ -467,6 +521,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_3>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "50"^^xsd:int
     
@@ -477,6 +532,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
@@ -487,6 +543,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_1>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
@@ -501,13 +558,40 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "produceCapability"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objTermBlock1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjectiveTerm>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb1objFactor2>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?b>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb1objFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSign>  "+"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasAggregateOperation>  "sigma"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objTermBlock2>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjectiveTerm>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb2objFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb2objFactor2>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?e>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSign>  "+"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasAggregateOperation>  "sigma"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_4>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ProduceWeek>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_3>
@@ -517,6 +601,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_33>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34>
     
     
@@ -528,7 +613,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_24>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_23>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_22>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_22>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_1>
@@ -538,6 +624,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_12>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_14>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_13>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_11>
@@ -550,8 +637,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?c>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "veDemand"^^xsd:string,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "ownDemand"^^xsd:string
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "ownDemand"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "veDemand"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_33>
@@ -560,8 +647,9 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_3>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02>
@@ -570,8 +658,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Constraint>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsTermBlock2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?v>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsTermBlock2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02rhsTermBlock1>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02rhsTermBlock2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsTermBlock1>,
@@ -584,8 +672,18 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_4>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#optModel>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#OptModel>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasObjective>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objective>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint01rhsFactor1>
@@ -610,12 +708,39 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasOperator>  "greaterThan"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb1objFactor2>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?b>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "supplyCost"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Vendor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_2>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_4>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_4>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_3>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_3>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_2>
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_23>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_3>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "40"^^xsd:int
     
@@ -636,6 +761,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spentBy>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
@@ -648,6 +774,16 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#tb1objFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ObjFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?b>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasBindingDataProperty>  "supplyAmount"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_1>
@@ -690,6 +826,17 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_24>
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objective>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Objective>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasObjTerm>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objTermBlock2>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasObjTerm>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#objTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasOptInstruction>  "Minimize"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?v>

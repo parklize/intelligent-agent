@@ -11,6 +11,7 @@ import javax.swing.table.TableColumn;
 import model.Constraint;
 import model.Factor;
 import model.LHS;
+import model.Objective;
 import model.Operator;
 import model.Parameter;
 import model.Qualifier;
@@ -237,4 +238,26 @@ public class Utils {
 		
 	}
 	
+	public static void printObjective(Objective obj){
+		
+		System.out.println("Objective:====================");
+		System.out.println("Instruction:"+obj.getOptimizationInstruction());
+		ArrayList<TermBlock> tb = obj.getObjectiveTerm();
+		for(TermBlock t: tb){
+			System.out.println("==========================");
+			System.out.println("Sign:"+t.getSign());
+			System.out.println("AggOpp:"+t.getAggregateOppertor());
+			System.out.println("==========Factors==========");
+			ArrayList<Factor> fList = t.getFactors();
+			for(Factor f:fList){
+				System.out.println("Var Name:"+f.getV().getName());
+				System.out.println("OWL Property:"+f.getOwlProperty());
+			}
+			System.out.println("==========Parameters==========");
+			ArrayList<Parameter> pList =  t.getParameters();
+			for(Parameter p:pList){
+				System.out.println("p var name:"+p.getV().getName());
+			}
+		}
+	}
 }
