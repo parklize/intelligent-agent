@@ -1,4 +1,5 @@
 import ilog.concert.IloException;
+import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
@@ -67,6 +68,7 @@ public class TestOWL {
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			OWLDataFactory dataFactory = manager.getOWLDataFactory();
+			
 			// Load the local copy
 			OWLOntology ve = manager.loadOntologyFromOntologyDocument(file);
 			
@@ -74,14 +76,115 @@ public class TestOWL {
 			String prefix = soc.getPrefix();
 			PrefixManager pm = new DefaultPrefixManager(prefix);
 			
-//			ConstraintController con = new ConstraintController(ve, soc);
-//			ArrayList<Variable> varList = con.getAllVariables();
+			ConstraintController con = new ConstraintController(ve, soc);
+			ArrayList<Variable> varList = con.getAllVariables();
 			
-//			System.out.println(soc.getPrefix());
+			// 변수의 Description에 의해 변수에 속하는 인스턴스들을 뽑아옴
+			// description에 의해 뽑아오게 고침,Need Update
+			ArrayList<OWLNamedIndividual> indsInV = new ArrayList<OWLNamedIndividual>();
+			ArrayList<OWLNamedIndividual> indsInA = new ArrayList<OWLNamedIndividual>();
+			ArrayList<OWLNamedIndividual> indsInB = new ArrayList<OWLNamedIndividual>();
+			ArrayList<OWLNamedIndividual> indsInC = new ArrayList<OWLNamedIndividual>();
+			ArrayList<OWLNamedIndividual> indsInE = new ArrayList<OWLNamedIndividual>();
+			
+			
+			// indsInV
+			OWLClass vendor = dataFactory.getOWLClass(IRI.create(prefix+"#Vendor"));
+			Set indsVen = vendor.getIndividuals(ve);
+			Iterator vendorIt = indsVen.iterator();
+			while(vendorIt.hasNext()){
+				indsInV.add((OWLNamedIndividual) vendorIt.next());
+			}
+			// indsInA
+			OWLClass produceWeek = dataFactory.getOWLClass(IRI.create(prefix+"#ProduceWeek"));
+			Set indsPro = produceWeek.getIndividuals(ve);
+			Iterator indsProIt = indsPro.iterator();
+			while(indsProIt.hasNext()){
+				indsInA.add((OWLNamedIndividual) indsProIt.next());
+			}
+			// indsInB
+			OWLClass supplying = dataFactory.getOWLClass(IRI.create(prefix+"#Supplying"));
+			Set indsSup = supplying.getIndividuals(ve);
+			Iterator indsSupIt = indsSup.iterator();
+			while(indsSupIt.hasNext()){
+				indsInB.add((OWLNamedIndividual) indsSupIt.next());
+			}
+			// indsInC
+			OWLClass spendWeek = dataFactory.getOWLClass(IRI.create(prefix+"#SpendWeek"));
+			Set indsSpe = spendWeek.getIndividuals(ve);
+			Iterator indsSpeIt = indsSpe.iterator();
+			while(indsSpeIt.hasNext()){
+				indsInC.add((OWLNamedIndividual) indsSpeIt.next());
+			}
+			// indsInE
+			for(OWLNamedIndividual ind : indsInC){
+				OWLObjectProperty spendInventory = dataFactory.getOWLObjectProperty(IRI.create(prefix+"#spendInventory"));
+				HashMap spendInventoryVs = (HashMap) ind.getObjectPropertyValues(ve);
+				Set spendInventoryV = (Set) spendInventoryVs.get(spendInventory);
+				Iterator spendInventoryVIt = spendInventoryV.iterator();
+				while(spendInventoryVIt.hasNext()){
+					indsInE.add((OWLNamedIndividual) spendInventoryVIt.next());
+				}
+			}
+			
 			TestOWL towl = new TestOWL();
 			ArrayList<Constraint> consList = towl.getAllConstraints(ve);
-towl.getObjective(ve);
+			Objective obj = towl.getObjective(ve);
+//Utils.printObjective(obj);
+				
+			IloLinearNumExpr expr = cplex.linearNumExpr();
 			
+			// obj term blocks
+			ArrayList<TermBlock> tblocks = obj.getObjectiveTerm();
+			for(TermBlock t: tblocks){
+				ArrayList<Parameter> pList = t.getParameters();
+				if(pList.size()==1){
+					Parameter p = pList.get(0);// b,e
+					ArrayList<Factor> fList = t.getFactors();
+					Variable v = p.getV();
+					// v가 b이면 b의 사이즈에 의해 
+					if(v.getName().equals("?b")){
+						for(int i=0;i<indsInB.size();i++){
+							OWLNamedIndividual ind = indsInB.get(i);
+							String owlProperty = fList.get(1).getOwlProperty();
+							OWLDataProperty supplyCost = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+owlProperty));
+							HashMap supplyCostV = (HashMap) ind.getDataPropertyValues(ve);
+							String sCost = supplyCostV.get(supplyCost).toString();
+							StringTokenizer st = new StringTokenizer(sCost,"\"");
+							st.nextToken();
+							expr.addTerm(x[i], Integer.parseInt(st.nextToken()));
+						}
+					}else if(v.getName().equals("?e")){
+						for(int i=0;i<indsInE.size();i++){
+							OWLNamedIndividual ind = indsInE.get(i);
+							String owlProperty = fList.get(1).getOwlProperty();
+							OWLDataProperty inventoryCost = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+owlProperty));
+							HashMap inventoryCostV = (HashMap) ind.getDataPropertyValues(ve);
+							String iCost = inventoryCostV.get(inventoryCost).toString();
+							StringTokenizer st = new StringTokenizer(iCost,"\"");
+							st.nextToken();
+							expr.addTerm(y[i], Integer.parseInt(st.nextToken()));
+						}
+					}
+				}
+			}
+			
+			//obj instruction
+			String instruction = obj.getOptimizationInstruction();
+			if(instruction.equals("Maximize")){
+				cplex.addMaximize(expr);
+			}else if(instruction.equals("Minimize")){
+				cplex.addMinimize(expr);
+			}
+
+
+
+
+			
+
+
+
+/*
 			for(Constraint c:consList){
 System.out.println("Constraint Name:"+c.getName());
 				// get qualifiers's list
@@ -92,10 +195,10 @@ System.out.println("Constraint Name:"+c.getName());
 					// get qualifier
 					Qualifier q = (Qualifier) it.next();
 System.out.println("qualifier:"+q.getV().getName());
-					/*
-					 *  get qualifier's class, 
-					 *  NEED TO UPDATE description은 manchester syntax이 될수 있으므로 parsing해야 함
-					 */
+					//
+					 //  get qualifier's class, 
+					 //  NEED TO UPDATE description은 manchester syntax이 될수 있으므로 parsing해야 함
+					 //
 					OWLClass vendor = dataFactory.getOWLClass("#"+q.getV().getDescription(),pm);
 					Set vendorList =  vendor.getIndividuals(ve);
 					Iterator vendorIt = vendorList.iterator();
@@ -137,9 +240,9 @@ System.out.println("ind"+ind);
 							// NEED UPDATE... factor에서 가져와야 함.
 							OWLDataPropertyImpl dp = new OWLDataPropertyImpl(dataFactory, IRI.create(prefix+"#produceCapability"));
 							HashMap produceWeek = (HashMap) ind.getDataPropertyValues(ve);
-System.out.println("procudeCapability:"+produceWeek.get(dp).toString());
+//System.out.println("procudeCapability:"+produceWeek.get(dp).toString());
 							// produceCapability값을 가져옴
-							int produceWeekVal = Integer.parseInt((produceWeek.get(dp).toString()).substring(2, 4));
+//							int produceWeekVal = Integer.parseInt((produceWeek.get(dp).toString()).substring(2, 4));
 
 							// 변수 b에 있는 인스턴스,b는 a에 의해 결정되는 것들이므로 a를 백터로 저장했다가 꺼내면서
 							// 속하는 b를 하나하나씩 꺼내야 함.
@@ -165,7 +268,7 @@ System.out.println("procudeCapability:"+produceWeek.get(dp).toString());
 							String Opp = c.getOpp().getOpp();
 System.out.println("Opp:"+Opp);
 							if(Opp.equals("greaterThan")){
-								cplex.addGe(produceWeekVal, rexpr);
+//								cplex.addGe(produceWeekVal, rexpr);
 							}
 						}
 					}
@@ -190,7 +293,7 @@ System.out.println("Opp:"+Opp);
 					}
 				}
 			}
-			
+			*/	
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -718,7 +821,7 @@ System.out.println("Opp:"+Opp);
 			
 			objTerm.add(t);
 		}
-
+		obj.setObjectiveTerm(objTerm);
 		return obj;
 	}
 }

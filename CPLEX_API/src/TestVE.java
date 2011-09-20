@@ -44,8 +44,9 @@ public class TestVE {
 			expr.addTerm(30, y[2]);//y3
 			expr.addTerm(40, y[3]);//y4
 			
-			IloObjective obj = cplex.minimize(expr);
-			cplex.add(obj);
+//			IloObjective obj = cplex.minimize(expr);
+//			cplex.add(obj);
+			cplex.addMinimize(expr);
 			
 			/*
 			 * Subject to part
@@ -61,7 +62,6 @@ public class TestVE {
 			cplex.addGe(cplex.sum(x[1],x[4],y[1]), 60);
 			cplex.addGe(cplex.sum(x[2],x[5],x[7]), 65);
 			cplex.addGe(cplex.sum(x[3],x[6],x[8],x[9]), 60);
-System.out.println(cplex.toString());	
 			/*
 			 * Solution part
 			 */
