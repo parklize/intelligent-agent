@@ -408,14 +408,14 @@
     <owl:Class rdf:about="&Ontology1314840683578;Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -875,10 +875,51 @@
     
 
 
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_1 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_1">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">10</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_2 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_2">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">20</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_3 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_3">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">30</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_4 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_4">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">40</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_1 -->
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_1">
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_1"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_11"/>
     </owl:NamedIndividual>
     
@@ -888,6 +929,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_2">
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_2"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_12"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_22"/>
     </owl:NamedIndividual>
@@ -898,6 +940,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_3">
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_3"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_13"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_23"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_33"/>
@@ -909,6 +952,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_4">
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_4"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_14"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_24"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_34"/>
