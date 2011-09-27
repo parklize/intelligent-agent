@@ -318,7 +318,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JTable getVariablesTable() {
 		
 		if (variablesTable == null) {
-			final String[] colHeads = {"Variable","Description","Class Selector"};
+			final String[] colHeads = {"Variable","Domain Description"};
 			final String[][] data = null;
 			
 			DefaultTableModel model = new DefaultTableModel(data,colHeads);
@@ -332,7 +332,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			// add variables from totalvariables list to display
 			if(totalVariablesList.size() != 0){                                                         
 				for(Variable v:totalVariablesList){
-					model.addRow(new Object[]{v.getName(),v.getDescription(),"Direct Input"});
+					model.addRow(new Object[]{v.getName(),v.getDescription()});
 				}
 			}
 			
