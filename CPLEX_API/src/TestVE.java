@@ -51,7 +51,8 @@ public class TestVE {
 			/*
 			 * Subject to part
 			 */
-			cplex.addLe(cplex.sum(x[0],x[1],x[2],x[3]), 50);
+			IloNumExpr c1 = cplex.sum(x[0],x[1],x[2],x[3]);
+			cplex.addLe(c1, 50);
 			cplex.addLe(cplex.sum(x[4],x[5],x[6]), 60.0);
 			cplex.addLe(cplex.sum(x[7],x[8]), 65);
 			cplex.addLe(x[9], 50);

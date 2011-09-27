@@ -21,10 +21,12 @@ public class Test02 {
 			IloNumVar[] x = cplex.numVarArray(3, lb, ub);
 			
 			double[] objvals = {1.0,2.0,3.0};
-			cplex.addMaximize(cplex.scalProd(x, objvals));
+//			cplex.addMaximize(cplex.scalProd(x, objvals));
+//			
+//			cplex.addLe(cplex.sum(cplex.prod(-1.0, x[0]),cplex.prod(1.0, x[1]),cplex.prod(1.0, x[2])), 20);
+//			cplex.addLe(cplex.sum(cplex.prod(1.0, x[0]),cplex.prod(-3.0, x[1]),cplex.prod(1.0, x[2])), 30.0);
 			
-			cplex.addLe(cplex.sum(cplex.prod(-1.0, x[0]),cplex.prod(1.0, x[1]),cplex.prod(1.0, x[2])), 20);
-			cplex.addLe(cplex.sum(cplex.prod(1.0, x[0]),cplex.prod(-3.0, x[1]),cplex.prod(1.0, x[2])), 30.0);
+			cplex.addMaximize(x[0]);
 			
 			if(cplex.solve()){
 				cplex.output().println("Solution status = "+cplex.getStatus());

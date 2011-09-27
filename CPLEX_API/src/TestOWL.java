@@ -82,12 +82,26 @@ public class TestOWL {
 			// 변수의 Description에 의해 변수에 속하는 인스턴스들을 뽑아옴
 			// description에 의해 뽑아오게 고침,Need Update
 			ArrayList<OWLNamedIndividual> indsInV = new ArrayList<OWLNamedIndividual>();
-			ArrayList<OWLNamedIndividual> indsInA = new ArrayList<OWLNamedIndividual>();
-			ArrayList<OWLNamedIndividual> indsInB = new ArrayList<OWLNamedIndividual>();
+			ArrayList<OWLNamedIndividual> indsInA = new ArrayList<OWLNamedIndividual>();//4
+			ArrayList<OWLNamedIndividual> indsInB = new ArrayList<OWLNamedIndividual>();//10
 			ArrayList<OWLNamedIndividual> indsInC = new ArrayList<OWLNamedIndividual>();
 			ArrayList<OWLNamedIndividual> indsInE = new ArrayList<OWLNamedIndividual>();
-			
-			
+			ArrayList[] vePW = new ArrayList[4];
+			vePW[0] = new ArrayList<IloNumVar>();
+			vePW[0].add(x[0]);
+			vePW[0].add(x[1]);
+			vePW[0].add(x[2]);
+			vePW[0].add(x[3]);
+			vePW[1] = new ArrayList<IloNumVar>();
+			vePW[1].add(x[4]);
+			vePW[1].add(x[5]);
+			vePW[1].add(x[6]);
+			vePW[2] = new ArrayList<IloNumVar>();
+			vePW[2].add(x[7]);
+			vePW[2].add(x[8]);
+			vePW[3] = new ArrayList<IloNumVar>();
+			vePW[3].add(x[9]);
+
 			// indsInV
 			OWLClass vendor = dataFactory.getOWLClass(IRI.create(prefix+"#Vendor"));
 			Set indsVen = vendor.getIndividuals(ve);
@@ -128,7 +142,7 @@ public class TestOWL {
 			}
 			
 			TestOWL towl = new TestOWL();
-			ArrayList<Constraint> consList = towl.getAllConstraints(ve);
+			
 			Objective obj = towl.getObjective(ve);
 //Utils.printObjective(obj);
 				
@@ -142,8 +156,10 @@ public class TestOWL {
 					Parameter p = pList.get(0);// b,e
 					ArrayList<Factor> fList = t.getFactors();
 					Variable v = p.getV();
+					
 					// v가 b이면 b의 사이즈에 의해 
 					if(v.getName().equals("?b")){
+						
 						for(int i=0;i<indsInB.size();i++){
 							OWLNamedIndividual ind = indsInB.get(i);
 							String owlProperty = fList.get(1).getOwlProperty();
@@ -154,7 +170,9 @@ public class TestOWL {
 							st.nextToken();
 							expr.addTerm(x[i], Integer.parseInt(st.nextToken()));
 						}
+						
 					}else if(v.getName().equals("?e")){
+						
 						for(int i=0;i<indsInE.size();i++){
 							OWLNamedIndividual ind = indsInE.get(i);
 							String owlProperty = fList.get(1).getOwlProperty();
@@ -165,26 +183,23 @@ public class TestOWL {
 							st.nextToken();
 							expr.addTerm(y[i], Integer.parseInt(st.nextToken()));
 						}
+						
 					}
 				}
 			}
 			
 			//obj instruction
 			String instruction = obj.getOptimizationInstruction();
+			
 			if(instruction.equals("Maximize")){
 				cplex.addMaximize(expr);
 			}else if(instruction.equals("Minimize")){
 				cplex.addMinimize(expr);
 			}
-
-
-
-
 			
+			// get all constraints
+			ArrayList<Constraint> consList = towl.getAllConstraints(ve);
 
-
-
-/*
 			for(Constraint c:consList){
 System.out.println("Constraint Name:"+c.getName());
 				// get qualifiers's list
@@ -195,16 +210,10 @@ System.out.println("Constraint Name:"+c.getName());
 					// get qualifier
 					Qualifier q = (Qualifier) it.next();
 System.out.println("qualifier:"+q.getV().getName());
-					//
-					 //  get qualifier's class, 
-					 //  NEED TO UPDATE description은 manchester syntax이 될수 있으므로 parsing해야 함
-					 //
-					OWLClass vendor = dataFactory.getOWLClass("#"+q.getV().getDescription(),pm);
-					Set vendorList =  vendor.getIndividuals(ve);
-					Iterator vendorIt = vendorList.iterator();
-					while(vendorIt.hasNext()){
-						OWLNamedIndividual vendorInd = (OWLNamedIndividual) vendorIt.next();
-System.out.println("ind:"+vendorInd);
+					
+					// Opp
+					String opp = c.getOpp().getOpp();
+System.out.println("Opp:"+opp);
 
 					// LHS part
 					ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
@@ -221,83 +230,91 @@ System.out.println("Agg Opp:"+tb.getAggregateOppertor());
 System.out.println("Factor Variable:"+f.getV().getName());
 System.out.println("Variable Description:"+f.getV().getDescription());
 System.out.println("Factor Property:"+f.getOwlProperty());
-						}
-					}
-					
-					// NEED UPDATE...변수 a에 들어있는 인스턴스들 추출
-					OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#produceWeekOf"));
-					OWLObjectPropertyImpl hasProduceWeek = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#hasProduceWeek"));
-//					OWLObjectPropertyExpression hasFacInverse = hasFac.getInverseProperty();
-//System.out.println(hasFac+"\n"+hasFacInverse);
-					HashMap vendorObjectPorperties = (HashMap) vendorInd.getObjectPropertyValues(ve);
-					Set value = (Set) vendorObjectPorperties.get(hasProduceWeek);
-					if(value !=null){
-						Iterator valueIt = value.iterator();
-						while(valueIt.hasNext()){
-							// 하나하나의 ProduceWeek 객체
-							OWLNamedIndividual ind = (OWLNamedIndividual) valueIt.next();
-System.out.println("ind"+ind);
-							// NEED UPDATE... factor에서 가져와야 함.
-							OWLDataPropertyImpl dp = new OWLDataPropertyImpl(dataFactory, IRI.create(prefix+"#produceCapability"));
-							HashMap produceWeek = (HashMap) ind.getDataPropertyValues(ve);
-//System.out.println("procudeCapability:"+produceWeek.get(dp).toString());
-							// produceCapability값을 가져옴
-//							int produceWeekVal = Integer.parseInt((produceWeek.get(dp).toString()).substring(2, 4));
-
-							// 변수 b에 있는 인스턴스,b는 a에 의해 결정되는 것들이므로 a를 백터로 저장했다가 꺼내면서
-							// 속하는 b를 하나하나씩 꺼내야 함.
-							OWLObjectPropertyImpl produce = new OWLObjectPropertyImpl(dataFactory,IRI.create(prefix+"#produce"));
-							HashMap indOPValues = (HashMap) ind.getObjectPropertyValues(ve);
-							Set produceVal = (Set) indOPValues.get(produce);
-							// 매개 produceweek의 supplying객체들의 개수를 가져옴. 
-							int supplyingNum = produceVal.size();
-							
-							IloNumExpr rexpr = null;
-							// 4개의 supplying을 가지고 있으면 
-							if(supplyingNum == 4){
-								rexpr = cplex.sum(x[0],x[1],x[2],x[3]);
-							}else if(supplyingNum == 3){
-								rexpr = cplex.sum(x[4],x[5],x[6]);
-							}else if(supplyingNum == 2){
-								rexpr = cplex.sum(x[7],x[8]);
-							}else{
-								rexpr = x[9];
-							}
-							
-							// Opp
-							String Opp = c.getOpp().getOpp();
-System.out.println("Opp:"+Opp);
-							if(Opp.equals("greaterThan")){
-//								cplex.addGe(produceWeekVal, rexpr);
+							if(f.getV().getName().equals("?a")){
+								for(int i=0;i<indsInA.size();i++){
+									OWLNamedIndividual pw = indsInA.get(i);
+System.out.println(pw);
+									OWLDataProperty produceCapability = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+									HashMap pcVs = (HashMap) pw.getDataPropertyValues(ve);
+									Set pcV = (Set) pcVs.get(produceCapability);
+									Iterator pcVIt = pcV.iterator();
+									
+									while(pcVIt.hasNext()){
+										System.out.println(pcVIt.next());
+									}
+									
+									ArrayList<IloNumVar> v = vePW[i];
+									IloNumExpr vexpr = v.get(0);
+									for(int j=1;j<v.size();j++){
+										vexpr = cplex.sum(vexpr,v.get(j));
+									}
+									
+								}
 							}
 						}
 					}
 					
-						// RHS
-						ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
-						Iterator rtermblockIt = rtermblocks.iterator();
-						while(rtermblockIt.hasNext()){
-							TermBlock tb = (TermBlock) rtermblockIt.next();
-							
-	System.out.println("Termblock sign:"+tb.getSign());
-	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
-							ArrayList<Factor> facList = tb.getFactors();
-							Iterator facIt = facList.iterator();
-							while(facIt.hasNext()){
-								Factor f = (Factor) facIt.next();
-	System.out.println("Factor Variable:"+f.getV().getName());
-	System.out.println("Variable Description:"+f.getV().getDescription());
-	System.out.println("Factor Property:"+f.getOwlProperty());
-							}
+					// RHS
+					ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
+					Iterator rtermblockIt = rtermblocks.iterator();
+					while(rtermblockIt.hasNext()){
+						TermBlock tb = (TermBlock) rtermblockIt.next();
+						
+System.out.println("Termblock sign:"+tb.getSign());
+System.out.println("Agg Opp:"+tb.getAggregateOppertor());
+						ArrayList<Factor> facList = tb.getFactors();
+						Iterator facIt = facList.iterator();
+						while(facIt.hasNext()){
+							Factor f = (Factor) facIt.next();
+System.out.println("Factor Variable:"+f.getV().getName());
+System.out.println("Variable Description:"+f.getV().getDescription());
+System.out.println("Factor Property:"+f.getOwlProperty());
 						}
 					}
 				}
 			}
-			*/	
-		} catch (OWLOntologyCreationException e) {
+			
+			
+			// Subject to part
+//			IloNumExpr c1 = cplex.sum(x[0],x[1],x[2],x[3]);
+//			cplex.addLe(c1, 50);
+//			cplex.addLe(cplex.sum(x[4],x[5],x[6]), 60.0);
+//			cplex.addLe(cplex.sum(x[7],x[8]), 65);
+//			cplex.addLe(x[9], 50);
+//			
+//			cplex.addEq(cplex.sum(y[0],y[1],y[2],y[3]), 10.0);
+//			
+//			cplex.addGe(cplex.sum(x[0],y[0]), 50);
+//			cplex.addGe(cplex.sum(x[1],x[4],y[1]), 60);
+//			cplex.addGe(cplex.sum(x[2],x[5],x[7]), 65);
+//			cplex.addGe(cplex.sum(x[3],x[6],x[8],x[9]), 60);
+//			
+//			// Solution part
+//			if(cplex.solve()){
+//				cplex.output().println("Solution status = "+cplex.getStatus());
+//				cplex.output().println("Solution value = "+cplex.getObjValue());
+//				
+//				double[] val = cplex.getValues(x);
+//				int ncols = cplex.getNcols();
+//				
+//				double[] val1 = cplex.getValues(y);
+//				int ncols1 = cplex.getNcols();
+//				
+//				
+//				for(int j=0;j<x.length;j++){
+//					cplex.output().println("Column: " + j + " Value = " + val[j]);
+//				}
+//				
+//				for(int k=0;k<y.length;k++){
+//					cplex.output().println("Column1: " + k + " Value = " + val1[k]);
+//				}
+//				cplex.end();
+//			}
+			
+		} catch (IloException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IloException e) {
+		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -331,6 +348,11 @@ System.out.println("Opp:"+Opp);
 	
 	}
 	*/
+	
+	
+	
+	
+	
 	// get all constraints from ontology
 	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
 		
