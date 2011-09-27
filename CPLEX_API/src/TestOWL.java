@@ -4,7 +4,10 @@ import ilog.concert.IloNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,11 +63,8 @@ public class TestOWL {
 //		ArrayList<IloNumVar> valsInB = new ArrayList<IloNumVar>();
 
 		try {
-			File file = new File("Ontology/ve2addedObj.owl");
 			
-			IloCplex cplex = new IloCplex();
-			IloNumVar[] x = cplex.numVarArray(10, 0.0, Double.MAX_VALUE);
-			IloNumVar[] y = cplex.numVarArray(4, 0.0, Double.MAX_VALUE);
+			File file = new File("Ontology/ve2addedObj.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			OWLDataFactory dataFactory = manager.getOWLDataFactory();
@@ -79,126 +79,28 @@ public class TestOWL {
 			ConstraintController con = new ConstraintController(ve, soc);
 			ArrayList<Variable> varList = con.getAllVariables();
 			
-			// 변수의 Description에 의해 변수에 속하는 인스턴스들을 뽑아옴
-			// description에 의해 뽑아오게 고침,Need Update
-			ArrayList<OWLNamedIndividual> indsInV = new ArrayList<OWLNamedIndividual>();
-			ArrayList<OWLNamedIndividual> indsInA = new ArrayList<OWLNamedIndividual>();//4
-			ArrayList<OWLNamedIndividual> indsInB = new ArrayList<OWLNamedIndividual>();//10
-			ArrayList<OWLNamedIndividual> indsInC = new ArrayList<OWLNamedIndividual>();
-			ArrayList<OWLNamedIndividual> indsInE = new ArrayList<OWLNamedIndividual>();
-			ArrayList[] vePW = new ArrayList[4];
-			vePW[0] = new ArrayList<IloNumVar>();
-			vePW[0].add(x[0]);
-			vePW[0].add(x[1]);
-			vePW[0].add(x[2]);
-			vePW[0].add(x[3]);
-			vePW[1] = new ArrayList<IloNumVar>();
-			vePW[1].add(x[4]);
-			vePW[1].add(x[5]);
-			vePW[1].add(x[6]);
-			vePW[2] = new ArrayList<IloNumVar>();
-			vePW[2].add(x[7]);
-			vePW[2].add(x[8]);
-			vePW[3] = new ArrayList<IloNumVar>();
-			vePW[3].add(x[9]);
-
-			// indsInV
-			OWLClass vendor = dataFactory.getOWLClass(IRI.create(prefix+"#Vendor"));
-			Set indsVen = vendor.getIndividuals(ve);
-			Iterator vendorIt = indsVen.iterator();
-			while(vendorIt.hasNext()){
-				indsInV.add((OWLNamedIndividual) vendorIt.next());
-			}
-			// indsInA
-			OWLClass produceWeek = dataFactory.getOWLClass(IRI.create(prefix+"#ProduceWeek"));
-			Set indsPro = produceWeek.getIndividuals(ve);
-			Iterator indsProIt = indsPro.iterator();
-			while(indsProIt.hasNext()){
-				indsInA.add((OWLNamedIndividual) indsProIt.next());
-			}
-			// indsInB
-			OWLClass supplying = dataFactory.getOWLClass(IRI.create(prefix+"#Supplying"));
-			Set indsSup = supplying.getIndividuals(ve);
-			Iterator indsSupIt = indsSup.iterator();
-			while(indsSupIt.hasNext()){
-				indsInB.add((OWLNamedIndividual) indsSupIt.next());
-			}
-			// indsInC
-			OWLClass spendWeek = dataFactory.getOWLClass(IRI.create(prefix+"#SpendWeek"));
-			Set indsSpe = spendWeek.getIndividuals(ve);
-			Iterator indsSpeIt = indsSpe.iterator();
-			while(indsSpeIt.hasNext()){
-				indsInC.add((OWLNamedIndividual) indsSpeIt.next());
-			}
-			// indsInE
-			for(OWLNamedIndividual ind : indsInC){
-				OWLObjectProperty spendInventory = dataFactory.getOWLObjectProperty(IRI.create(prefix+"#spendInventory"));
-				HashMap spendInventoryVs = (HashMap) ind.getObjectPropertyValues(ve);
-				Set spendInventoryV = (Set) spendInventoryVs.get(spendInventory);
-				Iterator spendInventoryVIt = spendInventoryV.iterator();
-				while(spendInventoryVIt.hasNext()){
-					indsInE.add((OWLNamedIndividual) spendInventoryVIt.next());
-				}
-			}
-			
 			TestOWL towl = new TestOWL();
+			towl.generateIlogCode(towl.getAllConstraints(ve));
 			
-			Objective obj = towl.getObjective(ve);
-//Utils.printObjective(obj);
-				
-			IloLinearNumExpr expr = cplex.linearNumExpr();
+		} catch (OWLOntologyCreationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	// generate Ilog file
+	private void generateIlogCode(ArrayList<Constraint> consList){
+		
+		try {
 			
-			// obj term blocks
-			ArrayList<TermBlock> tblocks = obj.getObjectiveTerm();
-			for(TermBlock t: tblocks){
-				ArrayList<Parameter> pList = t.getParameters();
-				if(pList.size()==1){
-					Parameter p = pList.get(0);// b,e
-					ArrayList<Factor> fList = t.getFactors();
-					Variable v = p.getV();
-					
-					// v가 b이면 b의 사이즈에 의해 
-					if(v.getName().equals("?b")){
-						
-						for(int i=0;i<indsInB.size();i++){
-							OWLNamedIndividual ind = indsInB.get(i);
-							String owlProperty = fList.get(1).getOwlProperty();
-							OWLDataProperty supplyCost = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+owlProperty));
-							HashMap supplyCostV = (HashMap) ind.getDataPropertyValues(ve);
-							String sCost = supplyCostV.get(supplyCost).toString();
-							StringTokenizer st = new StringTokenizer(sCost,"\"");
-							st.nextToken();
-							expr.addTerm(x[i], Integer.parseInt(st.nextToken()));
-						}
-						
-					}else if(v.getName().equals("?e")){
-						
-						for(int i=0;i<indsInE.size();i++){
-							OWLNamedIndividual ind = indsInE.get(i);
-							String owlProperty = fList.get(1).getOwlProperty();
-							OWLDataProperty inventoryCost = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+owlProperty));
-							HashMap inventoryCostV = (HashMap) ind.getDataPropertyValues(ve);
-							String iCost = inventoryCostV.get(inventoryCost).toString();
-							StringTokenizer st = new StringTokenizer(iCost,"\"");
-							st.nextToken();
-							expr.addTerm(y[i], Integer.parseInt(st.nextToken()));
-						}
-						
-					}
-				}
-			}
+			StringBuffer varDecStr = new StringBuffer("");// store var part 
+			StringBuffer subjectToStr = new StringBuffer("");// store subject to part
+			StringBuffer objectiveStr = new StringBuffer("");// store obj part
 			
-			//obj instruction
-			String instruction = obj.getOptimizationInstruction();
-			
-			if(instruction.equals("Maximize")){
-				cplex.addMaximize(expr);
-			}else if(instruction.equals("Minimize")){
-				cplex.addMinimize(expr);
-			}
-			
-			// get all constraints
-			ArrayList<Constraint> consList = towl.getAllConstraints(ve);
+//			FileWriter fw = new FileWriter("IloFile.txt");
+//			BufferedWriter bw = new BufferedWriter(fw);
 
 			for(Constraint c:consList){
 System.out.println("Constraint Name:"+c.getName());
@@ -230,27 +132,6 @@ System.out.println("Agg Opp:"+tb.getAggregateOppertor());
 System.out.println("Factor Variable:"+f.getV().getName());
 System.out.println("Variable Description:"+f.getV().getDescription());
 System.out.println("Factor Property:"+f.getOwlProperty());
-							if(f.getV().getName().equals("?a")){
-								for(int i=0;i<indsInA.size();i++){
-									OWLNamedIndividual pw = indsInA.get(i);
-System.out.println(pw);
-									OWLDataProperty produceCapability = dataFactory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
-									HashMap pcVs = (HashMap) pw.getDataPropertyValues(ve);
-									Set pcV = (Set) pcVs.get(produceCapability);
-									Iterator pcVIt = pcV.iterator();
-									
-									while(pcVIt.hasNext()){
-										System.out.println(pcVIt.next());
-									}
-									
-									ArrayList<IloNumVar> v = vePW[i];
-									IloNumExpr vexpr = v.get(0);
-									for(int j=1;j<v.size();j++){
-										vexpr = cplex.sum(vexpr,v.get(j));
-									}
-									
-								}
-							}
 						}
 					}
 					
@@ -273,85 +154,11 @@ System.out.println("Factor Property:"+f.getOwlProperty());
 					}
 				}
 			}
-			
-			
-			// Subject to part
-//			IloNumExpr c1 = cplex.sum(x[0],x[1],x[2],x[3]);
-//			cplex.addLe(c1, 50);
-//			cplex.addLe(cplex.sum(x[4],x[5],x[6]), 60.0);
-//			cplex.addLe(cplex.sum(x[7],x[8]), 65);
-//			cplex.addLe(x[9], 50);
-//			
-//			cplex.addEq(cplex.sum(y[0],y[1],y[2],y[3]), 10.0);
-//			
-//			cplex.addGe(cplex.sum(x[0],y[0]), 50);
-//			cplex.addGe(cplex.sum(x[1],x[4],y[1]), 60);
-//			cplex.addGe(cplex.sum(x[2],x[5],x[7]), 65);
-//			cplex.addGe(cplex.sum(x[3],x[6],x[8],x[9]), 60);
-//			
-//			// Solution part
-//			if(cplex.solve()){
-//				cplex.output().println("Solution status = "+cplex.getStatus());
-//				cplex.output().println("Solution value = "+cplex.getObjValue());
-//				
-//				double[] val = cplex.getValues(x);
-//				int ncols = cplex.getNcols();
-//				
-//				double[] val1 = cplex.getValues(y);
-//				int ncols1 = cplex.getNcols();
-//				
-//				
-//				for(int j=0;j<x.length;j++){
-//					cplex.output().println("Column: " + j + " Value = " + val[j]);
-//				}
-//				
-//				for(int k=0;k<y.length;k++){
-//					cplex.output().println("Column1: " + k + " Value = " + val1[k]);
-//				}
-//				cplex.end();
-//			}
-			
-		} catch (IloException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OWLOntologyCreationException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	// get all individuals in a variable
-	/*
-	private Set<OWLIndividual> indsInVal(Variable v,OWLOntology owl){
-		// individuals list in v
-		Set<OWLNamedIndividual> indList = new HashSet<OWLNamedIndividual>();
-		
-		OWLDataFactory df = OWLManager.createOWLOntologyManager().getOWLDataFactory();
-		SWCLOntologyController soc = new SWCLOntologyController(owl);
-		String prefix = soc.getPrefix();
-		PrefixManager pm = new DefaultPrefixManager(prefix);
-
-		String des = v.getDescription();
-		StringTokenizer st = new StringTokenizer(des);
-		int tkNum = st.countTokens();
-		if(tkNum == 1){
-			// token 이 하나면 클래스임. 그 클래스에 속하는 객체들 가져오기.
-			OWLClass cls = df.getOWLClass(IRI.create("#"+st.nextToken()));
-			return cls.getIndividuals(owl);
-		}else if(tkNum == 3){
-			
-			OWLObjectProperty op = df.getOWLObjectProperty(IRI.create("#"+st.nextToken()));
-			st.nextToken();
-			
-			return indList;
-		}
-	
-	}
-	*/
-	
-	
-	
-	
 	
 	// get all constraints from ontology
 	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
@@ -741,7 +548,9 @@ System.out.println("Factor Property:"+f.getOwlProperty());
 		return constraintsList;
 	}
 	
-	// get objective from ontology
+	
+	
+	// get objective from ontology, not used
 	private Objective getObjective(OWLOntology owl){
 		
 		Objective obj = new Objective();
