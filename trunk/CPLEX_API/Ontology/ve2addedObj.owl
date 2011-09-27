@@ -408,14 +408,14 @@
     <owl:Class rdf:about="&Ontology1314840683578;Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -833,6 +833,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_1">
         <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">50</produceCapability>
         <produceWeekOf rdf:resource="&Ontology1314840683578;ve"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_11"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_12"/>
@@ -846,6 +847,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_2">
         <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">60</produceCapability>
         <produceWeekOf rdf:resource="&Ontology1314840683578;ve"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_22"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_23"/>
@@ -858,6 +860,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_3">
         <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">65</produceCapability>
         <produceWeekOf rdf:resource="&Ontology1314840683578;ve"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_33"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_34"/>
@@ -869,6 +872,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_4">
         <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">50</produceCapability>
         <produceWeekOf rdf:resource="&Ontology1314840683578;ve"/>
         <produce rdf:resource="&Ontology1314840683578;veSupplying_44"/>
     </owl:NamedIndividual>

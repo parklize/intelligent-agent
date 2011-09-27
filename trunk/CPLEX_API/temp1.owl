@@ -550,7 +550,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>  "50"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_3>
@@ -561,7 +562,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_33>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>  "65"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_2>
@@ -573,7 +575,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_24>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_23>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_22>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>  "60"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_1>
@@ -586,7 +589,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceWeekOf>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_14>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_13>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_11>
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produce>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_11>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#produceCapability>  "50"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02>
