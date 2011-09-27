@@ -317,7 +317,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			// factor 가져가기
 			for (int k=0; k<om.getObj().getObjectiveTerm().get(i).getFactors().size();k++){
 				OWLClass objFactorClass= dataFactory.getOWLClass("#ObjFactor",pm);
-				OWLIndividual objFactorInd = dataFactory.getOWLNamedIndividual("#objFactor"+(k+1),pm);
+				OWLIndividual objFactorInd = dataFactory.getOWLNamedIndividual("#tb"+(i+1)+"objFactor"+(k+1),pm);
 				OWLClassAssertionAxiom objFactorAssertion = dataFactory.getOWLClassAssertionAxiom(objFactorClass, objFactorInd);
 				manager.addAxiom(ont, objFactorAssertion);
 				
