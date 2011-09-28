@@ -247,6 +247,12 @@
     
 
 
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#inventoryCost -->
+
+    <owl:DatatypeProperty rdf:about="&Ontology1314840683578;inventoryCost"/>
+    
+
+
     <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ownDemand -->
 
     <owl:DatatypeProperty rdf:about="&Ontology1314840683578;ownDemand">
@@ -309,7 +315,7 @@
         <owl:equivalentClass>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&Ontology1314840683578;produceWeekOf"/>
-                <owl:hasValue rdf:resource="&Ontology1314840683578;?v"/>
+                <owl:hasValue rdf:resource="&Ontology1314840683578;?ve"/>
             </owl:Restriction>
         </owl:equivalentClass>
     </owl:Class>
@@ -329,48 +335,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?c -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?ve -->
 
-    <owl:Class rdf:about="&Ontology1314840683578;ClassFor?c">
-        <owl:equivalentClass>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;spendWeekOf"/>
-                <owl:hasValue rdf:resource="&Ontology1314840683578;?v"/>
-            </owl:Restriction>
-        </owl:equivalentClass>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?d -->
-
-    <owl:Class rdf:about="&Ontology1314840683578;ClassFor?d">
-        <owl:equivalentClass>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;spentBy"/>
-                <owl:hasValue rdf:resource="&Ontology1314840683578;?c"/>
-            </owl:Restriction>
-        </owl:equivalentClass>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?e -->
-
-    <owl:Class rdf:about="&Ontology1314840683578;ClassFor?e">
-        <owl:equivalentClass>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;ivSpentBy"/>
-                <owl:hasValue rdf:resource="&Ontology1314840683578;?c"/>
-            </owl:Restriction>
-        </owl:equivalentClass>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ClassFor?v -->
-
-    <owl:Class rdf:about="&Ontology1314840683578;ClassFor?v">
+    <owl:Class rdf:about="&Ontology1314840683578;ClassFor?ve">
         <owl:equivalentClass rdf:resource="&Ontology1314840683578;Vendor"/>
     </owl:Class>
     
@@ -381,14 +348,14 @@
     <owl:Class rdf:about="&Ontology1314840683578;Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -498,38 +465,11 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?c -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?ve -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;?c">
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;?ve">
         <rdf:type rdf:resource="&Ontology1314840683578;Variable"/>
-        <bindingClass rdf:datatype="&xsd;string">ClassFor?c</bindingClass>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?d -->
-
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;?d">
-        <rdf:type rdf:resource="&Ontology1314840683578;Variable"/>
-        <bindingClass rdf:datatype="&xsd;string">ClassFor?d</bindingClass>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?e -->
-
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;?e">
-        <rdf:type rdf:resource="&Ontology1314840683578;Variable"/>
-        <bindingClass rdf:datatype="&xsd;string">ClassFor?e</bindingClass>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#?v -->
-
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;?v">
-        <rdf:type rdf:resource="&Ontology1314840683578;Variable"/>
-        <bindingClass rdf:datatype="&xsd;string">ClassFor?v</bindingClass>
+        <bindingClass rdf:datatype="&xsd;string">ClassFor?ve</bindingClass>
     </owl:NamedIndividual>
     
 
@@ -538,8 +478,8 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint01">
         <rdf:type rdf:resource="&Ontology1314840683578;Constraint"/>
-        <hasOperator rdf:datatype="&xsd;string">greaterThan</hasOperator>
-        <hasQualifier rdf:resource="&Ontology1314840683578;?v"/>
+        <hasOperator rdf:datatype="&xsd;string">greaterThanOrEqual</hasOperator>
+        <hasQualifier rdf:resource="&Ontology1314840683578;?ve"/>
         <hasLhs rdf:resource="&Ontology1314840683578;constraint01lhsTermBlock1"/>
         <hasRhs rdf:resource="&Ontology1314840683578;constraint01rhsTermBlock1"/>
     </owl:NamedIndividual>
@@ -588,83 +528,262 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ve -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02">
-        <rdf:type rdf:resource="&Ontology1314840683578;Constraint"/>
-        <hasOperator rdf:datatype="&xsd;string">lessThanOrEqual</hasOperator>
-        <hasQualifier rdf:resource="&Ontology1314840683578;?v"/>
-        <hasLhs rdf:resource="&Ontology1314840683578;constraint02lhsTermBlock1"/>
-        <hasLhs rdf:resource="&Ontology1314840683578;constraint02lhsTermBlock2"/>
-        <hasRhs rdf:resource="&Ontology1314840683578;constraint02rhsTermBlock1"/>
-        <hasRhs rdf:resource="&Ontology1314840683578;constraint02rhsTermBlock2"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;ve">
+        <rdf:type rdf:resource="&Ontology1314840683578;Vendor"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_1"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_2"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_3"/>
+        <hasProduceWeek rdf:resource="&Ontology1314840683578;veProduceWeek_4"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_1"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_2"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_3"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;veSpendWeek_4"/>
+        <hasInventory rdf:resource="&Ontology1314840683578;veTotalInventory"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsFactor1 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_1 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02lhsFactor1">
-        <rdf:type rdf:resource="&Ontology1314840683578;LhsFactor"/>
-        <hasBindingDataProperty rdf:datatype="&xsd;string">ownDemand</hasBindingDataProperty>
-        <hasBindingDataProperty rdf:datatype="&xsd;string">veDemand</hasBindingDataProperty>
-        <hasVar rdf:resource="&Ontology1314840683578;?c"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_1">
+        <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">50</produceCapability>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_11"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_12"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_13"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_14"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsTermBlock1 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_2 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02lhsTermBlock1">
-        <rdf:type rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
-        <hasSign rdf:datatype="&xsd;string">+</hasSign>
-        <hasFactor rdf:resource="&Ontology1314840683578;constraint02lhsFactor1"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_2">
+        <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">60</produceCapability>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_22"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_23"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_24"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02lhsTermBlock2 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_3 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02lhsTermBlock2">
-        <rdf:type rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
-        <hasSign rdf:datatype="&xsd;string">+</hasSign>
-        <hasFactor rdf:resource="&Ontology1314840683578;constraint02lhsFactor1"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_3">
+        <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">65</produceCapability>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_33"/>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_34"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02rhsFactor1 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veProduceWeek_4 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02rhsFactor1">
-        <rdf:type rdf:resource="&Ontology1314840683578;RhsFactor"/>
-        <hasBindingDataProperty rdf:datatype="&xsd;string">hasAmount</hasBindingDataProperty>
-        <hasBindingDataProperty rdf:datatype="&xsd;string">supplyAmount</hasBindingDataProperty>
-        <hasVar rdf:resource="&Ontology1314840683578;?d"/>
-        <hasVar rdf:resource="&Ontology1314840683578;?e"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veProduceWeek_4">
+        <rdf:type rdf:resource="&Ontology1314840683578;ProduceWeek"/>
+        <produceCapability rdf:datatype="&xsd;int">50</produceCapability>
+        <produce rdf:resource="&Ontology1314840683578;veSupplying_44"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02rhsTermBlock1 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_1 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02rhsTermBlock1">
-        <rdf:type rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
-        <hasSign rdf:datatype="&xsd;string">+</hasSign>
-        <hasAggregateOperation rdf:datatype="&xsd;string">sigma</hasAggregateOperation>
-        <hasParameters rdf:resource="&Ontology1314840683578;?d"/>
-        <hasFactor rdf:resource="&Ontology1314840683578;constraint02rhsFactor1"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_1">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">0</inventoryCost>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint02rhsTermBlock2 -->
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_2 -->
 
-    <owl:NamedIndividual rdf:about="&Ontology1314840683578;constraint02rhsTermBlock2">
-        <rdf:type rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
-        <hasSign rdf:datatype="&xsd;string">+</hasSign>
-        <hasAggregateOperation rdf:datatype="&xsd;string">sigma</hasAggregateOperation>
-        <hasParameters rdf:resource="&Ontology1314840683578;?e"/>
-        <hasFactor rdf:resource="&Ontology1314840683578;constraint02rhsFactor1"/>
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_2">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">10</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_3 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_3">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">20</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_4 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendInventoryWeek_4">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int"></hasAmount>
+        <inventoryCost rdf:datatype="&xsd;int">30</inventoryCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_1 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_1">
+        <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <ownDemand rdf:datatype="&xsd;int">0</ownDemand>
+        <veDemand rdf:datatype="&xsd;int">50</veDemand>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_11"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_2 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_2">
+        <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <ownDemand rdf:datatype="&xsd;int">20</ownDemand>
+        <veDemand rdf:datatype="&xsd;int">40</veDemand>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_12"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_22"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_3 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_3">
+        <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <ownDemand rdf:datatype="&xsd;int">10</ownDemand>
+        <veDemand rdf:datatype="&xsd;int">55</veDemand>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_13"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_23"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_33"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendWeek_4 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSpendWeek_4">
+        <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
+        <ownDemand rdf:datatype="&xsd;int">0</ownDemand>
+        <veDemand rdf:datatype="&xsd;int">60</veDemand>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_14"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_24"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_34"/>
+        <spend rdf:resource="&Ontology1314840683578;veSupplying_44"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_11 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_11">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">30</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_12 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_12">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">40</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_13 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_13">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">50</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_14 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_14">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">60</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_22 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_22">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">30</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_23 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_23">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">40</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_24 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_24">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">50</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_33 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_33">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">30</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_34">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
+        <supplyCost rdf:datatype="&xsd;int">40</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44 -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_44">
+        <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyCost rdf:datatype="&xsd;int">30</supplyCost>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veTotalInventory -->
+
+    <owl:NamedIndividual rdf:about="&Ontology1314840683578;veTotalInventory">
+        <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
     </owl:NamedIndividual>
 </rdf:RDF>
 

@@ -337,9 +337,9 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			}
 			
 			// set jcombobox to third column
-			JComboBox jb = getClassesComboBox();
-			TableColumn propertyColumn = variablesTable.getColumnModel().getColumn(2);
-			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
+//			JComboBox jb = getClassesComboBox();
+//			TableColumn propertyColumn = variablesTable.getColumnModel().getColumn(2);
+//			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
 			
 
 			/*
