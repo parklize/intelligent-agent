@@ -64,7 +64,7 @@ public class TestOWL {
 
 		try {
 			
-			File file = new File("Ontology/ve2addedObj.owl");
+			File file = new File("Ontology/VE_addC2.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			OWLDataFactory dataFactory = manager.getOWLDataFactory();
@@ -80,7 +80,7 @@ public class TestOWL {
 			ArrayList<Variable> varList = con.getAllVariables();
 			
 			TestOWL towl = new TestOWL();
-			towl.generateIlogCode(towl.getAllConstraints(ve));
+			towl.generateIlogCode(towl.getAllConstraints(ve),ve);
 			
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
@@ -91,19 +91,26 @@ public class TestOWL {
 	
 	
 	// generate Ilog file
-	private void generateIlogCode(ArrayList<Constraint> consList){
+	private void generateIlogCode(ArrayList<Constraint> consList, OWLOntology owl){
+		
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
 		
 		try {
 			
 			StringBuffer varDecStr = new StringBuffer("");// store var part 
-			StringBuffer subjectToStr = new StringBuffer("");// store subject to part
+			StringBuffer subjectToStr = new StringBuffer(" subject to {\n");// store subject to part
 			StringBuffer objectiveStr = new StringBuffer("");// store obj part
 			
-//			FileWriter fw = new FileWriter("IloFile.txt");
-//			BufferedWriter bw = new BufferedWriter(fw);
+			FileWriter fw = new FileWriter("IloFile.txt");
+			BufferedWriter bw = new BufferedWriter(fw);
+			StringTokenizer st = null;
 
 			for(Constraint c:consList){
-System.out.println("Constraint Name:"+c.getName());
+Utils.printConstraint(c);
+//System.out.println("Constraint Name:"+c.getName());
 				// get qualifiers's list
 				ArrayList<Qualifier> qualifierList = c.getQualifiers();
 				Iterator it = qualifierList.iterator();
@@ -111,48 +118,104 @@ System.out.println("Constraint Name:"+c.getName());
 				while(it.hasNext()){
 					// get qualifier
 					Qualifier q = (Qualifier) it.next();
-System.out.println("qualifier:"+q.getV().getName());
+//System.out.println("qualifier:"+q.getV().getName());
+					Set<OWLIndividual> indsSet = getIndividuals(q.getV(), owl,null);
+					Iterator indsSetIt = indsSet.iterator();
 					
-					// Opp
-					String opp = c.getOpp().getOpp();
-System.out.println("Opp:"+opp);
-
-					// LHS part
-					ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
-					Iterator termblockIt = termblocks.iterator();
-					while(termblockIt.hasNext()){
-						TermBlock tb = (TermBlock) termblockIt.next();
+					while(indsSetIt.hasNext()){
 						
-System.out.println("Termblock sign:"+tb.getSign());
-System.out.println("Agg Opp:"+tb.getAggregateOppertor());
-						ArrayList<Factor> facList = tb.getFactors();
-						Iterator facIt = facList.iterator();
-						while(facIt.hasNext()){
-							Factor f = (Factor) facIt.next();
-System.out.println("Factor Variable:"+f.getV().getName());
-System.out.println("Variable Description:"+f.getV().getDescription());
-System.out.println("Factor Property:"+f.getOwlProperty());
+						OWLIndividual ind = (OWLIndividual) indsSetIt.next();// qualifier ind
+						// Opp
+						String opp = getChangedOpp(c.getOpp().getOpp());
+//	System.out.println("Opp:"+opp);
+	
+						// LHS part
+						ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
+						Iterator termblockIt = termblocks.iterator();
+						while(termblockIt.hasNext()){
+							TermBlock tb = (TermBlock) termblockIt.next();
+							
+//	System.out.println("Termblock sign:"+tb.getSign());
+//	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
+							ArrayList<Factor> facList = tb.getFactors();
+							Iterator facIt = facList.iterator();
+							while(facIt.hasNext()){
+								Factor f = (Factor) facIt.next();
+System.out.println(f.getOwlProperty());
+								Set<OWLIndividual> varS = new HashSet<OWLIndividual>();
+								String prop = f.getOwlProperty();
+								OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+prop));
+System.out.println("owlP:"+owlP);
+								String des = f.getV().getDescription();
+								st = new StringTokenizer(des);
+								String var = null;
+								if(st.countTokens() == 3){
+									var = st.nextToken();
+									var = st.nextToken();
+									var = st.nextToken();
+								}
+								if(var.equals(q.getV().getName())){
+									varS = getIndividuals(f.getV(), owl,ind);
+								}else{
+									// need update
+								}
+								// a가 4개면 제약식 4개 생성
+								Iterator varSIt = varS.iterator();
+								while(varSIt.hasNext()){
+									OWLIndividual indFac = (OWLIndividual) varSIt.next();// produceweek ind하나
+//System.out.println(indFac);
+									HashMap dpVs = (HashMap) indFac.getDataPropertyValues(owl);
+									Set dpV = (Set) dpVs.get(owlP);
+									if(dpV == null){
+										// null잡아서 변수 생성해야 함,need update
+									}else{
+										Iterator dpVIt = dpV.iterator();
+										while(dpVIt.hasNext()){
+											// str tokenize with the format of "0"^^xsd:int
+											String val = dpVIt.next().toString();
+											st = new StringTokenizer(val,"\"");
+											subjectToStr.append("   "+st.nextToken());
+//System.out.println(dpVIt.next());
+											
+										}
+									}
+								}
+//	System.out.println("Factor Variable:"+f.getV().getName());
+//	System.out.println("Variable Description:"+f.getV().getDescription());
+//	System.out.println("Factor Property:"+f.getOwlProperty());
+							}
 						}
-					}
-					
-					// RHS
-					ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
-					Iterator rtermblockIt = rtermblocks.iterator();
-					while(rtermblockIt.hasNext()){
-						TermBlock tb = (TermBlock) rtermblockIt.next();
 						
-System.out.println("Termblock sign:"+tb.getSign());
-System.out.println("Agg Opp:"+tb.getAggregateOppertor());
-						ArrayList<Factor> facList = tb.getFactors();
-						Iterator facIt = facList.iterator();
-						while(facIt.hasNext()){
-							Factor f = (Factor) facIt.next();
-System.out.println("Factor Variable:"+f.getV().getName());
-System.out.println("Variable Description:"+f.getV().getDescription());
-System.out.println("Factor Property:"+f.getOwlProperty());
+						// RHS
+						ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
+						Iterator rtermblockIt = rtermblocks.iterator();
+						while(rtermblockIt.hasNext()){
+							TermBlock tb = (TermBlock) rtermblockIt.next();
+							
+//	System.out.println("Termblock sign:"+tb.getSign());
+//	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
+							ArrayList<Factor> facList = tb.getFactors();
+							Iterator facIt = facList.iterator();
+							while(facIt.hasNext()){
+								Factor f = (Factor) facIt.next();
+//	System.out.println("Factor Variable:"+f.getV().getName());
+//	System.out.println("Variable Description:"+f.getV().getDescription());
+//	System.out.println("Factor Property:"+f.getOwlProperty());
+							}
 						}
 					}
 				}
+			}
+			
+			
+			subjectToStr.append(" }");
+			bw.write(subjectToStr.toString());
+			
+			
+			
+			// close buffered writer
+			if(bw!=null){
+				bw.close();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -160,21 +223,82 @@ System.out.println("Factor Property:"+f.getOwlProperty());
 		}
 	}
 	
-	// get all constraints from ontology
-	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
+	// get opp in regular form
+	private String getChangedOpp(String opp) {
 		
-		ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
+		if(opp.equals("equal")){
+			return "==";
+		}else if(opp.equals("notEqual")){
+			return "!=";
+		}else if(opp.equals("lessThan")){
+			return "<";
+		}else if(opp.equals("lessThanOrEqual")){
+			return "<=";
+		}else if(opp.equals("greaterThan")){
+			return ">";
+		}else if(opp.equals("greaterThanOrEqual")){
+			return ">=";
+		}
+			
+		return null;
+	}
+
+
+
+	// get individuals in variable 
+	private Set<OWLIndividual> getIndividuals(Variable v,OWLOntology owl,OWLIndividual ind){
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		SWCLOntologyController soc = new SWCLOntologyController(owl);
-
+		String prefix = soc.getPrefix();
+		
+		String des = v.getDescription();
+		StringTokenizer st = new StringTokenizer(des);
+		
+		Set<OWLIndividual> indsSet = new HashSet<OWLIndividual>();
+		
+		if(st.countTokens()==1){
+			// class description example: Vendor
+			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+st.nextToken()));
+			return cls.getIndividuals(owl);
+		}else if(st.countTokens() == 3){
+			// class description example: produceWeek of ?v
+			String desc = st.nextToken();
+//System.out.println("val desc:"+desc);
+			OWLObjectProperty obp = factory.getOWLObjectProperty(IRI.create(prefix+"#"+desc));
+			Set obpSet = obp.getInverses(owl);
+			Iterator obpSetIt = obpSet.iterator();
+			OWLObjectProperty inverseObp = null;
+			while(obpSetIt.hasNext()){
+				inverseObp = (OWLObjectProperty) obpSetIt.next();// get hasProduceWeek
+			}
+			HashMap indVs = (HashMap) ind.getObjectPropertyValues(owl);
+			Set indV = (Set) indVs.get(inverseObp);
+			Iterator indVIt = indV.iterator();
+			while(indVIt.hasNext()){
+				indsSet.add((OWLIndividual) indVIt.next());
+			}
+			
+//System.out.println("cls:"+clss);
+		}
+		return indsSet;
+	}
+	// get all constraints from ontology
+	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
+		
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
+		
+		ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
 		
     	// controller
     	ConstraintController controller = new ConstraintController(owl, soc);
     	// get all variables to variablesList
     	ArrayList<Variable> variablesList = controller.getAllVariables();
-		String prefix = soc.getPrefix();
+
 
 		
 		// get all constraints
