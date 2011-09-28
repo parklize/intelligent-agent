@@ -419,7 +419,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			// factor 가져가기
 			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
 				OWLClass lhsFactorClass= dataFactory.getOWLClass("#LhsFactor",pm);
-				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"lhsFactor"+(k+1),pm);
+				OWLIndividual lhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"lhsFactor"+(i+1),pm);
 				OWLClassAssertionAxiom LhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(lhsFactorClass, lhsFactorInd);
 				manager.addAxiom(ont, LhsFactorAssertion);
 				
@@ -505,7 +505,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
 				
 				OWLClass rhsFactorClass= dataFactory.getOWLClass("#RhsFactor",pm);
-				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"rhsFactor"+(k+1),pm);
+				OWLIndividual rhsFactorInd = dataFactory.getOWLNamedIndividual("#"+con.getName()+"rhsFactor"+(i+1),pm);
 				OWLClassAssertionAxiom RhsFactorAssertion = dataFactory.getOWLClassAssertionAxiom(rhsFactorClass, rhsFactorInd);
 				manager.addAxiom(ont, RhsFactorAssertion);
 				
