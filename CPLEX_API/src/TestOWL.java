@@ -132,6 +132,7 @@ Utils.printConstraint(c);
 						// LHS part
 						ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
 						Iterator termblockIt = termblocks.iterator();
+						// 여기서부터 고칠것.
 						while(termblockIt.hasNext()){
 							TermBlock tb = (TermBlock) termblockIt.next();
 							
