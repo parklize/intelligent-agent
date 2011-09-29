@@ -396,7 +396,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#Supplying>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyCost>  "30"^^xsd:int,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#supplyAmount>  ""^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#constraint01rhsTermBlock1>
@@ -751,6 +752,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#SpendWeek>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendInventory>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_1>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_11>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veDemand>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ownDemand>  "0"^^xsd:int
@@ -762,6 +764,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#SpendWeek>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendInventory>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_22>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_12>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#ownDemand>  "20"^^xsd:int,
@@ -774,6 +777,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
         <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#SpendWeek>
     
     Facts:  
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendInventory>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_3>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_33>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_13>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_23>,
@@ -789,6 +793,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_14>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_44>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spendInventory>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSpendInventoryWeek_4>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_34>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veSupplying_24>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#veDemand>  "60"^^xsd:int,

@@ -80,7 +80,8 @@ public class TestOWL {
 			ArrayList<Variable> varList = con.getAllVariables();
 			
 			TestOWL towl = new TestOWL();
-			towl.generateIlogCode(towl.getAllConstraints(ve),ve);
+			Objective obj = towl.getObjective(ve);
+			towl.generateIlogCode(obj,towl.getAllConstraints(ve),ve);
 			
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
@@ -91,7 +92,7 @@ public class TestOWL {
 	
 	
 	// generate Ilog file
-	private void generateIlogCode(ArrayList<Constraint> consList, OWLOntology owl){
+	private void generateIlogCode(Objective obj, ArrayList<Constraint> consList, OWLOntology owl){
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLDataFactory factory = manager.getOWLDataFactory();
@@ -100,16 +101,20 @@ public class TestOWL {
 		
 		try {
 			
+			ArrayList<String> varsList = new ArrayList<String>();// 생성한 변수들 저장했다가,, 변수 생성할때 이미 생성했는지 체크할 때 쓰자
 			StringBuffer varDecStr = new StringBuffer("");// store var part 
 			StringBuffer subjectToStr = new StringBuffer(" subject to {\n");// store subject to part
 			StringBuffer objectiveStr = new StringBuffer("");// store obj part
 			
-			FileWriter fw = new FileWriter("IloFile.txt");
+			FileWriter fw = new FileWriter("IloFile.txt");// Ilog파일 생성 경로
 			BufferedWriter bw = new BufferedWriter(fw);
 			StringTokenizer st = null;
-
+			
+			// objectiveStr 만들기
+			
+			// subjectToStr 만들기
 			for(Constraint c:consList){
-Utils.printConstraint(c);
+//Utils.printConstraint(c);
 //System.out.println("Constraint Name:"+c.getName());
 				// get qualifiers's list
 				ArrayList<Qualifier> qualifierList = c.getQualifiers();
@@ -122,6 +127,7 @@ Utils.printConstraint(c);
 					Set<OWLIndividual> indsSet = getIndividuals(q.getV(), owl,null);
 					Iterator indsSetIt = indsSet.iterator();
 					
+					// qualifier 에 의한 loop
 					while(indsSetIt.hasNext()){
 						
 						OWLIndividual ind = (OWLIndividual) indsSetIt.next();// qualifier ind
@@ -129,24 +135,20 @@ Utils.printConstraint(c);
 						String opp = getChangedOpp(c.getOpp().getOpp());
 //	System.out.println("Opp:"+opp);
 	
-						// LHS part
 						ArrayList<TermBlock> termblocks = c.getLhs().getTermblocks();
 						Iterator termblockIt = termblocks.iterator();
-						// 여기서부터 고칠것.
-						while(termblockIt.hasNext()){
+						Set<OWLIndividual> varS = new HashSet<OWLIndividual>();//변수에 있는 ind개수
+						
+						// LHS Termblock에서의 parameter가 있으면 그 속하는 클래스 변수,없으면 Factor변수로 loop수 결정
+						// a produceweekOf v이면 , a의 개수에 의해 결정, 파라미터가 있고 b produceBy a이면 a에 의 해 결정
+						if(termblockIt.hasNext()){
 							TermBlock tb = (TermBlock) termblockIt.next();
-							
-//	System.out.println("Termblock sign:"+tb.getSign());
-//	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
-							ArrayList<Factor> facList = tb.getFactors();
-							Iterator facIt = facList.iterator();
-							while(facIt.hasNext()){
-								Factor f = (Factor) facIt.next();
-System.out.println(f.getOwlProperty());
-								Set<OWLIndividual> varS = new HashSet<OWLIndividual>();
-								String prop = f.getOwlProperty();
-								OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+prop));
-System.out.println("owlP:"+owlP);
+							ArrayList<Parameter> pList = tb.getParameters();
+							if(pList == null){
+//System.out.println("pList size is zero");
+								// 파라미터가 없으면 factor로 판단, anyone
+								ArrayList<Factor> fList = tb.getFactors();
+								Factor f = fList.get(0);
 								String des = f.getV().getDescription();
 								st = new StringTokenizer(des);
 								String var = null;
@@ -160,49 +162,148 @@ System.out.println("owlP:"+owlP);
 								}else{
 									// need update
 								}
-								// a가 4개면 제약식 4개 생성
-								Iterator varSIt = varS.iterator();
-								while(varSIt.hasNext()){
-									OWLIndividual indFac = (OWLIndividual) varSIt.next();// produceweek ind하나
-//System.out.println(indFac);
-									HashMap dpVs = (HashMap) indFac.getDataPropertyValues(owl);
-									Set dpV = (Set) dpVs.get(owlP);
-									if(dpV == null){
-										// null잡아서 변수 생성해야 함,need update
-									}else{
-										Iterator dpVIt = dpV.iterator();
-										while(dpVIt.hasNext()){
-											// str tokenize with the format of "0"^^xsd:int
-											String val = dpVIt.next().toString();
-											st = new StringTokenizer(val,"\"");
-											subjectToStr.append("   "+st.nextToken());
-//System.out.println(dpVIt.next());
-											
-										}
-									}
-								}
-//	System.out.println("Factor Variable:"+f.getV().getName());
-//	System.out.println("Variable Description:"+f.getV().getDescription());
-//	System.out.println("Factor Property:"+f.getOwlProperty());
+							}else{
+								// 파라미터 가 있을때
 							}
 						}
 						
-						// RHS
-						ArrayList<TermBlock> rtermblocks = c.getRhs().getTermblocks();
-						Iterator rtermblockIt = rtermblocks.iterator();
-						while(rtermblockIt.hasNext()){
-							TermBlock tb = (TermBlock) rtermblockIt.next();
+						// 한개 constraint에서 나오는 모든 제약식들
+						Iterator varSIt = varS.iterator();
+						while(varSIt.hasNext()){
+							OWLIndividual indInV = (OWLIndividual) varSIt.next();// a에들어있는 ind
+							StringBuffer lhsStr = new StringBuffer("   ");
+							StringBuffer rhsStr = new StringBuffer("");
 							
-//	System.out.println("Termblock sign:"+tb.getSign());
-//	System.out.println("Agg Opp:"+tb.getAggregateOppertor());
-							ArrayList<Factor> facList = tb.getFactors();
-							Iterator facIt = facList.iterator();
-							while(facIt.hasNext()){
-								Factor f = (Factor) facIt.next();
-//	System.out.println("Factor Variable:"+f.getV().getName());
-//	System.out.println("Variable Description:"+f.getV().getDescription());
-//	System.out.println("Factor Property:"+f.getOwlProperty());
+							// lhsStr 생성
+							ArrayList<TermBlock> lhsT = c.getLhs().getTermblocks();
+							Iterator lhsTIt = lhsT.iterator();
+							while(lhsTIt.hasNext()){
+								// 가로 Str생성
+								TermBlock tb = (TermBlock) lhsTIt.next();
+								StringBuffer tbStr = new StringBuffer("");
+								
+								ArrayList pList = tb.getParameters();
+								if(pList == null){
+									// 파라미터가 없으면 factor로 감
+									ArrayList<Factor> fList = tb.getFactors();
+									for(int i=0; i<fList.size(); i++){
+										// factor 있는 만큼 곱합
+										Factor f = fList.get(i);
+										OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+										HashMap dpVs = (HashMap) indInV.getDataPropertyValues(owl);
+										Set dpV = (Set) dpVs.get(owlP);
+										if(dpV == null){
+											// null잡아서 변수 생성해야 함,need update
+										}else{
+											Iterator dpVIt = dpV.iterator();
+											while(dpVIt.hasNext()){
+												// str tokenize with the format of "0"^^xsd:int
+												String val = dpVIt.next().toString();
+												st = new StringTokenizer(val,"\"");
+												tbStr.append(st.nextToken());
+												
+											}
+										}
+									}
+								}else{
+									// termblock에 파라미터가 있을때
+System.out.println("===has parameter===");
+								}
+								lhsStr.append(tb.getSign()+tbStr);
 							}
+							
+							// rhsStr 생성
+							ArrayList<TermBlock> rhsT = c.getRhs().getTermblocks();
+							Iterator rhsTIt = rhsT.iterator();
+							while(rhsTIt.hasNext()){
+								// 가로 Str생성
+								TermBlock tb = (TermBlock) rhsTIt.next();
+								StringBuffer tbStr = new StringBuffer("");
+								
+								ArrayList pList = tb.getParameters();
+								if(pList == null){
+									// 파라미터가 없으면 factor로 감
+									ArrayList<Factor> fList = tb.getFactors();
+									for(int i=0; i<fList.size(); i++){
+										// factor 있는 만큼 곱합
+										Factor f = fList.get(i);
+										OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+										HashMap dpVs = (HashMap) indInV.getDataPropertyValues(owl);
+										Set dpV = (Set) dpVs.get(owlP);
+										if(dpV == null){
+											// null잡아서 변수 생성해야 함,need update
+											System.out.println("nullllll");
+										}else{
+											Iterator dpVIt = dpV.iterator();
+											while(dpVIt.hasNext()){
+												// str tokenize with the format of "0"^^xsd:int
+												String val = dpVIt.next().toString();
+												st = new StringTokenizer(val,"\"");
+												tbStr.append(st.nextToken());
+												
+											}
+										}
+									}
+								}else{
+									// termblock에 파라미터가 있을때
+System.out.println("===has parameter===");
+									String aggOp = tb.getAggregateOppertor();
+									if(aggOp.equals("sigma")){
+										// Sigma일때
+										Parameter p = (Parameter) pList.get(0);// parameter하나라고 가정,need update
+										Variable v = p.getV();
+//System.out.println(v.getName()+":"+v.getDescription());
+//System.out.println(indInV);
+										Set inds = getIndividuals(v, owl, indInV);
+										Iterator indsIt = inds.iterator();
+										while(indsIt.hasNext()){
+											//b에 들어있는 하나하나의 객체
+											OWLIndividual indF = (OWLIndividual) indsIt.next();
+System.out.println(indF);
+											ArrayList<Factor> fList = tb.getFactors();
+											for(int i=0; i<fList.size(); i++){
+												// factor 있는 만큼 곱합
+												Factor f = fList.get(i);
+												OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+System.out.println("owlP:"+owlP);
+												HashMap dpVs = (HashMap) indF.getDataPropertyValues(owl);
+												Set dpV = (Set) dpVs.get(owlP);
+												Iterator dpVIt = dpV.iterator();
+												while(dpVIt.hasNext()){
+													// str tokenize with the format of "0"^^xsd:int
+													String val = dpVIt.next().toString();
+System.out.println("val:"+val);
+													if(val.equals("\"\"^^xsd:int")){
+														// ""^^xsd:int잡아서 변수 생성해야 함,need update
+//System.out.println("property값이 널이네요,, 변수 생성 합시다");
+														// property + ind형태로 변수 생성 및 코드 생성
+														// 이미 선언한 변수인지 체크해줘야지
+														String varName = soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(indF.toString().replace("#", ""), prefix);
+														if(varsList.contains(varName)){
+															// 이미 선언했네요,걍 넘어가
+														}else{
+															varsList.add(varName);
+															varDecStr.append("dvar int+ "+varName+"\n");
+														}
+														tbStr.append(soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(indF.toString().replace("#", ""), prefix)+"+");
+													}else{
+														st = new StringTokenizer(val,"\"");
+														tbStr.append(st.nextToken());
+													}
+													
+												}
+											}
+										}
+										
+									}else{
+										// Production 일때
+									}
+								}
+								rhsStr.append(tb.getSign()+tbStr);
+							}
+							
+							// subject to 에 lhsStr+opp+rhsStr 추가 및 행 바꾸기
+							subjectToStr.append(lhsStr).append(opp).append(rhsStr).append("\n");
 						}
 					}
 				}
@@ -210,9 +311,9 @@ System.out.println("owlP:"+owlP);
 			
 			
 			subjectToStr.append(" }");
-			bw.write(subjectToStr.toString());
-			
-			
+			bw.write(varDecStr.toString()+"\n");// 변수 선언부분 출력
+			bw.write(objectiveStr.toString()+"\n");
+			bw.write(subjectToStr.toString());// subject to 부분 출력
 			
 			// close buffered writer
 			if(bw!=null){
@@ -243,9 +344,7 @@ System.out.println("owlP:"+owlP);
 			
 		return null;
 	}
-
-
-
+	
 	// get individuals in variable 
 	private Set<OWLIndividual> getIndividuals(Variable v,OWLOntology owl,OWLIndividual ind){
 		
@@ -276,15 +375,20 @@ System.out.println("owlP:"+owlP);
 			}
 			HashMap indVs = (HashMap) ind.getObjectPropertyValues(owl);
 			Set indV = (Set) indVs.get(inverseObp);
-			Iterator indVIt = indV.iterator();
-			while(indVIt.hasNext()){
-				indsSet.add((OWLIndividual) indVIt.next());
+			if(indV != null){
+				Iterator indVIt = indV.iterator();
+				while(indVIt.hasNext()){
+					indsSet.add((OWLIndividual) indVIt.next());
+				}
+			}else{
+				System.out.println("getIndividuals()에서 에러 발생:"+inverseObp+"값이 없습니다...");
 			}
 			
 //System.out.println("cls:"+clss);
 		}
 		return indsSet;
 	}
+	
 	// get all constraints from ontology
 	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
 		
@@ -672,8 +776,6 @@ System.out.println("owlP:"+owlP);
 		
 		return constraintsList;
 	}
-	
-	
 	
 	// get objective from ontology, not used
 	private Objective getObjective(OWLOntology owl){

@@ -1,14 +1,25 @@
+dvar int+ supplyAmountveSupplying_44
+dvar int+ supplyAmountveSupplying_33
+dvar int+ supplyAmountveSupplying_34
+dvar int+ supplyAmountveSupplying_23
+dvar int+ supplyAmountveSupplying_22
+dvar int+ supplyAmountveSupplying_24
+dvar int+ supplyAmountveSupplying_14
+dvar int+ supplyAmountveSupplying_13
+dvar int+ supplyAmountveSupplying_12
+dvar int+ supplyAmountveSupplying_11
+dvar int+ hasAmountveSpendInventoryWeek_1
+dvar int+ hasAmountveSpendInventoryWeek_2
+dvar int+ hasAmountveSpendInventoryWeek_3
+dvar int+ hasAmountveSpendInventoryWeek_4
+
  subject to {
-   50
-   65
-   60
-   50
-   0
-   20
-   10
-   0
-   50
-   40
-   55
-   60
+   +50>=+supplyAmountveSupplying_44+
+   +65>=+supplyAmountveSupplying_33+supplyAmountveSupplying_34+
+   +60>=+supplyAmountveSupplying_23+supplyAmountveSupplying_22+supplyAmountveSupplying_24+
+   +50>=+supplyAmountveSupplying_14+supplyAmountveSupplying_13+supplyAmountveSupplying_12+supplyAmountveSupplying_11+
+   +0+50<=+supplyAmountveSupplying_11++hasAmountveSpendInventoryWeek_1+
+   +20+40<=+supplyAmountveSupplying_22+supplyAmountveSupplying_12++hasAmountveSpendInventoryWeek_2+
+   +10+55<=+supplyAmountveSupplying_23+supplyAmountveSupplying_13+supplyAmountveSupplying_33++hasAmountveSpendInventoryWeek_3+
+   +0+60<=+supplyAmountveSupplying_14+supplyAmountveSupplying_24+supplyAmountveSupplying_34+supplyAmountveSupplying_44++hasAmountveSpendInventoryWeek_4+
  }
