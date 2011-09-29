@@ -13,6 +13,8 @@ dvar int+ hasAmountveSpendInventoryWeek_2
 dvar int+ hasAmountveSpendInventoryWeek_3
 dvar int+ hasAmountveSpendInventoryWeek_4
 
+minimize
+++;
  subject to {
    +50>=+supplyAmountveSupplying_44+
    +65>=+supplyAmountveSupplying_33+supplyAmountveSupplying_34+

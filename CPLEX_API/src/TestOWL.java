@@ -64,7 +64,7 @@ public class TestOWL {
 
 		try {
 			
-			File file = new File("Ontology/VE_addC2.owl");
+			File file = new File("Ontology/VE_addC2_addObj.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			OWLDataFactory dataFactory = manager.getOWLDataFactory();
@@ -111,7 +111,29 @@ public class TestOWL {
 			StringTokenizer st = null;
 			
 			// objectiveStr 만들기
+			// instruction part
+			if(obj.getOptimizationInstruction().equals("Maximize")){
+				objectiveStr.append("maximize\n");
+			}else{
+				objectiveStr.append("minimize\n");
+			}
+			// objective termblocks
+			ArrayList<TermBlock> objTList = obj.getObjectiveTerm();
+			Iterator objTListIt = objTList.iterator();
+
+			// termblock 개수만큼 가로 확장
+			while(objTListIt.hasNext()){
+				TermBlock  tb = (TermBlock) objTListIt.next();
+				ArrayList<Parameter> pList = tb.getParameters();
+				if(pList == null){
+					// 파라미터가 없을때
+				}else{
+					// 파라미터가 있을때
+				}
 			
+				StringBuffer tbStr = new StringBuffer("");
+				objectiveStr.append(tb.getSign()+tbStr);
+			}
 			// subjectToStr 만들기
 			for(Constraint c:consList){
 //Utils.printConstraint(c);
@@ -164,6 +186,17 @@ public class TestOWL {
 								}
 							}else{
 								// 파라미터 가 있을때
+								String aggOp = tb.getAggregateOppertor();
+								if(aggOp.equals("sigma")){
+									// Sigma일때
+									Parameter p = (Parameter) pList.get(0);// parameter하나라고 가정,need update
+									Variable v = p.getV();
+//System.out.println(v.getName()+":"+v.getDescription());
+//System.out.println(indInV);
+								// 하고 잇는데..	
+								}else{
+									// Production 일때
+								}
 							}
 						}
 						
@@ -207,7 +240,7 @@ public class TestOWL {
 									}
 								}else{
 									// termblock에 파라미터가 있을때
-System.out.println("===has parameter===");
+//System.out.println("===has parameter===");
 								}
 								lhsStr.append(tb.getSign()+tbStr);
 							}
@@ -246,7 +279,7 @@ System.out.println("===has parameter===");
 									}
 								}else{
 									// termblock에 파라미터가 있을때
-System.out.println("===has parameter===");
+//System.out.println("===has parameter===");
 									String aggOp = tb.getAggregateOppertor();
 									if(aggOp.equals("sigma")){
 										// Sigma일때
@@ -259,20 +292,20 @@ System.out.println("===has parameter===");
 										while(indsIt.hasNext()){
 											//b에 들어있는 하나하나의 객체
 											OWLIndividual indF = (OWLIndividual) indsIt.next();
-System.out.println(indF);
+//System.out.println(indF);
 											ArrayList<Factor> fList = tb.getFactors();
 											for(int i=0; i<fList.size(); i++){
 												// factor 있는 만큼 곱합
 												Factor f = fList.get(i);
 												OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
-System.out.println("owlP:"+owlP);
+//System.out.println("owlP:"+owlP);
 												HashMap dpVs = (HashMap) indF.getDataPropertyValues(owl);
 												Set dpV = (Set) dpVs.get(owlP);
 												Iterator dpVIt = dpV.iterator();
 												while(dpVIt.hasNext()){
 													// str tokenize with the format of "0"^^xsd:int
 													String val = dpVIt.next().toString();
-System.out.println("val:"+val);
+//System.out.println("val:"+val);
 													if(val.equals("\"\"^^xsd:int")){
 														// ""^^xsd:int잡아서 변수 생성해야 함,need update
 //System.out.println("property값이 널이네요,, 변수 생성 합시다");
@@ -309,7 +342,7 @@ System.out.println("val:"+val);
 				}
 			}
 			
-			
+			objectiveStr.append(";");
 			subjectToStr.append(" }");
 			bw.write(varDecStr.toString()+"\n");// 변수 선언부분 출력
 			bw.write(objectiveStr.toString()+"\n");
