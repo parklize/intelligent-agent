@@ -98,6 +98,8 @@ public class TestOWL {
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		SWCLOntologyController soc = new SWCLOntologyController(owl);
 		String prefix = soc.getPrefix();
+		ConstraintController con = new ConstraintController(owl, soc);
+		ArrayList<Variable> varList = con.getAllVariables();
 		
 		try {
 			
@@ -129,6 +131,18 @@ public class TestOWL {
 					// 파라미터가 없을때
 				}else{
 					// 파라미터가 있을때
+					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
+					String des = p.getV().getDescription();
+					st = new StringTokenizer(des);
+					// des가 producedBy value ?a형태일떄
+					if(st.countTokens() == 3){
+						String prop = st.nextToken();//get producedBy
+						st.nextToken();
+						String vName = st.nextToken();
+						Variable v = Utils.findVariableWithName(varList, vName);
+						System.out.println(v.getDescription());
+						
+					}
 				}
 			
 				StringBuffer tbStr = new StringBuffer("");
