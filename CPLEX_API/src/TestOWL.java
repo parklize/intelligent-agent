@@ -135,16 +135,19 @@ public class TestOWL {
 					// 파라미터가 있을때
 					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
 					String des = p.getV().getDescription();
-					st = new StringTokenizer(des);
-					// des가 producedBy value ?a형태일떄
-					if(st.countTokens() == 3){
-						String prop = st.nextToken();//get producedBy
-						st.nextToken();
-						String vName = st.nextToken();
-						Variable v = Utils.findVariableWithName(varList, vName);
-						System.out.println(v.getDescription());
-						
+System.out.println("des:"+des);
+					ArrayList<VariableStructure> vsList = getVSList(owl,p.getV());
+					for(int j=0;j<vsList.size();j++){
+						VariableStructure vs = vsList.get(j);
+System.out.println("parent:"+vs.getParent());
+						ArrayList<OWLIndividual> chList = vs.getChildrens();
+System.out.println("childrens:");
+						Iterator chListIt = chList.iterator();
+						while(chListIt.hasNext()){
+System.out.println("ch:"+chListIt.next());
+						}
 					}
+System.out.println(vsList.size());				
 				}
 			
 				StringBuffer tbStr = new StringBuffer("");
@@ -395,18 +398,58 @@ public class TestOWL {
 	}
 	
 	// get variable structure list 
-	private ArrayList<VariableStructure> getVSList(OWLOntology owl, String des){
+	private ArrayList<VariableStructure> getVSList(OWLOntology owl, Variable variable){
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		ConstraintController con = new ConstraintController(owl, soc);
+		ArrayList<Variable> varList = con.getAllVariables();
 		String prefix = soc.getPrefix();
 		
-		ArrayList<VariableStructure> vsList = new ArrayList<VariableStructure>();
 		
+		ArrayList<VariableStructure> vsList = new ArrayList<VariableStructure>();
+//System.out.println(des);		
 		// description에 근거하여 
-		StringTokenizer st = new StringTokenizer(des);
-		if(st.countTokens() == 3){
+		StringTokenizer st = new StringTokenizer(variable.getDescription());
+		if(st.countTokens() == 1){
+			// v Vendor과 같은 경우
+			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+st.nextToken()));
+			Set inds = cls.getIndividuals(owl);
+			Iterator indsIt = inds.iterator();
+			VariableStructure vs = new VariableStructure();
+			ArrayList<OWLIndividual> indsList = new ArrayList<OWLIndividual>();
+			while(indsIt.hasNext()){
+				indsList.add((OWLIndividual) indsIt.next());
+			}
+			vs.setChildrens(indsList);
+			vsList.add(vs);
+		}else if(st.countTokens() == 3){
+			String prop = st.nextToken();//property
+			st.nextToken();//"VALUE"
+			String var = st.nextToken();//class or variable
+			Variable v = Utils.findVariableWithName(varList, var);
+			ArrayList<VariableStructure> vs1List = getVSList(owl,v);
+			Iterator vs1ListIt = vs1List.iterator();
+			while(vs1ListIt.hasNext()){
+				VariableStructure vs = (VariableStructure) vs1ListIt.next();
+				ArrayList<OWLIndividual> chList = vs.getChildrens();
+				Iterator chListIt = chList.iterator();
+				while(chListIt.hasNext()){
+					// 위에 children은 아래 parent
+					OWLIndividual parentInd = (OWLIndividual) chListIt.next();
+					ArrayList<OWLIndividual> childList = new ArrayList<OWLIndividual>();
+					Set<OWLIndividual> childInds = getIndividuals(variable,owl,parentInd);
+					Iterator childIndsIt = childInds.iterator();
+					while(childIndsIt.hasNext()){
+						childList.add((OWLIndividual) childIndsIt.next());
+					}
+					VariableStructure vs1 = new VariableStructure();
+					vs1.setParent(parentInd);
+					vs1.setChildrens(childList);
+					vsList.add(vs1);
+				}
+			}
 			
 		}
 		return vsList;
