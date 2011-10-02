@@ -44,6 +44,8 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import Utils.Utils;
+import Utils.VariableStructure;
+import Utils.VariableStructureList;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
@@ -392,6 +394,23 @@ public class TestOWL {
 		return null;
 	}
 	
+	// get variable structure list 
+	private ArrayList<VariableStructure> getVSList(OWLOntology owl, String des){
+		
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
+		
+		ArrayList<VariableStructure> vsList = new ArrayList<VariableStructure>();
+		
+		// description에 근거하여 
+		StringTokenizer st = new StringTokenizer(des);
+		if(st.countTokens() == 3){
+			
+		}
+		return vsList;
+	}
 	// get individuals in variable 
 	private Set<OWLIndividual> getIndividuals(Variable v,OWLOntology owl,OWLIndividual ind){
 		
