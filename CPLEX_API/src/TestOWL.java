@@ -124,33 +124,68 @@ public class TestOWL {
 			// objective termblocks
 			ArrayList<TermBlock> objTList = obj.getObjectiveTerm();
 			Iterator objTListIt = objTList.iterator();
-
+System.out.println(objTList.size());
 			// termblock 개수만큼 가로 확장
 			while(objTListIt.hasNext()){
 				TermBlock  tb = (TermBlock) objTListIt.next();
+				StringBuffer tbStr = new StringBuffer("");// termblock str for every termblock
+				ArrayList<Factor> fList = tb.getFactors();
+//				while(fListIt.hasNext()){
+//					Factor f = (Factor) fListIt.next();
+//System.out.println(f.getV().getName());
+//System.out.println(f.getOwlProperty());
+//				}
+				// parameter
 				ArrayList<Parameter> pList = tb.getParameters();
 				if(pList == null){
 					// 파라미터가 없을때
+System.out.println("no parameter");
 				}else{
 					// 파라미터가 있을때
 					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
 					String des = p.getV().getDescription();
-System.out.println("des:"+des);
+//System.out.println("des:"+des);
 					ArrayList<VariableStructure> vsList = getVSList(owl,p.getV());
-					for(int j=0;j<vsList.size();j++){
-						VariableStructure vs = vsList.get(j);
-System.out.println("parent:"+vs.getParent());
-						ArrayList<OWLIndividual> chList = vs.getChildrens();
-System.out.println("childrens:");
+					ArrayList total = new ArrayList();
+					Iterator vsListIt = vsList.iterator();
+					// 변수에 대한 모든 객채들 모음
+					while(vsListIt.hasNext()){
+						ArrayList chList = ((VariableStructure)vsListIt.next()).getChildrens();
 						Iterator chListIt = chList.iterator();
 						while(chListIt.hasNext()){
-System.out.println("ch:"+chListIt.next());
+							total.add(chListIt.next());
 						}
 					}
-System.out.println(vsList.size());				
+					// 변수에 들어있는 객체들의 개수만큼 
+					Iterator totalIt = total.iterator();
+
+					while(totalIt.hasNext()){
+						OWLIndividual ind = (OWLIndividual) totalIt.next();
+						for(int j=0; j<fList.size(); j++){
+							Factor f = (Factor) fList.get(j);
+							OWLDataProperty dp = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+							HashMap dpVs = (HashMap) ind.getDataPropertyValues(owl);
+							Set dpV = (Set) dpVs.get(dp);// property value set
+							Iterator dpVIt = dpV.iterator();
+							while(dpVIt.hasNext()){
+								System.out.println(dpVIt.next()); //property value
+							}
+						}
+					}
+//					for(int j=0;j<vsList.size();j++){
+//						VariableStructure vs = vsList.get(j);
+////System.out.println("parent:"+vs.getParent());
+//						ArrayList<OWLIndividual> chList = vs.getChildrens();
+////System.out.println("childrens:");
+//						Iterator chListIt = chList.iterator();
+//						while(chListIt.hasNext()){
+////System.out.println("ch:"+chListIt.next());
+//						}
+//					}
 				}
+				
 			
-				StringBuffer tbStr = new StringBuffer("");
+				
 				objectiveStr.append(tb.getSign()+tbStr);
 			}
 			// subjectToStr 만들기
