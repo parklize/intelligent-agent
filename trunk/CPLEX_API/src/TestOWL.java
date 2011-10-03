@@ -115,12 +115,6 @@ public class TestOWL {
 			StringTokenizer st = null;
 			
 			// objectiveStr 만들기
-			// instruction part
-			if(obj.getOptimizationInstruction().equals("Maximize")){
-				objectiveStr.append("maximize\n");
-			}else{
-				objectiveStr.append("minimize\n");
-			}
 			// objective termblocks
 			ArrayList<TermBlock> objTList = obj.getObjectiveTerm();
 			Iterator objTListIt = objTList.iterator();
@@ -161,6 +155,7 @@ System.out.println("no parameter");
 
 					while(totalIt.hasNext()){
 						OWLIndividual ind = (OWLIndividual) totalIt.next();
+						StringBuffer fStr = new StringBuffer("");
 						for(int j=0; j<fList.size(); j++){
 							Factor f = (Factor) fList.get(j);
 							OWLDataProperty dp = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
@@ -168,10 +163,30 @@ System.out.println("no parameter");
 							Set dpV = (Set) dpVs.get(dp);// property value set
 							Iterator dpVIt = dpV.iterator();
 							while(dpVIt.hasNext()){
-								System.out.println(dpVIt.next()); //property value
+								String val = dpVIt.next().toString(); //property value
+								if(val.equals("\"\"^^xsd:int")){
+									// ""^^xsd:int잡아서 변수 생성해야 함,need update
+									// property + ind형태로 변수 생성 및 코드 생성
+									// 이미 선언한 변수인지 체크해줘야지
+									String varName = soc.getWithoutPrefix(dp.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(ind.toString().replace("#", ""), prefix);
+									if(varsList.contains(varName)){
+										// 이미 선언했네요,걍 넘어가
+									}else{
+										varsList.add(varName);
+										varDecStr.append("dvar int+ "+varName+"\n");
+									}
+//									tbStr.append(soc.getWithoutPrefix(dp.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(ind.toString().replace("#", ""), prefix)+"+");
+									fStr.append(soc.getWithoutPrefix(dp.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(ind.toString().replace("#", ""), prefix)+"*");
+								}else{
+									st = new StringTokenizer(val,"\"");
+									fStr.append(st.nextToken()+"*");
+								}
 							}
 						}
+						tbStr.append(tb.getSign()+fStr);// add factor string to termblock string
+						tbStr = new StringBuffer(tbStr.substring(0, tbStr.length()-1));// delete every termblock's *
 					}
+					objectiveStr.append(tbStr);
 //					for(int j=0;j<vsList.size();j++){
 //						VariableStructure vs = vsList.get(j);
 ////System.out.println("parent:"+vs.getParent());
@@ -183,11 +198,15 @@ System.out.println("no parameter");
 //						}
 //					}
 				}
-				
-			
-				
-				objectiveStr.append(tb.getSign()+tbStr);
 			}
+			objectiveStr = new StringBuffer(objectiveStr.substring(1));// delete first +
+			// instruction part
+			if(obj.getOptimizationInstruction().equals("Maximize")){
+				objectiveStr = new StringBuffer("maximize\n"+objectiveStr);
+			}else{
+				objectiveStr = new StringBuffer("minimize\n"+objectiveStr);
+			}
+			
 			// subjectToStr 만들기
 			for(Constraint c:consList){
 //Utils.printConstraint(c);
@@ -258,7 +277,7 @@ System.out.println("no parameter");
 						Iterator varSIt = varS.iterator();
 						while(varSIt.hasNext()){
 							OWLIndividual indInV = (OWLIndividual) varSIt.next();// a에들어있는 ind
-							StringBuffer lhsStr = new StringBuffer("   ");
+							StringBuffer lhsStr = new StringBuffer("");
 							StringBuffer rhsStr = new StringBuffer("");
 							
 							// lhsStr 생성
@@ -288,7 +307,6 @@ System.out.println("no parameter");
 												String val = dpVIt.next().toString();
 												st = new StringTokenizer(val,"\"");
 												tbStr.append(st.nextToken());
-												
 											}
 										}
 									}
@@ -298,6 +316,7 @@ System.out.println("no parameter");
 								}
 								lhsStr.append(tb.getSign()+tbStr);
 							}
+							lhsStr = new StringBuffer(lhsStr.substring(1));// delete first +
 							
 							// rhsStr 생성
 							ArrayList<TermBlock> rhsT = c.getRhs().getTermblocks();
@@ -372,7 +391,7 @@ System.out.println("no parameter");
 															varsList.add(varName);
 															varDecStr.append("dvar int+ "+varName+"\n");
 														}
-														tbStr.append(soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(indF.toString().replace("#", ""), prefix)+"+");
+														tbStr.append(tb.getSign()+varName);
 													}else{
 														st = new StringTokenizer(val,"\"");
 														tbStr.append(st.nextToken());
@@ -386,11 +405,11 @@ System.out.println("no parameter");
 										// Production 일때
 									}
 								}
-								rhsStr.append(tb.getSign()+tbStr);
+								rhsStr.append(tbStr);
 							}
-							
+							rhsStr = new StringBuffer(rhsStr.substring(1));// delete first +
 							// subject to 에 lhsStr+opp+rhsStr 추가 및 행 바꾸기
-							subjectToStr.append(lhsStr).append(opp).append(rhsStr).append("\n");
+							subjectToStr.append("   ").append(lhsStr).append(opp).append(rhsStr).append("\n");
 						}
 					}
 				}
@@ -399,7 +418,7 @@ System.out.println("no parameter");
 			objectiveStr.append(";");
 			subjectToStr.append(" }");
 			bw.write(varDecStr.toString()+"\n");// 변수 선언부분 출력
-			bw.write(objectiveStr.toString()+"\n");
+			bw.write(objectiveStr.toString()+"\n\n");
 			bw.write(subjectToStr.toString());// subject to 부분 출력
 			
 			// close buffered writer
@@ -643,61 +662,61 @@ System.out.println("no parameter");
 					}else{
 						tb.setAggregateOppertor("not use");
 					}
-					
+
 					// get parameter value
 					OWLObjectPropertyImpl hasPar = new OWLObjectPropertyImpl(factory, IRI.create(prefix+"#hasParameters"));
 					Set parSet = (Set) lhsObjectProperty.get(hasPar);
-					
+
 					if(parSet != null){
-						
+
 						// parameters list
 						ArrayList<Parameter> parList = null;
 						Iterator parIt = parSet.iterator();
-						
+
 						String parStr = null;
 						while(parIt.hasNext()){
-							
+
 							parList = new ArrayList<Parameter>();
 							Parameter p = new Parameter();
-							
+
 							OWLNamedIndividualImpl parameter = (OWLNamedIndividualImpl) parIt.next();
 							parStr = parameter.toString();
 							parStr = parStr.replaceAll("<"+prefix+"#", "");
 							parStr = parStr.replaceAll(">", "");
-	//System.out.println("LHS parameter is:" + parStr);
+							//System.out.println("LHS parameter is:" + parStr);
 							Variable v = Utils.findVariableWithName(variablesList, parStr);
 							p.setV(v);
 							parList.add(p);
 						}
-						
+
 						tb.setParameters(parList);
 					}
-					
+
 					// get factors
 					OWLObjectPropertyImpl hasFac = new OWLObjectPropertyImpl(factory,IRI.create(prefix+"#hasFactor"));
 					Set facSet = (Set) lhsObjectProperty.get(hasFac);
-					
+
 					if(facSet != null){
-						
+
 						Iterator facIt = facSet.iterator();
 						// factors list
 						ArrayList<Factor> facList = new ArrayList<Factor>();
-						
+
 						//factor name
 						String facStr = null;
 						while(facIt.hasNext()){
-							
+
 							Factor f = new Factor();
 							OWLNamedIndividualImpl factor = (OWLNamedIndividualImpl) facIt.next();//rhsFactor
 							HashMap factorDataProperty = (HashMap) factor.getDataPropertyValues(owl);
 							HashMap factorObjProperty = (HashMap) factor.getObjectPropertyValues(owl);
-							
+
 							// has Binding Data property
 							OWLDataPropertyImpl hasBindingDataProperty = new OWLDataPropertyImpl(factory, IRI.create(prefix+"#hasBindingDataProperty"));
 							Set hasBDPSet = (Set) factorDataProperty.get(hasBindingDataProperty);
-							
+
 							if(hasBDPSet != null){
-								
+
 								Iterator hasBDPSetIt = hasBDPSet.iterator();
 								
 								String hasBDPStr = null;
