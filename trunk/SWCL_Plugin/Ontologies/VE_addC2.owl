@@ -387,14 +387,14 @@
     <owl:Class rdf:about="&Ontology1314840683578;Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -801,6 +801,7 @@
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
         <ownDemand rdf:datatype="&xsd;int">0</ownDemand>
         <veDemand rdf:datatype="&xsd;int">50</veDemand>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_1"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_11"/>
     </owl:NamedIndividual>
     
@@ -812,6 +813,7 @@
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
         <ownDemand rdf:datatype="&xsd;int">20</ownDemand>
         <veDemand rdf:datatype="&xsd;int">40</veDemand>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_2"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_12"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_22"/>
     </owl:NamedIndividual>
@@ -824,6 +826,7 @@
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
         <ownDemand rdf:datatype="&xsd;int">10</ownDemand>
         <veDemand rdf:datatype="&xsd;int">55</veDemand>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_3"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_13"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_23"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_33"/>
@@ -837,6 +840,7 @@
         <rdf:type rdf:resource="&Ontology1314840683578;SpendWeek"/>
         <ownDemand rdf:datatype="&xsd;int">0</ownDemand>
         <veDemand rdf:datatype="&xsd;int">60</veDemand>
+        <spendInventory rdf:resource="&Ontology1314840683578;veSpendInventoryWeek_4"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_14"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_24"/>
         <spend rdf:resource="&Ontology1314840683578;veSupplying_34"/>
@@ -939,6 +943,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veSupplying_44">
         <rdf:type rdf:resource="&Ontology1314840683578;Supplying"/>
+        <supplyAmount rdf:datatype="&xsd;int"></supplyAmount>
         <supplyCost rdf:datatype="&xsd;int">30</supplyCost>
     </owl:NamedIndividual>
     
@@ -948,6 +953,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veTotalInventory">
         <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int">10</hasAmount>
     </owl:NamedIndividual>
 </rdf:RDF>
 
