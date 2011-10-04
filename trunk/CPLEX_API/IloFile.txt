@@ -1,28 +1,48 @@
-dvar int+ supplyAmountveSupplying_44
-dvar int+ supplyAmountveSupplying_33
-dvar int+ supplyAmountveSupplying_34
-dvar int+ supplyAmountveSupplying_23
-dvar int+ supplyAmountveSupplying_22
-dvar int+ supplyAmountveSupplying_24
-dvar int+ supplyAmountveSupplying_14
-dvar int+ supplyAmountveSupplying_13
-dvar int+ supplyAmountveSupplying_12
-dvar int+ supplyAmountveSupplying_11
-dvar int+ hasAmountveSpendInventoryWeek_1
-dvar int+ hasAmountveSpendInventoryWeek_2
-dvar int+ hasAmountveSpendInventoryWeek_3
-dvar int+ hasAmountveSpendInventoryWeek_4
+dvar int+ supplyAmountv1Supplying_24;
+dvar int+ supplyAmountv1Supplying_23;
+dvar int+ supplyAmountv1Supplying_22;
+dvar int+ supplyAmountv1Supplying_12;
+dvar int+ supplyAmountv1Supplying_11;
+dvar int+ supplyAmountv1Supplying_14;
+dvar int+ supplyAmountv1Supplying_13;
+dvar int+ supplyAmountv1Supplying_44;
+dvar int+ supplyAmountv1Supplying_34;
+dvar int+ supplyAmountv1Supplying_33;
+dvar int+ supplyAmountveSupplying_44;
+dvar int+ supplyAmountveSupplying_33;
+dvar int+ supplyAmountveSupplying_34;
+dvar int+ supplyAmountveSupplying_23;
+dvar int+ supplyAmountveSupplying_22;
+dvar int+ supplyAmountveSupplying_24;
+dvar int+ supplyAmountveSupplying_14;
+dvar int+ supplyAmountveSupplying_13;
+dvar int+ supplyAmountveSupplying_12;
+dvar int+ supplyAmountveSupplying_11;
+dvar int+ hasAmountveSpendInventoryWeek_1;
+dvar int+ hasAmountveSpendInventoryWeek_2;
+dvar int+ hasAmountveSpendInventoryWeek_3;
+dvar int+ hasAmountveSpendInventoryWeek_4;
+dvar int+ hasAmountv1SpendInventoryWeek_4;
+dvar int+ hasAmountv1SpendInventoryWeek_3;
+dvar int+ hasAmountv1SpendInventoryWeek_2;
+dvar int+ hasAmountv1SpendInventoryWeek_1;
 
 minimize
-supplyAmountveSupplying_44*30+supplyAmountveSupplying_33*30+supplyAmountveSupplying_34*40+supplyAmountveSupplying_23*40+supplyAmountveSupplying_22*30+supplyAmountveSupplying_24*50+supplyAmountveSupplying_14*60+supplyAmountveSupplying_13*50+supplyAmountveSupplying_12*40+supplyAmountveSupplying_11*30+hasAmountveSpendInventoryWeek_1*0+hasAmountveSpendInventoryWeek_2*10+hasAmountveSpendInventoryWeek_3*20+hasAmountveSpendInventoryWeek_4*30;
+supplyAmountv1Supplying_24*60+supplyAmountv1Supplying_23*55+supplyAmountv1Supplying_22*50+supplyAmountv1Supplying_12*55+supplyAmountv1Supplying_11*50+supplyAmountv1Supplying_14*65+supplyAmountv1Supplying_13*60+supplyAmountv1Supplying_44*50+supplyAmountv1Supplying_34*55+supplyAmountv1Supplying_33*50+supplyAmountveSupplying_44*30+supplyAmountveSupplying_33*30+supplyAmountveSupplying_34*40+supplyAmountveSupplying_23*40+supplyAmountveSupplying_22*30+supplyAmountveSupplying_24*50+supplyAmountveSupplying_14*60+supplyAmountveSupplying_13*50+supplyAmountveSupplying_12*40+supplyAmountveSupplying_11*30+hasAmountveSpendInventoryWeek_1*0+hasAmountveSpendInventoryWeek_2*10+hasAmountveSpendInventoryWeek_3*20+hasAmountveSpendInventoryWeek_4*30;
 
  subject to {
-   50>=supplyAmountveSupplying_44
-   65>=supplyAmountveSupplying_33+supplyAmountveSupplying_34
-   60>=supplyAmountveSupplying_23+supplyAmountveSupplying_22+supplyAmountveSupplying_24
-   50>=supplyAmountveSupplying_14+supplyAmountveSupplying_13+supplyAmountveSupplying_12+supplyAmountveSupplying_11
-   0+50<=supplyAmountveSupplying_11+hasAmountveSpendInventoryWeek_1
-   20+40<=supplyAmountveSupplying_22+supplyAmountveSupplying_12+hasAmountveSpendInventoryWeek_2
-   10+55<=supplyAmountveSupplying_23+supplyAmountveSupplying_13+supplyAmountveSupplying_33+hasAmountveSpendInventoryWeek_3
-   0+60<=supplyAmountveSupplying_14+supplyAmountveSupplying_24+supplyAmountveSupplying_34+supplyAmountveSupplying_44+hasAmountveSpendInventoryWeek_4
+   40>=supplyAmountv1Supplying_24+supplyAmountv1Supplying_23+supplyAmountv1Supplying_22;
+   90>=supplyAmountv1Supplying_12+supplyAmountv1Supplying_11+supplyAmountv1Supplying_14+supplyAmountv1Supplying_13;
+   50>=supplyAmountv1Supplying_44;
+   60>=supplyAmountv1Supplying_34+supplyAmountv1Supplying_33;
+   50>=supplyAmountveSupplying_44;
+   65>=supplyAmountveSupplying_33+supplyAmountveSupplying_34;
+   60>=supplyAmountveSupplying_23+supplyAmountveSupplying_22+supplyAmountveSupplying_24;
+   50>=supplyAmountveSupplying_14+supplyAmountveSupplying_13+supplyAmountveSupplying_12+supplyAmountveSupplying_11;
+   0+50<=supplyAmountveSupplying_11+hasAmountveSpendInventoryWeek_1;
+   20+40<=supplyAmountveSupplying_22+supplyAmountveSupplying_12+hasAmountveSpendInventoryWeek_2;
+   10+55<=supplyAmountveSupplying_23+supplyAmountveSupplying_13+supplyAmountveSupplying_33+hasAmountveSpendInventoryWeek_3;
+   0+60<=supplyAmountveSupplying_14+supplyAmountveSupplying_24+supplyAmountveSupplying_34+supplyAmountveSupplying_44+hasAmountveSpendInventoryWeek_4;
+   30==hasAmountv1SpendInventoryWeek_4+hasAmountv1SpendInventoryWeek_3+hasAmountv1SpendInventoryWeek_2+hasAmountv1SpendInventoryWeek_1;
+   10==hasAmountveSpendInventoryWeek_2+hasAmountveSpendInventoryWeek_1+hasAmountveSpendInventoryWeek_4+hasAmountveSpendInventoryWeek_3;
  }
