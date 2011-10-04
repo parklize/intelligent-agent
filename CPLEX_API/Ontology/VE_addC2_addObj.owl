@@ -1088,6 +1088,7 @@
 
     <owl:NamedIndividual rdf:about="&Ontology1314840683578;veTotalInventory">
         <rdf:type rdf:resource="&Ontology1314840683578;Inventory"/>
+        <hasAmount rdf:datatype="&xsd;int">10</hasAmount>
     </owl:NamedIndividual>
 </rdf:RDF>
 
