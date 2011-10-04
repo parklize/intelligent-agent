@@ -249,6 +249,7 @@ System.out.println(f.getOwlProperty());
 										HashMap dpVs = (HashMap) indInV.getDataPropertyValues(owl);
 										Set dpV = (Set) dpVs.get(owlP);
 										Iterator dpVIt = dpV.iterator();
+										
 										while(dpVIt.hasNext()){
 											String val = dpVIt.next().toString(); //property value
 											if(val.equals("\"\"^^xsd:int")){
