@@ -450,14 +450,14 @@
     <owl:Class rdf:about="&Ontology1314840683578;Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&Ontology1314840683578;hasRhs"/>
-                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;RhsTermBlock"/>
+                <owl:onProperty rdf:resource="&Ontology1314840683578;hasLhs"/>
+                <owl:allValuesFrom rdf:resource="&Ontology1314840683578;LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -952,10 +952,10 @@
         <hasProduceWeek rdf:resource="&Ontology1314840683578;v1ProduceWeek_2"/>
         <hasProduceWeek rdf:resource="&Ontology1314840683578;v1ProduceWeek_3"/>
         <hasProduceWeek rdf:resource="&Ontology1314840683578;v1ProduceWeek_4"/>
-        <spend rdf:resource="&Ontology1314840683578;v1SpendWeek_1"/>
-        <spend rdf:resource="&Ontology1314840683578;v1SpendWeek_2"/>
-        <spend rdf:resource="&Ontology1314840683578;v1SpendWeek_3"/>
-        <spend rdf:resource="&Ontology1314840683578;v1SpendWeek_4"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;v1SpendWeek_1"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;v1SpendWeek_2"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;v1SpendWeek_3"/>
+        <hasSpendWeek rdf:resource="&Ontology1314840683578;v1SpendWeek_4"/>
         <hasInventory rdf:resource="&Ontology1314840683578;v1TotalInventory"/>
     </owl:NamedIndividual>
     

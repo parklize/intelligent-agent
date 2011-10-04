@@ -251,7 +251,7 @@ System.out.println(f.getOwlProperty());
 										Iterator dpVIt = dpV.iterator();
 										
 										while(dpVIt.hasNext()){
-											String val = dpVIt.next().toString(); //property value
+											String val = dpVIt.next().toString(); // property value
 											if(val.equals("\"\"^^xsd:int")){
 												// ""^^xsd:int잡아서 변수 생성해야 함,need update
 												// property + ind형태로 변수 생성 및 코드 생성

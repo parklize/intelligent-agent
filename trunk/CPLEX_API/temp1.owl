@@ -1135,12 +1135,12 @@ Individual: <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1ProduceWeek_2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1ProduceWeek_4>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_2>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_1>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_2>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasInventory>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1TotalInventory>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_4>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1ProduceWeek_3>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_4>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_1>,
-     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#spend>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_3>,
+     <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1SpendWeek_3>,
      <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl#v1ProduceWeek_1>
     
     
