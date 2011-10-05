@@ -49,7 +49,7 @@ public class TestOWL {
 		
 		try {
 			
-			File file = new File("Ontology/VE_addC3_addObj_addSubInventory_addV12.owl");
+			File file = new File("Ontology/VE_addC3_addObj_addSubInventory_addV123.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			
