@@ -189,11 +189,8 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 				"    EquivalentTo:\n"+
 				"        ");
 				StringBuffer des = new StringBuffer(v.getDescription());
-System.out.println(des);
-System.out.println(des.charAt(0));
 				// des앞게 blank하나 있음
 				if(des.charAt(1)=='{'){
-System.out.println("{{{{");
 					des.insert(2, "<"+prefix+"#");
 					des.insert(des.length()-1,">");
 				}else{
