@@ -177,6 +177,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			
 			// temporary save at current directory as manchester owl syntax
 			String presentDir = System.getProperty("user.dir");
+//System.out.println("presentDir:"+presentDir);// D://eclipse
 			wdt = new WriterDocumentTarget(new FileWriter(presentDir + "//temp.owl"));
 			manager.saveOntology(ont, new ManchesterOWLSyntaxOntologyFormat(), wdt);
 			
@@ -184,9 +185,21 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			for(Variable v:variablesList){
 //System.out.println("Description:"+v.getDescription());
 				fw = (FileWriter) wdt.getWriter();
-				char[] cs = ("Class: " + "<" + prefix + "#ClassFor" + v.getName() + ">\n\n" +
-						"    EquivalentTo:\n"+
-						"        "+v.getDescription()+"\n\n").toCharArray();
+				StringBuffer clsDes = new StringBuffer("Class: " + "<" + prefix + "#ClassFor" + v.getName() + ">\n\n" +
+				"    EquivalentTo:\n"+
+				"        ");
+				StringBuffer des = new StringBuffer(v.getDescription());
+System.out.println(des);
+System.out.println(des.charAt(0));
+				// des앞게 blank하나 있음
+				if(des.charAt(1)=='{'){
+System.out.println("{{{{");
+					des.insert(2, "<"+prefix+"#");
+					des.insert(des.length()-1,">");
+				}else{
+				}
+				clsDes.append(des).append("\n\n");
+				char[] cs = clsDes.toString().toCharArray();
 				for(char c: cs){
 					fw.write(c);
 				}
