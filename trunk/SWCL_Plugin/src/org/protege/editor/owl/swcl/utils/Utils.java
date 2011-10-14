@@ -85,12 +85,12 @@ public class Utils {
 		//Qualifier 
 	
 		if (con.getQualifiers().size()!=0){				//만약 qualifier사이즈가 0이 아니면 실행
-			str+="( Qualifier (Variable (";
+			str+="( Qualifier (";
 			
 			for (int i=0; i<con.getQualifiers().size();i++){	// qualifier 사이즈만큼 
 				str+=" "+ con.getQualifiers().get(i).getV().getName();
 			}
-			str+=" ) )";
+			str+=" )";
 		}
 		
 		
@@ -101,21 +101,21 @@ public class Utils {
 			str+="( TermBlock ( "+ con.getLhs().getTermblocks().get(i).getSign();
 			
 			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
-				str+=" "+ con.getLhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";	
+				str+=" "+ con.getLhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter(";	
 
 				for (int j=0; j<con.getLhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
 					str+=	" "+ con.getLhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
 				}
-				str+=" ) )";
+				str+=" )";
 			}
 			
-			str+=" Factor ( Variable(";
+			str+=" Factor (";
 			
 			for (int k=0; k<con.getLhs().getTermblocks().get(i).getFactors().size();k++){
 				str+=" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getLhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
 			
 			}
-			str+=" ) ) ) ) ";
+			str+=" ) ) ) ";
 		}
 		
 		
@@ -128,23 +128,23 @@ public class Utils {
 			str+="( TermBlock ( "+ con.getRhs().getTermblocks().get(i).getSign();
 			
 			if (con.getRhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
-				str+=" "+ con.getRhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter( Variable (";
+				str+=" "+ con.getRhs().getTermblocks().get(i).getAggregateOppertor()+" Parameter(";
 				
 
 				for (int j=0; j<con.getRhs().getTermblocks().get(i).getParameters().size();j++){		//parameter 사이즈 만큼
 					str+=	" "+ con.getRhs().getTermblocks().get(i).getParameters().get(j).getV().getName();
 				}
 		
-				str+=" ) )";
+				str+=" )";
 			}
 			
-			str+=" Factor ( Variable(";
+			str+=" Factor (";
 			
 			for (int k=0; k<con.getRhs().getTermblocks().get(i).getFactors().size();k++){
 				str+=" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getV().getName()+" "+ con.getRhs().getTermblocks().get(i).getFactors().get(k).getOwlProperty();
 			
 			}
-			str+=" ) ) ) )";
+			str+=" ) ) )";
 			
 		}
 
