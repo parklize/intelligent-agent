@@ -79,7 +79,7 @@ if(ont == null){
 		jLabel = new JLabel();
 		jLabel.setBounds(new Rectangle(18, 32, 141, 18));
 		jLabel.setText("Opimization Instruction:");
-		this.setSize(800, 600);
+		this.setSize(897, 600);
 		this.setLayout(null);
 		this.add(jLabel, null);
 		this.add(jLabel1, null);
@@ -109,7 +109,7 @@ if(ont == null){
 	private JScrollPane getRhsScrollPane() {
 		if (termScrollPane == null) {
 			termScrollPane = new JScrollPane();
-			termScrollPane.setBounds(new Rectangle(180, 98, 500, 114));
+			termScrollPane.setBounds(new Rectangle(180, 98, 620, 114));
 			termScrollPane.setViewportView(getRhsPanel());
 		}
 		return termScrollPane;
@@ -131,7 +131,7 @@ if(ont == null){
 			
 			// termblock initializing...
 			objectiveTermblocks[termblockNumber].setLayout(null);
-			objectiveTermblocks[termblockNumber].setBounds(new Rectangle(0, 112*termblockNumber, 500, 112));
+			objectiveTermblocks[termblockNumber].setBounds(new Rectangle(0, 112*termblockNumber, 620, 112));
 			objectiveTermblocks[termblockNumber].setBorder(BorderFactory.createLineBorder(SystemColor.activeCaptionBorder, 1));
 			
 			double rhsPanelHeight = termPanel.getPreferredSize().getHeight()+112;
@@ -147,7 +147,7 @@ if(ont == null){
 	private JButton getJButton() {
 		if (jButton == null) {
 			jButton = new JButton();
-			jButton.setBounds(new Rectangle(703, 100, 34, 17));
+			jButton.setBounds(new Rectangle(823, 98, 34, 17));
 			jButton.setText("+");
 			jButton.addActionListener(this);
 		}
@@ -158,7 +158,7 @@ if(ont == null){
 	private JButton getConfirmButton() {
 		if (confirmButton == null) {
 			confirmButton = new JButton();
-			confirmButton.setBounds(new Rectangle(642, 268, 52, 22));
+			confirmButton.setBounds(new Rectangle(747, 242, 52, 22));
 			confirmButton.setText("Confirm");
 			confirmButton.addActionListener(this);
 		}
@@ -232,4 +232,4 @@ if(ont == null){
 	}
 
 
-}
+}  //  @jve:decl-index=0:visual-constraint="10,10"

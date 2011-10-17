@@ -1,18 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=1" prefer="public" xml:base="">
         <uri id="Automatically generated entry, Timestamp=1317690994078" name="http://www.semanticweb.org/ontologies/2011/8/secretgarden.owl" uri="secretgarden.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC1.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC2.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC2_addObj.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC2_addObj_addSubInventory.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory_addV1.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory_addV12.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory_addV123.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory_addV1234.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="VE_addC3_addObj_addSubInventory_addV123_addC3.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1318399532343" name="http://www.semanticweb.org/ontologies/2011/8/Ontology1314840683578.owl" uri="Original/VEOntology.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1318661802765" name="http://www.semanticweb.org/ontologies/2011/9/Ontology1318493910988.owl" uri="Original/population.owl"/>
     </group>
 </catalog>
