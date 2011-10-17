@@ -227,7 +227,7 @@ public class TermBlockComponent extends JPanel {
 	private JScrollPane getFactorScrollPane() {
 		if (factorScrollPane == null) {
 			factorScrollPane = new JScrollPane();
-			factorScrollPane.setBounds(new Rectangle(334, 40, 135, 62));
+			factorScrollPane.setBounds(new Rectangle(334, 40, 250, 62));
 			factorScrollPane.setViewportView(getFactorTable());
 		}
 		return factorScrollPane;
@@ -244,6 +244,7 @@ public class TermBlockComponent extends JPanel {
 			factorTable = new JTable(dt);
 			
 			factorVariableColumn  = factorTable.getColumnModel().getColumn(0);		
+			factorVariableColumn.setMaxWidth(50);
 			// initialize factor variable combobox
 			Utils.refreshComboBox(variablesList, factorVariableColumn);
 			

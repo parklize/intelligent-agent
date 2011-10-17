@@ -636,7 +636,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 	//System.out.println("indName:"+indName);
 			// get all variables
 			while((readLine = br.readLine()) != null){
-	//System.out.println("readLine:"+readLine);	
+//	System.out.println("readLine:"+readLine);	
 				// get all variables from ontology
 				Set variablesSet = variableCls.getIndividuals(ont);
 				if(variablesSet != null){
@@ -651,14 +651,21 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 						if(readLine.contains("Class: " + "<" + base + "#ClassFor"+indName + ">")){
 							readLine = br.readLine();
 							readLine = br.readLine();
-							readLine = br.readLine();
-		//System.out.println("1:"+readLine);
-							readLine = readLine.replaceAll("        ", "");
-							readLine = readLine.replaceAll("<"+base+"#","");
-							readLine = readLine.replaceAll(">","");
-		//System.out.println("2:"+readLine);
+							readLine = br.readLine();//String for classFor?a (partof,, if too long, it will be splited to next line)
+							String varDes = readLine;
+							while(!readLine.equals("    ")){
+								readLine = br.readLine();
+								varDes = varDes+readLine;
+							}
+//		System.out.println("1:"+varDes);
+							varDes = varDes.replaceAll("        ", "");
+							varDes = varDes.replaceAll("<"+base+"#","");
+							varDes = varDes.replaceAll(">","");
+							varDes = varDes.replace("\u0028", "");// delete (
+							varDes = varDes.replace("\u0029", "");// delete )
+//		System.out.println("2:"+varDes);
 							
-							v.setDescription(readLine);
+							v.setDescription(varDes);
 							variablesList.add(v);
 						}
 					}

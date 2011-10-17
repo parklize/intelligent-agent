@@ -162,7 +162,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	
 	// initializing frame
 	private void initialize() {
-		this.setSize(680, 770);
+		this.setSize(850, 770);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SWCL");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -202,7 +202,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JPanel getConainerPane() {
 		if (wholePanel == null) {
 			wholePanel = new JPanel();
-			wholePanel.setPreferredSize(new Dimension(650,950));
+			wholePanel.setPreferredSize(new Dimension(820,950));
 			wholePanel.setLayout(null);
 			wholePanel.add(getJScrollPane(), null);
 			wholePanel.add(getAbstractSyntaxPanel(), null);
@@ -214,7 +214,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getJScrollPane() {
 		if (containerScrollPane == null) {
 			containerScrollPane = new JScrollPane();
-			containerScrollPane.setBounds(new Rectangle(0, 0, 675, 750));
+			containerScrollPane.setBounds(new Rectangle(0, 0, 830, 750));
 			containerScrollPane.setViewportView(getContainerPanel());
 		}
 		return containerScrollPane;
@@ -284,7 +284,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getVariableScrollPane() {
 		if (variableScrollPane == null) {
 			variableScrollPane = new JScrollPane();
-			variableScrollPane.setBounds(new Rectangle(142, 60, 500, 120));
+			variableScrollPane.setBounds(new Rectangle(142, 60, 620, 120));
 			variableScrollPane.setViewportView(getVariablePanel());
 		}
 		return variableScrollPane;
@@ -308,7 +308,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getVariablesScrollPane() {
 		if (variablesScrollPane == null) {
 			variablesScrollPane = new JScrollPane();
-			variablesScrollPane.setBounds(new Rectangle(27, 8, 385, 103));
+			variablesScrollPane.setBounds(new Rectangle(27, 8, 445, 103));
 			variablesScrollPane.setViewportView(getVariablesTable());
 		}
 		return variablesScrollPane;
@@ -415,7 +415,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (addVariableButton == null) {
 			addVariableButton = new JButton();
 			addVariableButton.setText("+");
-			addVariableButton.setBounds(new Rectangle(422, 7, 25, 18));
+			addVariableButton.setBounds(new Rectangle(482, 7, 25, 18));
 			addVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -458,7 +458,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (removeVariableButton == null) {
 			removeVariableButton = new JButton();
 			removeVariableButton.setText("-");
-			removeVariableButton.setBounds(new Rectangle(452, 7, 25, 18));
+			removeVariableButton.setBounds(new Rectangle(512, 7, 25, 18));
 			removeVariableButton.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -560,7 +560,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			abstractSyntaxLabel.setBounds(new Rectangle(33, 20, 97, 18));
 			abstractSyntaxPanel = new JPanel();
 			abstractSyntaxPanel.setLayout(null);
-			abstractSyntaxPanel.setBounds(new Rectangle(0, 749, 673, 180));
+			abstractSyntaxPanel.setBounds(new Rectangle(0, 749, 820, 180));
 			abstractSyntaxPanel.add(abstractSyntaxLabel, null);
 			abstractSyntaxPanel.add(getJTextArea(), null);
 //			abstractSyntaxPanel.add(getJButton(), null);
@@ -573,7 +573,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 		if (abstractSyntaxArea == null) {
 			abstractSyntaxArea = new JTextArea();
 			abstractSyntaxArea.setLineWrap(true);
-			abstractSyntaxArea.setBounds(new Rectangle(144, 18, 501, 112));
+			abstractSyntaxArea.setBounds(new Rectangle(144, 18, 620, 112));
 		}
 		return abstractSyntaxArea;
 	}
@@ -640,7 +640,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getLhsScrollPane() {
 		if (lhsScrollPane == null) {
 			lhsScrollPane = new JScrollPane();
-			lhsScrollPane.setBounds(new Rectangle(142, 400, 500, 114));
+			lhsScrollPane.setBounds(new Rectangle(142, 400, 620, 114));
 			lhsScrollPane.setViewportView(getLhsPanel());
 		}
 		return lhsScrollPane;
@@ -662,7 +662,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// termblock initializing...
 			lhsTermblocks[lhsTermblockNumber].setLayout(null);
-			lhsTermblocks[lhsTermblockNumber].setBounds(new Rectangle(0, 112*lhsTermblockNumber, 500, 112));
+			lhsTermblocks[lhsTermblockNumber].setBounds(new Rectangle(0, 112*lhsTermblockNumber, 620, 112));
 			lhsTermblocks[lhsTermblockNumber].setBorder(BorderFactory.createLineBorder(SystemColor.activeCaptionBorder, 1));
 			
 			double lhsPanelHeight = lhsPanel.getPreferredSize().getHeight()+112;
@@ -680,7 +680,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getQualifierScrollPane() {
 		if (qualifierScrollPane == null) {
 			qualifierScrollPane = new JScrollPane();
-			qualifierScrollPane.setBounds(new Rectangle(142, 230, 500, 120));
+			qualifierScrollPane.setBounds(new Rectangle(142, 230, 620, 120));
 			qualifierScrollPane.setViewportView(getQualifierPanel());
 		}
 		return qualifierScrollPane;
@@ -782,7 +782,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 	private JScrollPane getRhsScrollPane() {
 		if (rhsScrollPane == null) {
 			rhsScrollPane = new JScrollPane();
-			rhsScrollPane.setBounds(new Rectangle(141, 570, 500, 114));
+			rhsScrollPane.setBounds(new Rectangle(141, 570, 620, 114));
 			rhsScrollPane.setViewportView(getRhsPanel());
 		}
 		return rhsScrollPane;
@@ -804,7 +804,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 			
 			// termblock initializing...
 			rhsTermblocks[rhsTermblockNumber].setLayout(null);
-			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 112*rhsTermblockNumber, 500, 112));
+			rhsTermblocks[rhsTermblockNumber].setBounds(new Rectangle(0, 112*rhsTermblockNumber, 620, 112));
 			rhsTermblocks[rhsTermblockNumber].setBorder(BorderFactory.createLineBorder(SystemColor.activeCaptionBorder, 1));
 			
 			double rhsPanelHeight = rhsPanel.getPreferredSize().getHeight()+112;
