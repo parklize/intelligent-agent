@@ -1,0 +1,693 @@
+Prefix: VEOntology: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?>
+Prefix: ClassFor: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: : <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+
+Ontology: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl>
+
+
+Datatype: xsd:int
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: hasCapacityVendor
+
+    Domain: 
+        Capacity
+    
+    Range: 
+        Vendor
+    
+    InverseOf: 
+        hasCapacity
+    
+    
+ObjectProperty: hasQualifier
+
+    
+ObjectProperty: hasCapacity
+
+    InverseOf: 
+        hasCapacityVendor
+    
+    
+ObjectProperty: hasProduceWeek
+
+    Domain: 
+        Consumption
+    
+    Range: 
+        Week
+    
+    InverseOf: 
+        hasProduceConsumption
+    
+    
+ObjectProperty: hasDemandVendor
+
+    Domain: 
+        Demand
+    
+    Range: 
+        Vendor
+    
+    InverseOf: 
+        hasDemand
+    
+    
+ObjectProperty: hasVar
+
+    
+ObjectProperty: hasFactor
+
+    
+ObjectProperty: hasConsumption
+
+    InverseOf: 
+        hasConsumptionVendor
+    
+    
+ObjectProperty: hasLhs
+
+    
+ObjectProperty: hasRhs
+
+    
+ObjectProperty: hasSpendConsumption
+
+    InverseOf: 
+        hasSpendWeek
+    
+    
+ObjectProperty: hasProduceConsumption
+
+    InverseOf: 
+        hasProduceWeek
+    
+    
+ObjectProperty: hasConsumptionVendor
+
+    Domain: 
+        Vendor
+    
+    Range: 
+        Consumption
+    
+    InverseOf: 
+        hasConsumption
+    
+    
+ObjectProperty: hasCapacityWeek
+
+    Domain: 
+        Capacity
+    
+    Range: 
+        Week
+    
+    
+ObjectProperty: hasDemand
+
+    InverseOf: 
+        hasDemandVendor,
+        hasDemandWeek
+    
+    
+ObjectProperty: hasParameters
+
+    
+ObjectProperty: hasDemandWeek
+
+    Domain: 
+        Demand
+    
+    Range: 
+        Week
+    
+    InverseOf: 
+        hasDemand
+    
+    
+ObjectProperty: hasSpendWeek
+
+    Domain: 
+        Consumption
+    
+    Range: 
+        Week
+    
+    InverseOf: 
+        hasSpendConsumption
+    
+    
+DataProperty: hasVeDemand
+
+    Domain: 
+        Demand
+    
+    Range: 
+        xsd:int
+    
+    
+DataProperty: bindingClass
+
+    
+DataProperty: hasOwnDemand
+
+    Domain: 
+        Demand
+    
+    Range: 
+        xsd:int
+    
+    
+DataProperty: hasBindingDataProperty
+
+    
+DataProperty: hasSign
+
+    
+DataProperty: hasOperator
+
+    
+DataProperty: hasConsumptionCost
+
+    Domain: 
+        Consumption
+    
+    Range: 
+        xsd:int
+    
+    
+DataProperty: hasConsumptionAmount
+
+    Domain: 
+        Consumption
+    
+    Range: 
+        xsd:int
+    
+    
+DataProperty: hasAggregateOperation
+
+    
+DataProperty: hasProduceCapacity
+
+    Domain: 
+        Capacity
+    
+    Range: 
+        xsd:int
+    
+    
+Class: Capacity
+
+    
+Class: Consumption
+
+    
+Class: ClassFor:v
+
+    EquivalentTo: 
+        Vendor
+    
+    
+Class: LhsTermBlock
+
+    SubClassOf: 
+        hasFactor only LhsFactor
+    
+    
+Class: RhsFactor
+
+    
+Class: Vendor
+
+    EquivalentTo: 
+        ClassFor:v
+    
+    
+Class: Constraint
+
+    SubClassOf: 
+        hasLhs only LhsTermBlock,
+        hasRhs only RhsTermBlock
+    
+    
+Class: MemoryVendor
+
+    SubClassOf: 
+        Vendor
+    
+    
+Class: ClassFor:w
+
+    EquivalentTo: 
+        Week
+    
+    
+Class: AssemblyVendor
+
+    SubClassOf: 
+        Vendor
+    
+    
+Class: LhsFactor
+
+    
+Class: Variable
+
+    
+Class: Week
+
+    EquivalentTo: 
+        ClassFor:w
+    
+    
+Class: RhsTermBlock
+
+    SubClassOf: 
+        hasFactor only RhsFactor
+    
+    
+Class: ClassFor:a
+
+    EquivalentTo: 
+        Consumption
+         and (hasConsumptionVendor value VEOntology:v)
+         and (hasProduceWeek value VEOntology:w)
+    
+    
+Class: Demand
+
+    
+Class: CPUVendor
+
+    SubClassOf: 
+        Vendor
+    
+    
+Class: ClassFor:b
+
+    EquivalentTo: 
+        Capacity
+         and (hasCapacityWeek value VEOntology:w)
+         and (hasConsumptionVendor value VEOntology:v)
+    
+    
+Individual: VEOntology:v
+
+    Types: 
+        Variable
+    
+    Facts:  
+     bindingClass  "ClassFor?v"^^xsd:string
+    
+    
+Individual: v4
+
+    Types: 
+        AssemblyVendor
+    
+    Facts:  
+     hasDemand  v4DemandWeek1,
+     hasConsumption  v4Consumption24,
+     hasCapacity  v4CapacityWeek4,
+     hasConsumption  v4Consumption23,
+     hasConsumption  v4Consumption13,
+     hasConsumption  v4Consumption12,
+     hasConsumption  v4Consumption34,
+     hasDemand  v4DemandWeek2,
+     hasConsumption  v4Consumption22,
+     hasConsumption  v4Consumption33,
+     hasConsumption  v4Consumption11,
+     hasConsumption  v4Consumption14,
+     hasConsumption  v4Consumption44,
+     hasDemand  v4DemandWeek3,
+     hasDemand  v4DemandWeek4,
+     hasCapacity  v4CapacityWeek2,
+     hasCapacity  v4CapacityWeek3,
+     hasCapacity  v4CapacityWeek1
+    
+    
+Individual: VEOntology:w
+
+    Types: 
+        Variable
+    
+    Facts:  
+     bindingClass  "ClassFor?w"^^xsd:string
+    
+    
+Individual: v4Consumption24
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasProduceWeek  v4Week2,
+     hasSpendWeek  v4Week4,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "50"^^xsd:int
+    
+    
+Individual: constraint01rhsTermBlock1
+
+    Types: 
+        RhsTermBlock
+    
+    Facts:  
+     hasFactor  constraint01rhsFactor1,
+     hasSign  "+"^^xsd:string
+    
+    
+Individual: v4DemandWeek4
+
+    Types: 
+        Demand
+    
+    Facts:  
+     hasDemandWeek  v4Week4,
+     hasDemandVendor  v4,
+     hasVeDemand  "60"^^xsd:int,
+     hasOwnDemand  "0"^^xsd:int
+    
+    
+Individual: v4Consumption44
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasProduceWeek  v4Week4,
+     hasSpendWeek  v4Week4,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "30"^^xsd:int
+    
+    
+Individual: v4Consumption22
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week2,
+     hasProduceWeek  v4Week2,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "30"^^xsd:int
+    
+    
+Individual: v4Consumption23
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week3,
+     hasProduceWeek  v4Week2,
+     hasConsumptionCost  "40"^^xsd:int,
+     hasConsumptionAmount  ""^^xsd:int
+    
+    
+Individual: constraint01lhsTermBlock1
+
+    Types: 
+        LhsTermBlock
+    
+    Facts:  
+     hasFactor  constraint01lhsFactor1,
+     hasParameters  VEOntology:a,
+     hasSign  "+"^^xsd:string,
+     hasAggregateOperation  "sigma"^^xsd:string
+    
+    
+Individual: constraint01
+
+    Types: 
+        Constraint
+    
+    Facts:  
+     hasLhs  constraint01lhsTermBlock1,
+     hasQualifier  VEOntology:w,
+     hasQualifier  VEOntology:v,
+     hasRhs  constraint01rhsTermBlock1,
+     hasOperator  "equal"^^xsd:string
+    
+    
+Individual: v4CapacityWeek1
+
+    Types: 
+        Capacity
+    
+    Facts:  
+     hasCapacityVendor  v4,
+     hasCapacityWeek  v4Week1,
+     hasProduceCapacity  "50"^^xsd:int
+    
+    
+Individual: v4CapacityWeek2
+
+    Types: 
+        Capacity
+    
+    Facts:  
+     hasCapacityWeek  v4Week2,
+     hasCapacityVendor  v4,
+     hasProduceCapacity  "60"^^xsd:int
+    
+    
+Individual: v4DemandWeek2
+
+    Types: 
+        Demand
+    
+    Facts:  
+     hasDemandVendor  v4,
+     hasDemandWeek  v4Week2,
+     hasOwnDemand  "20"^^xsd:int,
+     hasVeDemand  "40"^^xsd:int
+    
+    
+Individual: VEOntology:a
+
+    Types: 
+        Variable
+    
+    Facts:  
+     bindingClass  "ClassFor?a"^^xsd:string
+    
+    
+Individual: v4DemandWeek3
+
+    Types: 
+        Demand
+    
+    Facts:  
+     hasDemandWeek  v4Week3,
+     hasDemandVendor  v4,
+     hasVeDemand  "55"^^xsd:int,
+     hasOwnDemand  "10"^^xsd:int
+    
+    
+Individual: v4DemandWeek1
+
+    Types: 
+        Demand
+    
+    Facts:  
+     hasDemandVendor  v4,
+     hasDemandWeek  v4Week1,
+     hasVeDemand  "50"^^xsd:int,
+     hasOwnDemand  "0"^^xsd:int
+    
+    
+Individual: VEOntology:b
+
+    Types: 
+        Variable
+    
+    Facts:  
+     bindingClass  "ClassFor?b"^^xsd:string
+    
+    
+Individual: v4Consumption12
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week2,
+     hasProduceWeek  v4Week1,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "40"^^xsd:int
+    
+    
+Individual: v4Week1
+
+    Types: 
+        Week
+    
+    Facts:  
+     hasDemand  v4DemandWeek1,
+     hasSpendConsumption  v4Consumption11,
+     hasProduceConsumption  v4Consumption13,
+     hasProduceConsumption  v4Consumption14,
+     hasProduceConsumption  v4Consumption11,
+     hasCapacity  v4CapacityWeek1,
+     hasProduceConsumption  v4Consumption12
+    
+    
+Individual: v4Consumption11
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week1,
+     hasProduceWeek  v4Week1,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "30"^^xsd:int
+    
+    
+Individual: v4Week2
+
+    Types: 
+        Week
+    
+    Facts:  
+     hasSpendConsumption  v4Consumption22,
+     hasDemand  v4DemandWeek2,
+     hasProduceConsumption  v4Consumption23,
+     hasSpendConsumption  v4Consumption12,
+     hasProduceConsumption  v4Consumption24,
+     hasProduceConsumption  v4Consumption22,
+     hasCapacity  v4CapacityWeek2
+    
+    
+Individual: v4Week3
+
+    Types: 
+        Week
+    
+    Facts:  
+     hasSpendConsumption  v4Consumption23,
+     hasProduceConsumption  v4Consumption33,
+     hasDemand  v4DemandWeek3,
+     hasSpendConsumption  v4Consumption13,
+     hasCapacity  v4CapacityWeek3,
+     hasProduceConsumption  v4Consumption34,
+     hasSpendConsumption  v4Consumption33
+    
+    
+Individual: constraint01rhsFactor1
+
+    Types: 
+        RhsFactor
+    
+    Facts:  
+     hasVar  VEOntology:b,
+     hasBindingDataProperty  "hasProduceCapacity"^^xsd:string
+    
+    
+Individual: v4Week4
+
+    Types: 
+        Week
+    
+    Facts:  
+     hasDemand  v4DemandWeek4,
+     hasProduceConsumption  v4Consumption24,
+     hasProduceConsumption  v4Consumption14,
+     hasProduceConsumption  v4Consumption44,
+     hasCapacity  v4CapacityWeek4,
+     hasProduceConsumption  v4Consumption34
+    
+    
+Individual: constraint01lhsFactor1
+
+    Types: 
+        LhsFactor
+    
+    Facts:  
+     hasVar  VEOntology:a,
+     hasBindingDataProperty  "hasConsumptionAmount"^^xsd:string
+    
+    
+Individual: v4CapacityWeek4
+
+    Types: 
+        Capacity
+    
+    Facts:  
+     hasCapacityWeek  v4Week4,
+     hasCapacityVendor  v4,
+     hasProduceCapacity  "50"^^xsd:int
+    
+    
+Individual: v4CapacityWeek3
+
+    Types: 
+        Capacity
+    
+    Facts:  
+     hasCapacityVendor  v4,
+     hasCapacityWeek  v4Week3,
+     hasProduceCapacity  "65"^^xsd:int
+    
+    
+Individual: v4Consumption33
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasProduceWeek  v4Week3,
+     hasSpendWeek  v4Week3,
+     hasConsumptionCost  "30"^^xsd:int,
+     hasConsumptionAmount  ""^^xsd:int
+    
+    
+Individual: v4Consumption34
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week4,
+     hasProduceWeek  v4Week3,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "40"^^xsd:int
+    
+    
+Individual: v4Consumption14
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasProduceWeek  v4Week1,
+     hasSpendWeek  v4Week4,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "60"^^xsd:int
+    
+    
+Individual: v4Consumption13
+
+    Types: 
+        Consumption
+    
+    Facts:  
+     hasSpendWeek  v4Week3,
+     hasProduceWeek  v4Week1,
+     hasConsumptionAmount  ""^^xsd:int,
+     hasConsumptionCost  "50"^^xsd:int
+    
+    
