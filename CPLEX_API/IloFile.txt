@@ -1,0 +1,16 @@
+dvar int+ hasConsumptionAmountv4Consumption11;
+dvar int+ hasConsumptionAmountv4Consumption12;
+dvar int+ hasConsumptionAmountv4Consumption13;
+dvar int+ hasConsumptionAmountv4Consumption14;
+dvar int+ hasConsumptionAmountv4Consumption22;
+dvar int+ hasConsumptionAmountv4Consumption23;
+dvar int+ hasConsumptionAmountv4Consumption24;
+dvar int+ hasConsumptionAmountv4Consumption33;
+dvar int+ hasConsumptionAmountv4Consumption34;
+dvar int+ hasConsumptionAmountv4Consumption44;
+
+minimize
+30*hasConsumptionAmountv4Consumption11+40*hasConsumptionAmountv4Consumption12+50*hasConsumptionAmountv4Consumption13+60*hasConsumptionAmountv4Consumption14+30*hasConsumptionAmountv4Consumption22+40*hasConsumptionAmountv4Consumption23+50*hasConsumptionAmountv4Consumption24+30*hasConsumptionAmountv4Consumption33+40*hasConsumptionAmountv4Consumption34+30*hasConsumptionAmountv4Consumption44;
+
+ subject to {
+ }

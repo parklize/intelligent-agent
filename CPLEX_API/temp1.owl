@@ -33,7 +33,20 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#has
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>
 
     InverseOf: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>,
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>
+    
+    
+ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>
+
+    Domain: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
+    
+    Range: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
+    
+    InverseOf: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>
     
     
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>
@@ -48,17 +61,8 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#has
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>
     
     
-ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>
+ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasObjective>
 
-    Domain: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
-    
-    Range: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
-    
-    InverseOf: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>
-    
     
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>
 
@@ -102,6 +106,9 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#has
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumption>
     
     
+ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasObjTerm>
+
+    
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>
 
     Domain: 
@@ -109,6 +116,9 @@ ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#has
     
     Range: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
+    
+    InverseOf: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>
     
     
 ObjectProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>
@@ -153,6 +163,9 @@ DataProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVe
     Range: 
         xsd:int
     
+    
+DataProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOptInstruction>
+
     
 DataProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>
 
@@ -220,11 +233,20 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?i>
     
     
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjectiveTerm>
+
+    SubClassOf: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor> only <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjFactor>
+    
+    
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?v>
 
     EquivalentTo: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
+    
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#OptModel>
+
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
 
@@ -235,17 +257,17 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
 
     
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
+
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?v>
+    
+    
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint>
 
     SubClassOf: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs> only <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>,
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs> only <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock>
-    
-    
-Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
-
-    EquivalentTo: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?v>
     
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#MemoryVendor>
@@ -269,21 +291,8 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#AssemblyVend
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
     
-Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?c>
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Objective>
 
-    EquivalentTo: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
-         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?v>)
-         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
-    
-    
-Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?d>
-
-    EquivalentTo: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
-         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionVendor> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?v>)
-         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
-    
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
 
@@ -300,7 +309,7 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor> only <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
     
     
-Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjFactor>
 
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?a>
@@ -310,6 +319,9 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?a>
          and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionVendor> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?v>)
          and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
     
+    
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
+
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#CPUVendor>
 
@@ -328,7 +340,7 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?b>
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>
 
     Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#AssemblyVendor>
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek1>,
@@ -369,13 +381,16 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?w"^^xsd:string
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsTermBlock1>
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#objTermBlock1>
 
     Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock>
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjectiveTerm>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
     
     
@@ -391,6 +406,16 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01rhsTermBlock1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01rhsFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek4>
 
     Types: 
@@ -398,20 +423,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "60"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02rhsTermBlock1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02rhsFactor1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>
@@ -438,16 +451,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "30"^^xsd:int
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsFactor1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?b>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasProduceCapacity"^^xsd:string
-    
-    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption23>
 
     Types: 
@@ -460,13 +463,37 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01lhsTermBlock1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01lhsFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?a>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01lhsTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?v>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01rhsTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOperator>  "equal"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek1>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "50"^^xsd:int
     
@@ -478,48 +505,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "60"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsTermBlock1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?a>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsFactor1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsFactor2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsFactor>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasVeDemand"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsTermBlock1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsFactor1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02rhsFactor1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek2>
@@ -528,7 +514,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "20"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "40"^^xsd:int
@@ -543,6 +528,16 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?a>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?a"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#objective>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Objective>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasObjTerm>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#objTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOptInstruction>  "Minimize"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek3>
 
     Types: 
@@ -550,44 +545,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "55"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?v>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsTermBlock1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsTermBlock1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOperator>  "equal"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02rhsTermBlock1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsTermBlock2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsTermBlock1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOperator>  "lessThanOrEqual"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsTermBlock2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsFactor2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek1>
@@ -596,19 +555,9 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?d>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?d"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?b>
@@ -618,33 +567,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?b>
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?b"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?c>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?c"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsFactor1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsFactor>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasOwnDemand"^^xsd:string
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?i"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption12>
@@ -657,6 +579,15 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?i"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>
@@ -716,6 +647,16 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01rhsFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?b>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasProduceCapacity"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>
 
     Types: 
@@ -723,11 +664,32 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor2>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01lhsFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?a>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek4>
@@ -737,7 +699,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "50"^^xsd:int
     
     
@@ -747,19 +708,18 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityVendor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "65"^^xsd:int
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsFactor1>
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor1>
 
     Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsFactor>
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjFactor>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?a>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionCost"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>
@@ -808,5 +768,14 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#optModel>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#OptModel>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasObjective>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#objective>
     
     

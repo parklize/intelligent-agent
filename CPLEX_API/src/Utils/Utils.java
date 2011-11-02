@@ -3,6 +3,8 @@ package Utils;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -175,6 +177,19 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+	
+	// intersection of two sets
+	public static Set intersectionSet(Set s1, Set s2){
+		Set intersection = new HashSet();
+		for(Object o:s1){
+			if(s2.contains(o)){
+				intersection.add(o);
+			}
+		}
+		return intersection;
+	}
+	
+	
 	
 	// test purpose
 	public static void printVariablesList(String s,ArrayList<Variable> list){
