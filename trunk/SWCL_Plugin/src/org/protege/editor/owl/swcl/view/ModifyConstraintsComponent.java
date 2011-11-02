@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -1049,6 +1050,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
+System.out.println("OK");
+Utils.printConstraint(con);
 			String newName = this.con.getName();
 			
 			// check the constraint name exist
@@ -1100,29 +1103,36 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 				JOptionPane.showMessageDialog (null, "Constraint name exist!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
 			}else{
 	
-				int rowCount = this.tableModel.getRowCount();// =no. of constraints 
-				
+				int rowCount = this.tableModel.getRowCount();// 제약의 개수
+//System.out.println("rowCount"+rowCount);				
 				for(int i=0;i<rowCount;i++){
-					if (i==(rowCount-1)){
+					JCheckBox jcb = (JCheckBox) tableModel.getValueAt(i, 0);
+					if(jcb.isSelected()){
 						this.tableModel.setValueAt(this.abstractSyntax,i,2);
 						this.tableModel.setValueAt(this.con.getName(), i, 1);
 					}
+//					if (i==(rowCount-1)){
+//						this.tableModel.setValueAt(this.abstractSyntax,i,2);
+//						this.tableModel.setValueAt(this.con.getName(), i, 1);
+//					}
 				}
 				
 				this.controller.deleteVariables();
 				
-Utils.printVariablesList("ddd", this.variablesList);
+//Utils.printVariablesList("ddd", this.variablesList);
 
 //				this.variablesList = this.controller.getAllVariables();
 
 				
 //System.out.println("old constraint name is:" + this.oldCon.getName());
+				
 				// delete constraint first
 				this.controller.deleteConstraint(this.oldCon.getName());
 				
 				// write variables to ontology
 				this.controller.writeVariablesToOnt(this.variablesList);
-				
+System.out.println("After Submit");
+Utils.printConstraint(this.con);		
 				// write constraint to ontology
 				this.controller.writeConstraintToOnt(this.con);
 				
@@ -1137,7 +1147,7 @@ Utils.printVariablesList("ddd", this.variablesList);
 				// add varibaleList to totalVariablesList
 				this.totalVariablesList = this.variablesList;
 //Utils.printVariablesList("total:", this.totalVariablesList);
-//Utils.printVariablesList("variables:", variablesList);				
+Utils.printVariablesList("variables:", variablesList);				
 				this.dispose();
 			}
 		}
