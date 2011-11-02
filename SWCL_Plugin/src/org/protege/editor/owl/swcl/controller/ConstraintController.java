@@ -548,6 +548,7 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 
 	// delete delete selected constraint  NEED UPDATE....
 	public void deleteConstraint(String conName) {
+System.out.println("in deleteConstraint()");
 		
 		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(this.dataFactory, IRI.create(this.base+"#"+conName));
 		HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(this.ont);

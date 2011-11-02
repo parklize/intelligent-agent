@@ -98,6 +98,7 @@ public class Utils {
 		
 		str+=" LHS ";
 		for (int i=0; i<con.getLhs().getTermblocks().size();i++){
+//Utils.printConstraint(con);
 			str+="( TermBlock ( "+ con.getLhs().getTermblocks().get(i).getSign();
 			
 			if (con.getLhs().getTermblocks().get(i).getAggregateOppertor()!="not use"){			//만약 aggregate가 not use가 아니면 실행
@@ -187,6 +188,7 @@ public class Utils {
 	
 	public static void printConstraint(Constraint con){
 		
+		System.out.println(con.getName());
 		System.out.println("===qualifiers===");
 		for(Qualifier q:con.getQualifiers()){
 			System.out.println("name:"+q.getV().getName());

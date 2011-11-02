@@ -210,7 +210,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	
 	    	// get all variables to variablesList
 	    	this.variablesList = this.controller.getAllVariables();
-	    	
+//Utils.printVariablesList("varibles:",this.variablesList); 	
 	    	// get all constraints to constraintsList
 	    	getAllConstraints();
 	    	
@@ -220,7 +220,6 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	    	// insert all constraints to SWCL tab
 	    	DefaultTableModel tableModel = (DefaultTableModel) constraintsTable.getModel();
 	    	for(Constraint c:constraintsList){
-//	    		Utils.printConstraint(c);
 //	    		System.out.println(Utils.getSWCLAbstractSyntax(variablesList, c));
 				JCheckBox jb = new JCheckBox();
 				jb.setHorizontalAlignment(SwingConstants.CENTER);
@@ -905,7 +904,6 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 				
 				// =no. of constraints 
 				int rowCount = tableModel.getRowCount();
-				
 				// delete selected items
 				deleteItem(rowCount, tableModel);
 				
