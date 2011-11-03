@@ -49,7 +49,7 @@ public class TestOWL {
 		
 		try {
 			
-			File file = new File("Ontology/VE_addC1addiaddObj.owl");
+			File file = new File("Ontology/VE_addC2addiaddObjaddV1V2V3_FinalVersion.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			
@@ -120,7 +120,7 @@ System.out.println("no parameter");
 //					ArrayList<OWLIndividual> oiList = vs.getChildrens();
 //System.out.println(oiList.size());
 					ArrayList total = getAllInds(vsList);
-System.out.println("total:"+total.size());					
+//System.out.println("total:"+total.size());					
 					// 변수에 들어있는 객체들의 개수만큼 
 					Iterator totalIt = total.iterator();
 
@@ -130,6 +130,7 @@ System.out.println("total:"+total.size());
 						for(int j=0; j<fList.size(); j++){
 							Factor f = (Factor) fList.get(j);
 							OWLDataProperty dp = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+//System.out.println("dp:"+dp);
 							HashMap dpVs = (HashMap) ind.getDataPropertyValues(owl);
 							Set dpV = (Set) dpVs.get(dp);// property value set
 							Iterator dpVIt = dpV.iterator();
@@ -225,17 +226,23 @@ System.out.println("total:"+total.size());
 
 				for(OWLIndividual ind:indSet){
 //System.out.println(ind);
-//System.out.println("i:"+i);
+System.out.println("i:"+i);
+System.out.println("qListSize:"+qListSize);
 					indIndex[i] = ind;
-//System.out.println("indIndex[0]"+indIndex[0]); //첫번째 qualifier에 대응하는 ind
-//System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
+System.out.println("indIndex[0]"+indIndex[0]); //첫번째 qualifier에 대응하는 ind
+System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
 					if(qListSize>i+1){
-//System.out.println("==i:"+i);
+System.out.println("==i:"+i);
 						testing(subjectToStr, varDecStr, varsList, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 					}else{
+						
+						
 						// Opp
 						String opp = getChangedOpp(c.getOpp().getOpp());
 
+						
+						
+						
 						// lhsStr생성
 						StringBuffer lhsStr = new StringBuffer("");
 						
@@ -244,22 +251,65 @@ System.out.println("total:"+total.size());
 					
 						while(lhsTBIt.hasNext()){
 							TermBlock tb = (TermBlock) lhsTBIt.next();// LSH termblock
+System.out.println("tbtbtbt");
 							StringBuffer tbStr = new StringBuffer("");
 							
 							ArrayList<Parameter> pList = tb.getParameters();// parameter list
 							if(pList == null){
-								// 파라미터가 없으면 factor로 판단, anyone
-		//							ArrayList<Factor> fList = tb.getFactors();
-		//							Factor f = fList.get(0);
-		//System.out.println(f.getV().getName());
-		//							varS = getVSList(owl, f.getV());
-		//							varsInV = getAllInds(varS);
+								// 파라미터가 없을때
+								ArrayList<Factor> fList = tb.getFactors();
+								Variable v = fList.get(0).getV();
+								String des = v.getDescription();
+								String desArray[] = des.split(" and\\s*");
+//System.out.println("des:"+des);
+								Set<OWLIndividual> inds = getIndsInVar(desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
+System.out.println(inds.size());
+								Iterator indsIt = inds.iterator();
+								while(indsIt.hasNext()){
+									OWLIndividual fInd = (OWLIndividual) indsIt.next();
+//System.out.println("fInd:"+fInd);
+									for(int p=0; p<fList.size(); p++){
+										// factor 있는 만큼 곱합
+										Factor f = fList.get(p);
+										OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+									//System.out.println("owlP:"+owlP);
+										HashMap dpVs = (HashMap) fInd.getDataPropertyValues(owl);
+										Set dpV = (Set) dpVs.get(owlP);
+										Iterator dpVIt = dpV.iterator();
+										while(dpVIt.hasNext()){
+											// str tokenize with the format of "0"^^xsd:int
+											String val = dpVIt.next().toString();
+									//System.out.println("val:"+val);
+											if(val.equals("\"\"^^xsd:int")){
+												// ""^^xsd:int잡아서 변수 생성해야 함,need update
+									//System.out.println("property값이 널이네요,, 변수 생성 합시다");
+												// property + ind형태로 변수 생성 및 코드 생성
+												// 이미 선언한 변수인지 체크해줘야지
+												String varName = soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(fInd.toString().replace("#", ""), prefix);
+												if(varsList.contains(varName)){
+													// 이미 선언했네요,걍 넘어가
+												}else{
+													varsList.add(varName);
+													varDecStr.append("dvar int+ "+varName+";\n");
+												}
+												tbStr.append(soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(fInd.toString().replace("#", ""), prefix)+"*");
+											}else{
+//System.out.println("val:"+val);
+												StringTokenizer st = new StringTokenizer(val,"\"");
+												tbStr.append(st.nextToken()+"*");
+											}
+										}
+									}
+								}
+								lhsStr.append(tb.getSign()+tbStr);// add factor string to termblock string
+								lhsStr = new StringBuffer(lhsStr.substring(0, lhsStr.length()-1));// delete every termblock's *
+//System.out.println("lhsStr:"+lhsStr);
 							}else{
 								// 파라미터 가 있을때
 								Parameter p = (Parameter) pList.get(0);// parameter하나라고 가정,need update
 								Variable v = p.getV();
 								String des = v.getDescription();
-								String desArray[] = des.split("and\\s*");
+								String desArray[] = des.split(" and\\s*");
 								
 								Set<OWLIndividual> inds = getIndsInVar(desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								Iterator indsIt = inds.iterator();
@@ -310,20 +360,26 @@ System.out.println("total:"+total.size());
 								}else{
 									//production 일때
 								}
+								lhsStr.append(tbStr);
 							}
-							lhsStr.append(tbStr);
-							lhsStr = new StringBuffer(lhsStr.substring(1));// delete first +
-//System.out.println("lhsStr:"+lhsStr);
 						}
+						
+						if(lhsStr.length()>=1){
+							lhsStr = new StringBuffer(lhsStr.substring(1));// delete first +
+System.out.println("lhsStr:"+lhsStr);
+						}
+						
+						
+						
 						
 						// rhs 생성
 						StringBuffer rhsStr = new StringBuffer("");
 						
-						ArrayList<TermBlock> rhsTermblocks = c.getRhs().getTermblocks();// get lhs termblocks
+						ArrayList<TermBlock> rhsTermblocks = c.getRhs().getTermblocks();// get rhs termblocks
 						Iterator rhsTBIt = rhsTermblocks.iterator();
 						
 						while(rhsTBIt.hasNext()){
-							TermBlock tb = (TermBlock) rhsTBIt.next();// LSH termblock
+							TermBlock tb = (TermBlock) rhsTBIt.next();// RSH termblock
 							StringBuffer tbStr = new StringBuffer("");
 							
 							ArrayList<Parameter> pList = tb.getParameters();// parameter list
@@ -332,9 +388,49 @@ System.out.println("total:"+total.size());
 								Variable v = fList.get(0).getV();
 								String des = v.getDescription();
 								String desArray[] = des.split("and\\s*");
-System.out.println(des);
+//System.out.println(des);
 								Set<OWLIndividual> inds = getIndsInVar(desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
-System.out.println(inds.size());
+//System.out.println(inds.size());
+								Iterator indsIt = inds.iterator();
+								while(indsIt.hasNext()){
+									OWLIndividual fInd = (OWLIndividual) indsIt.next();
+//System.out.println("fInd:"+fInd);
+									for(int p=0; p<fList.size(); p++){
+										// factor 있는 만큼 곱합
+										Factor f = fList.get(p);
+										OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
+									//System.out.println("owlP:"+owlP);
+										HashMap dpVs = (HashMap) fInd.getDataPropertyValues(owl);
+										Set dpV = (Set) dpVs.get(owlP);
+										Iterator dpVIt = dpV.iterator();
+										while(dpVIt.hasNext()){
+											// str tokenize with the format of "0"^^xsd:int
+											String val = dpVIt.next().toString();
+									//System.out.println("val:"+val);
+											if(val.equals("\"\"^^xsd:int")){
+												// ""^^xsd:int잡아서 변수 생성해야 함,need update
+									//System.out.println("property값이 널이네요,, 변수 생성 합시다");
+												// property + ind형태로 변수 생성 및 코드 생성
+												// 이미 선언한 변수인지 체크해줘야지
+												String varName = soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(fInd.toString().replace("#", ""), prefix);
+												if(varsList.contains(varName)){
+													// 이미 선언했네요,걍 넘어가
+												}else{
+													varsList.add(varName);
+													varDecStr.append("dvar int+ "+varName+";\n");
+												}
+												tbStr.append(soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(fInd.toString().replace("#", ""), prefix)+"*");
+											}else{
+//System.out.println("owlP:"+owlP+"val:"+val);
+												StringTokenizer st = new StringTokenizer(val,"\"");
+												tbStr.append(st.nextToken()+"*");
+											}
+										}
+									}
+								}
+								rhsStr.append(tb.getSign()+tbStr);// add factor string to termblock string
+								rhsStr = new StringBuffer(rhsStr.substring(0, rhsStr.length()-1));// delete every termblock's *
+//System.out.println("rhsStr:"+rhsStr);
 							}else{
 								// 파라미터 가 있을때
 								Parameter p = (Parameter) pList.get(0);// parameter하나라고 가정,need update
@@ -391,10 +487,21 @@ System.out.println(inds.size());
 								}else{
 									//production 일때
 								}
+								rhsStr.append(tbStr);
 							}
-							rhsStr.append(tbStr);
-//							rhsStr = new StringBuffer(rhsStr.substring(1));// delete first +
-//System.out.println("rhsStr:"+rhsStr);
+						}
+						
+						if(rhsStr.length()>=1){
+							rhsStr = new StringBuffer(rhsStr.substring(1)+";");// delete first +
+//	System.out.println("rhsStr:"+rhsStr);
+						}
+						
+						
+						
+						// lhs+sign+rhs
+						if(lhsStr.length()>=1 && rhsStr.length()>=1){
+							// v가 v1이고 v4Week4인 것을 방지하기 위해서 
+							subjectToStr.append("   ").append(lhsStr).append(opp).append(rhsStr).append("\n");// subject to 에 lhsStr+opp+rhsStr 추가 및 행 바꾸기
 						}
 					}
 				}
@@ -406,6 +513,7 @@ System.out.println(inds.size());
 	private Set<OWLIndividual> getIndsInVar(String desArray[], OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
 		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set, a에 객체들
 		for(String s:desArray){
+//System.out.println("s:"+s);
 			String partDes = s.trim();//앞뒤 blank들을 없앤것.
 //System.out.println("partDes:"+partDes);		
 			String splitStr[] = partDes.split(" ");
@@ -415,7 +523,7 @@ System.out.println(inds.size());
 			// consumption과 같은 하나짜리 일때
 			if(splitStr.length == 1){
 				OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+s.trim()));
-System.out.println("cls:"+cls);
+//System.out.println("cls:"+cls);
 				Set indsSet = cls.getIndividuals(owl);
 				if(inds.size()==0){
 					// 초기화 
