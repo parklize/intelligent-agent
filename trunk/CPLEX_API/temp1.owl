@@ -221,6 +221,14 @@ DataProperty: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasPr
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
 
     
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?k>
+
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
+         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandVendor> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?e>)
+         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
+    
+    
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?i>
 
     EquivalentTo: 
@@ -260,6 +268,12 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#MemoryVendor
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
     
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?z>
+
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#AssemblyVendor>
+    
+    
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?w>
 
     EquivalentTo: 
@@ -268,6 +282,9 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?w>
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#AssemblyVendor>
 
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?z>
+    
     SubClassOf: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
@@ -295,6 +312,9 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ObjFactor>
     
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#CPUVendor>
 
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?e>
+    
     SubClassOf: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
     
@@ -334,6 +354,20 @@ Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?d>
          and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
     
     
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?e>
+
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#CPUVendor>
+    
+    
+Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#ClassFor?f>
+
+    EquivalentTo: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
+         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionVendor> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?z>)
+         and (<http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek> value <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>)
+    
+    
 Class: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
 
     
@@ -371,13 +405,22 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?w"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?z>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?z"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek4>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "85"^^xsd:int
     
     
@@ -387,7 +430,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "90"^^xsd:int
     
     
@@ -397,7 +440,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "100"^^xsd:int
     
     
@@ -407,7 +450,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "90"^^xsd:int
     
     
@@ -417,8 +460,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -429,8 +472,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int
     
@@ -441,8 +484,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "60"^^xsd:int
     
@@ -463,7 +506,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
     
@@ -486,23 +529,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "90"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption14>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption12>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek3>
@@ -511,7 +539,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "90"^^xsd:int
     
     
@@ -521,23 +549,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "80"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption14>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek4>
@@ -546,7 +559,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "90"^^xsd:int
     
     
@@ -556,23 +569,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "50"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek2>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek2>
@@ -581,23 +579,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "60"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek3>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint02lhsTermBlock1>
@@ -626,7 +609,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "20"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "20"^^xsd:int
     
@@ -646,7 +629,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "35"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
@@ -667,7 +650,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  "30"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
     
@@ -681,14 +664,23 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?d>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?d"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?e>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?e"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption34>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
     
@@ -708,8 +700,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -748,8 +740,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int
     
@@ -760,10 +752,28 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "30"^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?f>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?f"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?k>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Variable>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#bindingClass>  "ClassFor?k"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek4>
@@ -772,7 +782,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "50"^^xsd:int
     
     
@@ -782,7 +792,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "65"^^xsd:int
     
     
@@ -792,9 +802,19 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?k>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasVeDemand"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek2>
@@ -803,7 +823,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
@@ -814,8 +834,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "60"^^xsd:int
     
@@ -835,8 +855,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
     
@@ -847,7 +867,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
@@ -858,7 +878,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int
     
@@ -876,74 +896,14 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#objTerm
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption14>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption24>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption14>
-    
-    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption11>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "70"^^xsd:int
     
@@ -954,8 +914,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "85"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -966,8 +926,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "75"^^xsd:int
     
@@ -978,8 +938,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "80"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1003,8 +963,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "70"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1015,8 +975,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "60"^^xsd:int
     
@@ -1027,10 +987,24 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?z>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?w>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsTermBlock1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasQualifier>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?e>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOperator>  "greaterThanOrEqual"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption11>
@@ -1039,8 +1013,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int
     
@@ -1065,8 +1039,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "70"^^xsd:int
     
@@ -1087,8 +1061,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "75"^^xsd:int
     
@@ -1099,10 +1073,22 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "80"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsTermBlock1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?f>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>
@@ -1111,8 +1097,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1123,8 +1109,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "55"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1135,10 +1121,80 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "30"^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03rhsFactor1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsFactor>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?f>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption13>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption12>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption11>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption11>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption11>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption11>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption11>
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption12>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption12>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption12>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption12>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption22>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek2>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek1>
@@ -1147,7 +1203,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "20"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int
     
@@ -1158,9 +1214,20 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek3>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor2>
@@ -1173,15 +1240,15 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objF
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek3>
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek4>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption44>
@@ -1190,21 +1257,10 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek4>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objFactor1>
@@ -1215,6 +1271,78 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#tb1objF
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVar>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?i>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionCost"^^xsd:string
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption13>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption13>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption23>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption13>
+    
+    
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1CapacityWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1DemandWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption24>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption44>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek4>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4>
@@ -1250,25 +1378,10 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "70"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption22>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption44>
@@ -1277,8 +1390,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1286,7 +1399,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consu
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3>
 
     Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor>,
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#CPUVendor>
     
     Facts:  
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34>,
@@ -1307,21 +1421,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption14>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption14>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek1>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2>
@@ -1382,43 +1481,14 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1>
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption33>
     
     
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption14>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2CapacityWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek3>
-    
-    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek1>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "70"^^xsd:int
     
     
@@ -1428,8 +1498,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
     
@@ -1440,8 +1510,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int
     
@@ -1452,8 +1522,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "55"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1464,8 +1534,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "60"^^xsd:int
     
@@ -1476,7 +1546,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "75"^^xsd:int
     
     
@@ -1486,7 +1556,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
@@ -1497,8 +1567,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week1>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "65"^^xsd:int
     
@@ -1509,7 +1579,6 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "80"^^xsd:int
     
     
@@ -1519,7 +1588,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Capac
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Capacity>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacityWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceCapacity>  "70"^^xsd:int
     
     
@@ -1529,8 +1598,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "30"^^xsd:int
     
@@ -1541,8 +1610,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1565,8 +1634,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "70"^^xsd:int
     
@@ -1577,7 +1646,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "10"^^xsd:int
     
@@ -1592,13 +1661,25 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constra
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasBindingDataProperty>  "hasConsumptionAmount"^^xsd:string
     
     
+Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsTermBlock1>
+
+    Types: 
+        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock>
+    
+    Facts:  
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasParameters>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#?k>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasFactor>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint03lhsFactor1>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasAggregateOperation>  "sigma"^^xsd:string,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSign>  "+"^^xsd:string
+    
+    
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2DemandWeek3>
 
     Types: 
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int
     
@@ -1619,7 +1700,7 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Deman
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Demand>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v2Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemandWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasVeDemand>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasOwnDemand>  "0"^^xsd:int
     
@@ -1630,8 +1711,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "75"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1642,25 +1723,10 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "55"^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week1>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption11>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek1>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption12>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption24>
@@ -1669,40 +1735,10 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "60"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week2>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption12>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption22>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek2>
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption23>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption13>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption33>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consumption22>
@@ -1711,25 +1747,10 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v1Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week2>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "50"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
-    
-    
-Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>
-
-    Types: 
-        <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week>
-    
-    Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasDemand>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4DemandWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption24>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption14>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption44>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasCapacity>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4CapacityWeek4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendConsumption>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consumption34>
     
     
 Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#constraint01lhsFactor1>
@@ -1748,8 +1769,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "30"^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int
     
@@ -1760,8 +1781,8 @@ Individual: <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Consu
         <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Consumption>
     
     Facts:  
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week4>,
-     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v4Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasProduceWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week3>,
+     <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasSpendWeek>  <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week4>,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionAmount>  ""^^xsd:int,
      <http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasConsumptionCost>  "40"^^xsd:int
     
