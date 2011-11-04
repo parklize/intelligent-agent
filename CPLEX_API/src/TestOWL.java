@@ -49,7 +49,7 @@ public class TestOWL {
 		
 		try {
 			
-			File file = new File("Ontology/VE_addC2addiaddObjaddV1V2V3_FinalVersion.owl");
+			File file = new File("Ontology/VE_addC2C3addiaddObjaddV1V2V3_FinalVersionChangeWeek.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			
@@ -171,7 +171,9 @@ System.out.println("no parameter");
 			// subjectToStr 만들기
 			for(Constraint c:consList){
 //Utils.printConstraint(c);
-//System.out.println("Constraint Name:"+c.getName());
+				
+				
+System.out.println("Constraint Name:"+c.getName());
 				// get qualifiers's list
 				ArrayList<Qualifier> qualifierList = c.getQualifiers();
 				ArrayList<Set<OWLIndividual>> qList = new ArrayList<Set<OWLIndividual>>();
@@ -180,10 +182,11 @@ System.out.println("no parameter");
 					ArrayList<OWLIndividual> indList = new ArrayList<OWLIndividual>();// qualifier에 들어있는 객체들 담을 객체
 					Variable v = qualifierList.get(i).getV();
 					String vDes = v.getDescription().trim();// qualifer description,like Vendor,Week
+System.out.println("vDes:"+vDes);
 					OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+vDes));
 					Set<OWLIndividual> indsSet = getIndividuals(v, owl, null);
 					qList.add(i, indsSet);
-//System.out.println(indsSet.size());
+System.out.println("indsSet Size:"+indsSet.size());
 				}
 				
 				// qualifer 가 하나인 경우,, 
@@ -222,17 +225,17 @@ System.out.println("no parameter");
 		int qListSize = qList.size();
 
 		if(qListSize>i){
-			Set<OWLIndividual> indSet = qList.get(i);
+			Set<OWLIndividual> indSet = qList.get(i); // 첫번째 qualifier에 들어있는 ind set
 
 				for(OWLIndividual ind:indSet){
-//System.out.println(ind);
+System.out.println(ind);
 System.out.println("i:"+i);
 System.out.println("qListSize:"+qListSize);
 					indIndex[i] = ind;
 System.out.println("indIndex[0]"+indIndex[0]); //첫번째 qualifier에 대응하는 ind
-System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
+//System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
 					if(qListSize>i+1){
-System.out.println("==i:"+i);
+//System.out.println("==i:"+i);
 						testing(subjectToStr, varDecStr, varsList, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 					}else{
 						
@@ -251,7 +254,7 @@ System.out.println("==i:"+i);
 					
 						while(lhsTBIt.hasNext()){
 							TermBlock tb = (TermBlock) lhsTBIt.next();// LSH termblock
-System.out.println("tbtbtbt");
+//System.out.println("tbtbtbt");
 							StringBuffer tbStr = new StringBuffer("");
 							
 							ArrayList<Parameter> pList = tb.getParameters();// parameter list
@@ -313,10 +316,11 @@ System.out.println(inds.size());
 								
 								Set<OWLIndividual> inds = getIndsInVar(desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								Iterator indsIt = inds.iterator();
-//	for(OWLIndividual inddddd:inds){
-//		System.out.println(inddddd);
-//	}
-//	System.out.println("====");
+for(OWLIndividual inddddd:inds){
+	
+	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
+}
+System.out.println("====");
 								String aggOp = tb.getAggregateOppertor();
 								if(aggOp.equals("sigma")){
 									while(indsIt.hasNext()){
@@ -329,7 +333,8 @@ System.out.println(inds.size());
 											// factor 있는 만큼 곱합
 											Factor f = fList.get(k);
 											OWLDataProperty owlP = factory.getOWLDataProperty(IRI.create(prefix+"#"+f.getOwlProperty()));
-//System.out.println("owlP:"+owlP);
+System.out.println("indF:"+indF);
+System.out.println("owlP:"+owlP);
 											HashMap dpVs = (HashMap)indF.getDataPropertyValues(owl);
 											Set dpV = (Set)dpVs.get(owlP);
 											Iterator dpVIt = dpV.iterator();
@@ -493,13 +498,15 @@ System.out.println("lhsStr:"+lhsStr);
 						
 						if(rhsStr.length()>=1){
 							rhsStr = new StringBuffer(rhsStr.substring(1)+";");// delete first +
-//	System.out.println("rhsStr:"+rhsStr);
+System.out.println("rhsStr:"+rhsStr);
 						}
 						
-						
+System.out.println("final lhsStr:"+lhsStr);
+System.out.println("final rhsStr:"+rhsStr);
 						
 						// lhs+sign+rhs
 						if(lhsStr.length()>=1 && rhsStr.length()>=1){
+System.out.println("printing...");
 							// v가 v1이고 v4Week4인 것을 방지하기 위해서 
 							subjectToStr.append("   ").append(lhsStr).append(opp).append(rhsStr).append("\n");// subject to 에 lhsStr+opp+rhsStr 추가 및 행 바꾸기
 						}
@@ -549,8 +556,8 @@ System.out.println("lhsStr:"+lhsStr);
 							inverseObjP = (OWLObjectProperty) inverseObjPIt.next();
 						}
 						OWLIndividual indexedInd = indIndex[j];	
-//System.out.println("inverseObjP:"+inverseObjP);						
-//System.out.println("indexedInd:"+indexedInd);
+System.out.println("inverseObjP:"+inverseObjP);						
+System.out.println("indexedInd:"+indexedInd);
 						HashMap indVs = (HashMap) indexedInd.getObjectPropertyValues(owl);
 						Set indV = (Set) indVs.get(inverseObjP);
 						if(indV != null){
