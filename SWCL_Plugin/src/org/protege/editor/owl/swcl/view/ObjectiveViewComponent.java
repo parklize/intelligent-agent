@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -26,8 +27,14 @@ import org.protege.editor.owl.swcl.model.OptModel;
 import org.protege.editor.owl.swcl.model.Parameter;
 import org.protege.editor.owl.swcl.model.TermBlock;
 import org.protege.editor.owl.swcl.model.Variable;
+import org.protege.editor.owl.swcl.utils.SolverCodeTranslator;
 import org.protege.editor.owl.swcl.utils.Utils;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 public class ObjectiveViewComponent extends JPanel implements ActionListener{
 
@@ -46,6 +53,9 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	private JButton confirmButton = null;
 	
 	private ConstraintController con = null;
+	
+	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();  //  @jve:decl-index=0:
+	
 
 	/**
 	 * This is the default constructor
@@ -224,9 +234,12 @@ if(ont == null){
 			termPanel.add(getRHSTermblockPanel(termblockNumber),null);
 			termPanel.repaint();
 			termblockNumber++;
+			
 		}else if(actionCommand.equals("Confirm")){
 			OptModel om = getOptModel();
 			con.writeOptModelToOnt(om);
+			SolverCodeTranslator sct = new SolverCodeTranslator();
+			sct.translateSWCL(this.ont); // D:\eclipse\Ilog.txt·Î
 		}
 		
 	}
