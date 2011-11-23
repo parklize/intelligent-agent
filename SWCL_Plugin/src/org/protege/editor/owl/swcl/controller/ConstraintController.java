@@ -45,7 +45,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 
 /**
  * @author parklize
- * @date 2011.11.23
+ * @version 1.0, 2011-11-23
  */
 
 public class ConstraintController {
@@ -82,9 +82,8 @@ public class ConstraintController {
 	
 	/**
 	 * Descrption: write the variables to the ontology
-	 * @param variablesList
+	 * Param: variables' list
 	 */
-	// NEED UPDATE
 	public void writeVariablesToOnt(ArrayList<Variable> variablesList) {
 		
 //Utils.printVariablesList("variablesList:", variablesList);
@@ -274,7 +273,10 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 		}
 	}
 	
-	// add Optmodel part to ontology
+	/**
+	 * Description: add OptModel to ontology
+	 * Param: OptModel
+	 */
 	public void writeOptModelToOnt(OptModel om){
 		
 		// add optmodel axiom
@@ -375,7 +377,11 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 			
 		}
 	}
-	// add constraint part to ontology
+
+	/**
+	 * Description: add constraint to ontology
+	 * Param: constraint
+	 */
 	public void writeConstraintToOnt(Constraint con) {
 		// add constraint axiom
 		OWLClass conClass = dataFactory.getOWLClass("#Constraint",pm);
@@ -562,9 +568,12 @@ System.out.println(v2.getViewName());// Class hierarchy (inferred)
 		}
 	}
 
-	// delete delete selected constraint  NEED UPDATE....
+	/**
+	 * Description: delete selected constraint with constraint name
+	 * Param: constraint name
+	 */
 	public void deleteConstraint(String conName) {
-System.out.println("in deleteConstraint()");
+//System.out.println("in deleteConstraint()");
 		
 		OWLNamedIndividualImpl ind = new OWLNamedIndividualImpl(this.dataFactory, IRI.create(this.base+"#"+conName));
 		HashMap indObjProperty = (HashMap) ind.getObjectPropertyValues(this.ont);
@@ -622,6 +631,10 @@ System.out.println("in deleteConstraint()");
 		
 	}
 
+	/**
+	 * Description: get all variables
+	 * @return all variables
+	 */
 	public ArrayList<Variable> getAllVariables() {
 		
 		ArrayList<Variable> variablesList = new ArrayList<Variable>();
@@ -698,7 +711,9 @@ System.out.println("in deleteConstraint()");
 			
 	}
 	
-	// delete all variables in the ontology
+	/**
+	 * Description: delete all variables in ontology
+	 */
 	public void deleteVariables(){
 		
 		OWLClass variable = new OWLClassImpl(this.dataFactory, IRI.create(base+"#Variable"));
