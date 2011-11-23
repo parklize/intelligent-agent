@@ -43,6 +43,11 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 
+/**
+ * @author parklize
+ * @date 2011.11.23
+ */
+
 public class ConstraintController {
 	
 	private SWCLOntologyController soh = null;
@@ -74,6 +79,11 @@ public class ConstraintController {
 		this.ont = owl;
 		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
 	}
+	
+	/**
+	 * Descrption: write the variables to the ontology
+	 * @param variablesList
+	 */
 	// NEED UPDATE
 	public void writeVariablesToOnt(ArrayList<Variable> variablesList) {
 		
