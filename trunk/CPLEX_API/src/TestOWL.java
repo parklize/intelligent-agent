@@ -61,7 +61,16 @@ public class TestOWL {
 			
 			TestOWL towl = new TestOWL();
 			Objective obj = towl.getObjective(ve);
-			towl.generateIlogCode(obj,towl.getAllConstraints(ve),ve);
+			
+System.out.println("Got objective, start getting constraints related to it...");
+			
+			ArrayList<Constraint> allConstraints = towl.getAllConstraints(ve);
+			ArrayList<Constraint> consList = towl.getRelatedConstraints(obj,allConstraints,ve);
+//System.out.println(consList.size());
+//for(Constraint c:consList){
+//	System.out.println(c.getName());
+//}
+			towl.generateIlogCode(obj,consList,ve);
 			
 System.out.println("Generating Ilog Code finished....");
 			
@@ -72,7 +81,87 @@ System.out.println("Generating Ilog Code finished....");
 	}
 	
 	
-	
+	// get related constraint from objective
+	private ArrayList<Constraint> getRelatedConstraints(Objective obj,
+			ArrayList<Constraint> allConstraints, OWLOntology owl) {
+		
+		ArrayList<Constraint> relatedCons = new ArrayList<Constraint>();
+		
+		// default
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		SWCLOntologyController soc = new SWCLOntologyController(owl);
+		String prefix = soc.getPrefix();
+		ConstraintController con = new ConstraintController(owl, soc);
+		
+		// get {classexpression,property} set from objective
+		ArrayList<TermBlock> objTerms = obj.getObjectiveTerm();
+		ArrayList<Factor> factors = new ArrayList<Factor>();
+		for(TermBlock t:objTerms){
+			ArrayList<Factor> facs = t.getFactors();
+			factors.addAll(facs);
+		}
+		
+		// loop all constraints to find out related factor
+		for(Constraint c:allConstraints){
+			ArrayList<TermBlock> lhsT = c.getLhs().getTermblocks();
+			for(TermBlock t:lhsT){
+				ArrayList<Factor> facs = t.getFactors();
+				// check related factors exist or not in facs
+				if(checkFactors(factors,facs)){
+					relatedCons.add(c);
+				}
+			}
+			ArrayList<TermBlock> rhsT = c.getRhs().getTermblocks();
+			for(TermBlock t:rhsT){
+				ArrayList<Factor> facs = t.getFactors();
+				// check related factors exist or not in facs
+				if(checkFactors(factors,facs)){
+					if(relatedCons.size()==0){
+						relatedCons.add(c);// initialize
+					}else{
+						if(relatedCons.contains(c)){
+							// if already exist, skip...
+						}else{
+							relatedCons.add(c);
+						}
+					}
+				}
+			}
+		}
+		
+		// return related constraints
+		return relatedCons;
+	}
+
+
+	// check whether two factors are related to each other
+	private boolean checkFactors(ArrayList<Factor> factors, ArrayList<Factor> facs) {
+		
+		for(Factor fac:factors){
+			for(Factor f:facs){
+				if(f.getOwlProperty().equals(fac.getOwlProperty())){
+					
+					String fDescription = f.getV().getDescription();
+					String facDescription = fac.getV().getDescription();
+					String fDesArray[] = fDescription.split(" and\\s*");
+					String facDesArray[] = facDescription.split(" and\\s*");
+					
+					for(String s:fDesArray){
+						for(String s1:facDesArray){
+							if(s.trim().equals(s1.trim())){
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+
 	// generate Ilog file
 	private void generateIlogCode(Objective obj, ArrayList<Constraint> consList, OWLOntology owl){
 		
