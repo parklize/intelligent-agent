@@ -3,6 +3,8 @@ package org.protege.editor.owl.swcl.utils;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -69,6 +71,17 @@ public class Utils {
 			}
 		}
 		return null;
+	}
+	
+	// intersection of two sets
+	public static Set intersectionSet(Set s1, Set s2){
+		Set intersection = new HashSet();
+		for(Object o:s1){
+			if(s2.contains(o)){
+				intersection.add(o);
+			}
+		}
+		return intersection;
 	}
 	
 	// get Abstract Syntax from Constraint
@@ -263,4 +276,5 @@ public class Utils {
 			}
 		}
 	}
+	
 }

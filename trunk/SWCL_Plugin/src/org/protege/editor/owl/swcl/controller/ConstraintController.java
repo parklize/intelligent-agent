@@ -10,14 +10,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.model.Constraint;
 import org.protege.editor.owl.swcl.model.OptModel;
 import org.protege.editor.owl.swcl.model.Qualifier;
 import org.protege.editor.owl.swcl.model.Variable;
-import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -30,7 +28,6 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -42,7 +39,6 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
-
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
@@ -68,6 +64,16 @@ public class ConstraintController {
 		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
 	}
 	
+	public ConstraintController(OWLOntology owl,SWCLOntologyController soh){
+		
+		this.soh = soh;
+		this.manager = OWLManager.createOWLOntologyManager();
+		this.dataFactory = manager.getOWLDataFactory();
+		this.base = soh.getPrefix();
+		this.pm = new DefaultPrefixManager(base);
+		this.ont = owl;
+		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
+	}
 	// NEED UPDATE
 	public void writeVariablesToOnt(ArrayList<Variable> variablesList) {
 		
