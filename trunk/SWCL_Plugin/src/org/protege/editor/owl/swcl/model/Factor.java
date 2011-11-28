@@ -1,5 +1,8 @@
 package org.protege.editor.owl.swcl.model;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-04-23
+ */
 public class Factor {
 
 	private Variable v;

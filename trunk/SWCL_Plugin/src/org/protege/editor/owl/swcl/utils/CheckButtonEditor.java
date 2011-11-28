@@ -7,7 +7,10 @@ import java.awt.event.ItemListener;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
- 
+/**
+ * @author parklize
+ * @version 1.0, 2011-11-23
+ */ 
 public class CheckButtonEditor extends DefaultCellEditor implements ItemListener {
     private static final long serialVersionUID = 198567563L;
     private JCheckBox button;

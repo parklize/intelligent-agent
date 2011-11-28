@@ -21,8 +21,8 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
 /**
- * Author: parklize
- * Date: 2011.05.25
+ * @author parklize
+ * @version 1.0, 2011-11-23
  */
 public class OWLComponentFactoryImplExtension implements OWLComponentFactory {
     private OWLEditorKit eKit;

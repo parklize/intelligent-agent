@@ -13,11 +13,8 @@ import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextArea;
 /**
- * 
- * Author: pryiyeon
- * Date: 2011.05.20~
- * Description: SWCL confirm component in Protege
- * 
+ * @author parklize
+ * @version 1.0, 2011-05-20
  */
 public class ConstraintConfirmComponent extends JFrame implements ActionListener{
 

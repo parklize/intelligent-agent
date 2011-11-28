@@ -45,11 +45,8 @@ import javax.swing.BorderFactory;
 import java.awt.SystemColor;
 import javax.swing.JTextArea;
 /**
- * 
- * Author: parklize,pryiyeon
- * Date: 2011.04.25
- * Description: component for adding constraint
- *
+ * @author parklize
+ * @version 1.0, 2011-04-25
  */
 public class ModifyConstraintsComponent extends JFrame implements ActionListener{
 

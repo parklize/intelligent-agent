@@ -24,10 +24,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.JButton;
 /**
- * 
- * Author: parklize
- * Date: 2011.04.20~
- * Description: TermBlockComponent
+ * @author parklize
+ * @version 1.0, 2011-04-23
  */
 public class TermBlockComponent extends JPanel {
 

@@ -1,7 +1,10 @@
 package org.protege.editor.owl.swcl.model;
 
 import org.semanticweb.owlapi.model.OWLDatatype;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-04-23
+ */
 public class RelatedVariable extends Variable{
 	
 	public RelatedVariable(String name, String description) {

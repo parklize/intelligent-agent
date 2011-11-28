@@ -5,7 +5,10 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableCellRenderer;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-11-23
+ */
 public class AbstractSyntaxRenderer extends JTextArea implements TableCellRenderer{
 
 	public AbstractSyntaxRenderer() {

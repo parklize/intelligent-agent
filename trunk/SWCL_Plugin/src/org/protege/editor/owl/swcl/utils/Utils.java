@@ -24,8 +24,10 @@ import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-11-23
+ */
 public class Utils {
 	
 	public static void refreshComboBox(ArrayList<Variable> vList, TableColumn tc){
