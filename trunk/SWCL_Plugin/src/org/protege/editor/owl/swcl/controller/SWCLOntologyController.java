@@ -12,7 +12,10 @@ import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLProperty;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-11-23
+ */
 public class SWCLOntologyController {
 
 	private OWLOntology ont;
@@ -24,7 +27,10 @@ public class SWCLOntologyController {
 		this.owlManager = ont.getOWLOntologyManager();
 	}
 	
-	// get prefix
+	/**
+	 * 
+	 * @return prefix
+	 */
 	public String getPrefix(){
 		// get prefix
 		String ontString = ont.toString();
@@ -34,7 +40,10 @@ public class SWCLOntologyController {
 		return ontString.substring(start+1, end);
 	}
 	
-	// get all properties without prefix
+	/**
+	 * 
+	 * @return get all datatype properties without prefix
+	 */
 	public ArrayList<String> getPropertyList(){
 		ArrayList<String> propertyList = new ArrayList<String>();
 		Set dataTypePropertySet = ont.getDataPropertiesInSignature();
@@ -45,7 +54,10 @@ public class SWCLOntologyController {
 		return propertyList;
 	}
 	
-	// get all object properties without prefix
+	/**
+	 * 
+	 * @return get all objective properties without prefix
+	 */
 	public ArrayList<String> getObjectPropertyList(){
 		ArrayList<String> propertyList = new ArrayList<String>();
 		Set objectTypePropertySet = ont.getObjectPropertiesInSignature();
@@ -56,7 +68,10 @@ public class SWCLOntologyController {
 		return propertyList;
 	}
 	
-	// get all classes without prefix
+	/**
+	 * 
+	 * @return get all classes without prefix
+	 */
 	public ArrayList<String> getClassList(){
 		ArrayList<String> classList = new ArrayList<String>();
 		Set classSet = ont.getClassesInSignature();
@@ -67,7 +82,10 @@ public class SWCLOntologyController {
 		return classList;
 	}
 	
-	// get all individuals without prefix
+	/**
+	 * 
+	 * @return get all individuals without prefix
+	 */
 	public ArrayList<String> getIndividualsList(){
 		ArrayList<String> indList = new ArrayList<String>();
 		Set indSet = ont.getIndividualsInSignature();
@@ -78,7 +96,11 @@ public class SWCLOntologyController {
 		return indList;
 	}
 	
-	// return class name without prefix
+	/**
+	 * 
+	 * @param OWLClass
+	 * @return class name without prefix
+	 */
 	public String getClassName(OWLClass owlClass){
 		String classNameWithoutPrefix = "";
 		String iriName = owlClass.getIRI().toString();
@@ -89,7 +111,11 @@ public class SWCLOntologyController {
 		return classNameWithoutPrefix;
 	}
 	
-	// return individual name without prefix
+	/**
+	 * 
+	 * @param OWLIndividual
+	 * @return individual name without prefix
+	 */
 	public String getIndividualName(OWLIndividual ind){
 		String owlIndWithoutPrefix = "";
 		String iriName = ((OWLNamedIndividual) ind).getIRI().toString();
@@ -100,7 +126,11 @@ public class SWCLOntologyController {
 		return owlIndWithoutPrefix;
 	}
 	
-	// get owl class with specific name
+	/**
+	 * 
+	 * @param OWL class name
+	 * @return get owl class with specific name
+	 */
 	public OWLClass getOWLClass(String name){
 		Set classSet = ont.getClassesInSignature();
 		Iterator it = classSet.iterator();
@@ -114,7 +144,11 @@ public class SWCLOntologyController {
 		return null;
 	}
 	
-	// get owl individual with specific name
+	/**
+	 * 
+	 * @param OWL Individual name
+	 * @return get owl individual with specific name
+	 */
 	public OWLIndividual getOWLIndividual(String name){
 		Set individualSet = ont.getIndividualsInSignature();
 		Iterator it = individualSet.iterator();
@@ -127,7 +161,11 @@ public class SWCLOntologyController {
 		return null;
 	}
 	
-	// return property name without prefix
+	/**
+	 * 
+	 * @param OWLProperty
+	 * @return property name without prefix
+	 */
 	public String getPropertyName(OWLProperty owlProperty){
 		String propertyNameWithoutPrefix = "";
 		String iriName = owlProperty.getIRI().toString();
@@ -138,7 +176,12 @@ public class SWCLOntologyController {
 		return propertyNameWithoutPrefix;
 	}
 	
-	// get without prefix
+	/**
+	 * 
+	 * @param String with prefix
+	 * @param prefix
+	 * @return  get without prefix
+	 */
 	public String getWithoutPrefix(String prefixStr,String prefix){
 		
 		String newStr = prefixStr;
