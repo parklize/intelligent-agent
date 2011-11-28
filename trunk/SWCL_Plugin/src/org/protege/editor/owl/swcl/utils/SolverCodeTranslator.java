@@ -1210,19 +1210,6 @@ System.out.println("no parameter");
 		return constraintsList;
 	}
 	
-	private ArrayList<OWLIndividual> getAllInds(ArrayList<VariableStructure> vsList){
-		ArrayList total = new ArrayList();
-		Iterator vsListIt = vsList.iterator();
-		// 변수에 대한 모든 객채들 모음
-		while(vsListIt.hasNext()){
-			ArrayList chList = ((VariableStructure)vsListIt.next()).getChildrens();
-			Iterator chListIt = chList.iterator();
-			while(chListIt.hasNext()){
-				total.add(chListIt.next());
-			}
-		}
-		return total;
-	}
 	// get objective from ontology, not used
 	private Objective getObjective(OWLOntology owl){
 		
