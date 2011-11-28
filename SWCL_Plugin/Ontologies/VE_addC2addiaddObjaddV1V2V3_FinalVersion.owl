@@ -440,14 +440,14 @@
     <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Constraint">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasLhs"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#LhsTermBlock"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#hasRhs"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#RhsTermBlock"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -1407,6 +1407,7 @@
     <!-- http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3 -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#CPUVendor"/>
         <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Vendor"/>
         <hasCapacity rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek1"/>
         <hasCapacity rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek2"/>
@@ -1669,10 +1670,10 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Week3">
         <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#Week"/>
         <hasCapacity rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3CapacityWeek3"/>
-        <hasSpendWeek rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13"/>
-        <hasSpendWeek rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23"/>
+        <hasSpendConsumption rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption13"/>
+        <hasSpendConsumption rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption23"/>
+        <hasSpendConsumption rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33"/>
         <hasProduceConsumption rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33"/>
-        <hasSpendWeek rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption33"/>
         <hasProduceConsumption rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3Consumption34"/>
         <hasDemand rdf:resource="http://www.semanticweb.org/ontologies/2011/9/VEOntology.owl#v3DemandWeek3"/>
     </owl:NamedIndividual>
