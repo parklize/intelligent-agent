@@ -35,7 +35,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-04-25
+ */
 public class ObjectiveViewComponent extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;

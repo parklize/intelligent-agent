@@ -40,7 +40,10 @@ import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
-
+/**
+ * @author parklize
+ * @version 1.0, 2011-11-23
+ */
 public class SolverCodeTranslator {
 
 	public static void translateSWCL(OWLOntology owl) {

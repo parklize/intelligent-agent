@@ -92,11 +92,8 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 
 
 /**
- * 
- * Author: parklize,pryiyeon
- * Date: 2011.04.20~
- * Description: SWCL view component in Protege
- * 
+ * @author parklize
+ * @version 1.0, 2011-04-23
  */
 
 public class SWCLViewComponent extends AbstractOWLViewComponent implements ActionListener{
