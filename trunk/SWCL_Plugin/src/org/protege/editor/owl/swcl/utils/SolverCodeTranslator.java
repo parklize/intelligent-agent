@@ -46,6 +46,10 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
  */
 public class SolverCodeTranslator {
 
+	/**
+	 * Description: translate SWCL to OPL
+	 * @param ontology
+	 */
 	public static void translateSWCL(OWLOntology owl) {
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -72,7 +76,13 @@ System.out.println("Generating Ilog Code finished....");
 	}
 	
 	
-	// get related constraint from objective
+	/**
+	 * 
+	 * @param objective
+	 * @param all Constraints
+	 * @param ontology
+	 * @return related constraint from objective
+	 */
 	private ArrayList<Constraint> getRelatedConstraints(Objective obj,
 			ArrayList<Constraint> allConstraints, OWLOntology owl) {
 		
@@ -126,11 +136,17 @@ System.out.println("Generating Ilog Code finished....");
 	}
 
 
-	// check whether two factors are related to each other
-	private boolean checkFactors(OWLOntology owl, ArrayList<Factor> factors, ArrayList<Factor> facs) {
+	/**
+	 * 
+	 * @param ontology
+	 * @param factors_1
+	 * @param factors_2
+	 * @return check whether two factors are related to each other
+	 */
+	private boolean checkFactors(OWLOntology owl, ArrayList<Factor> factors_1, ArrayList<Factor> factors_2) {
 		
-		for(Factor fac:factors){
-			for(Factor f:facs){
+		for(Factor fac:factors_1){
+			for(Factor f:factors_2){
 				if(f.getOwlProperty().equals(fac.getOwlProperty())){
 					
 					String fDescription = f.getV().getDescription();// latter one
@@ -155,7 +171,12 @@ System.out.println("Generating Ilog Code finished....");
 	}
 
 
-	// generate Ilog file
+	/**
+	 * Description: generate Ilog file
+	 * @param objective
+	 * @param constraint list
+	 * @param ontology
+	 */
 	private void generateIlogCode(Objective obj, ArrayList<Constraint> consList, OWLOntology owl){
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -296,8 +317,21 @@ System.out.println("no parameter");
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * 중점적으로 하고 있음,,,, 어려운 부분임.... 미치겠다,,,,,,,,,,,,,,,,,,,
+
+	/**
+	 * 
+	 * @param variable list
+	 * @param subjectToStr
+	 * @param varDecStr
+	 * @param varsList (String)
+	 * @param ontology
+	 * @param factory
+	 * @param prefix
+	 * @param constraint
+	 * @param qualifier list
+	 * @param individual list in qualifier
+	 * @param i
+	 * @param indIndex
 	 */
 	private void subGenerate(ArrayList<Variable> varList, StringBuffer subjectToStr, StringBuffer varDecStr, ArrayList<String> varsList, OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
 		
@@ -597,7 +631,20 @@ System.out.println("no parameter");
 	}
 
 
-
+	/**
+	 * Description: get all individuals in var
+	 * @param varList
+	 * @param desArray
+	 * @param owl
+	 * @param factory
+	 * @param prefix
+	 * @param c
+	 * @param qualifierList
+	 * @param qList
+	 * @param i
+	 * @param indIndex
+	 * @return
+	 */
 	private Set<OWLIndividual> getIndsInVar(ArrayList<Variable> varList, String desArray[], OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
 		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set, a에 객체들
 		for(String s:desArray){
@@ -703,7 +750,12 @@ System.out.println("no parameter");
 	}
 
 
-	// qualiferlist에 들어있는 변수있지 체크
+	/**
+	 * Description: check if exist in qualiferlist
+	 * @param varName
+	 * @param qualifierList
+	 * @return
+	 */
 	private boolean checkVarInQualifiers(String varName, ArrayList<Qualifier> qualifierList) {
 		for(Qualifier q:qualifierList){
 			String variableName = q.getV().getName();
@@ -716,7 +768,11 @@ System.out.println("no parameter");
 
 
 
-	// get opp in regular form
+	/**
+	 * Description: get opp in regular form
+	 * @param opp
+	 * @return regular opp form
+	 */
 	private String getChangedOpp(String opp) {
 		
 		if(opp.equals("equal")){
@@ -737,7 +793,13 @@ System.out.println("no parameter");
 	}
 	
 
-	// get individuals in variable 
+	/**
+	 * Description: get individuals in variable
+	 * @param variable
+	 * @param ontology
+	 * @param individual
+	 * @return individuals in variable
+	 */
 	private Set<OWLIndividual> getIndividuals(Variable v,OWLOntology owl,OWLIndividual ind){
 		
 		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set
@@ -825,7 +887,11 @@ System.out.println("no parameter");
 		return inds;
 	}
 	
-	// get all constraints from ontology
+	/**
+	 * Description: get all constraints from ontology
+	 * @param ontology
+	 * @return all constraints
+	 */
 	private ArrayList<Constraint> getAllConstraints(OWLOntology owl) {
 		
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -1213,7 +1279,11 @@ System.out.println("no parameter");
 		return constraintsList;
 	}
 	
-	// get objective from ontology, not used
+	/**
+	 * Description: get objective from ontology
+	 * @param ontology
+	 * @return objective
+	 */
 	private Objective getObjective(OWLOntology owl){
 		
 		Objective obj = new Objective();

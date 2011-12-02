@@ -30,6 +30,11 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
  */
 public class Utils {
 	
+	/**
+	 * Description: refresh combobox
+	 * @param variable list
+	 * @param table column
+	 */
 	public static void refreshComboBox(ArrayList<Variable> vList, TableColumn tc){
 		JComboBox jb = new JComboBox();
 		for(Variable v:vList){
@@ -38,6 +43,11 @@ public class Utils {
 		tc.setCellEditor(new DefaultCellEditor(jb));
 	}
 	
+	/**
+	 * Description: refresh total arraylist
+	 * @param total list
+	 * @param sub list
+	 */
 	public static void refreshTotalArrayList(ArrayList<Variable> total, ArrayList<Variable> sub1){
 		
 			total.clear();// clear all elements
@@ -48,13 +58,22 @@ public class Utils {
 			}
 			
 	}
-	
+	/**
+	 * Description: add arraylist2 to arraylist1 
+	 * @param list1
+	 * @param list2
+	 */
 	public static void addArrayList(ArrayList<Variable> list1, ArrayList<Variable> list2){
 		for(Variable v:list2){
 			list1.add(v);
 		}
 	}
-	
+	/**
+	 * Description: add two list to sum arrayList
+	 * @param list1
+	 * @param list2
+	 * @return sum arraylist
+	 */
 	public static ArrayList<Variable> sumArrayList(ArrayList<Variable> list1,ArrayList<Variable> list2){
 		ArrayList<Variable> sumArrayList = new ArrayList<Variable>();
 		for(Variable v:list1){
@@ -65,7 +84,12 @@ public class Utils {
 		}
 		return sumArrayList;
 	}
-	
+	/**
+	 * Description: find variable from variable list
+	 * @param variable list
+	 * @param name
+	 * @return variable
+	 */
 	public static Variable findVariableWithName(ArrayList<Variable> vList,String name){
 		for(Variable v:vList){
 			if(name.equals(v.getName())){
@@ -75,7 +99,12 @@ public class Utils {
 		return null;
 	}
 	
-	// intersection of two sets
+	/**
+	 * Description: intersection of two sets
+	 * @param set1
+	 * @param set2
+	 * @return intersection of two sets
+	 */
 	public static Set intersectionSet(Set s1, Set s2){
 		Set intersection = new HashSet();
 		for(Object o:s1){
@@ -86,7 +115,12 @@ public class Utils {
 		return intersection;
 	}
 	
-	// get Abstract Syntax from Constraint
+	/**
+	 * Description: get Abstract Syntax from Constraint
+	 * @param variable list
+	 * @param constraint
+	 * @return abstract syntax(String)
+	 */
 	public static String getSWCLAbstractSyntax(ArrayList<Variable> variablesList,Constraint con){
 		
 		String var="";
@@ -192,15 +226,21 @@ public class Utils {
 		}
 	}
 	
-	// test purpose
-	// test purpose
+	/**
+	 * Description: test purpose,print variable list
+	 * @param string before print
+	 * @param variable list
+	 */
 	public static void printVariablesList(String s,ArrayList<Variable> list){
 		for(Variable v:list){
 			System.out.println(s+v.getName());
 			System.out.println("Description:"+v.getDescription());
 		}
 	}
-	
+	/**
+	 * Description: print constraint
+	 * @param constraint
+	 */
 	public static void printConstraint(Constraint con){
 		
 		System.out.println(con.getName());
@@ -255,7 +295,10 @@ public class Utils {
 		}
 		
 	}
-	
+	/**
+	 * Description: print objective
+	 * @param objective
+	 */
 	public static void printObjective(Objective obj){
 		
 		System.out.println("Objective:====================");
