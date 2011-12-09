@@ -27,13 +27,11 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import Utils.Utils;
-import Utils.VariableStructure;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
@@ -50,6 +48,7 @@ public class TestOWL {
 		try {
 			
 			File file = new File("Ontology/VE_addC2C3C4addiaddObjaddV1V2V3_FinalVersionChangeWeek_test.owl");
+//			File file = new File("D:\\eclipse\\temp.owl");
 			
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			
@@ -108,7 +107,7 @@ System.out.println("Generating Ilog Code finished....");
 			for(TermBlock t:lhsT){
 				ArrayList<Factor> facs = t.getFactors();
 				// check related factors exist or not in facs
-				if(checkFactors(factors,facs)){
+				if(checkFactors(owl,factors,facs)){
 					relatedCons.add(c);
 				}
 			}
@@ -116,7 +115,7 @@ System.out.println("Generating Ilog Code finished....");
 			for(TermBlock t:rhsT){
 				ArrayList<Factor> facs = t.getFactors();
 				// check related factors exist or not in facs
-				if(checkFactors(factors,facs)){
+				if(checkFactors(owl,factors,facs)){
 					if(relatedCons.size()==0){
 						relatedCons.add(c);// initialize
 					}else{
@@ -136,24 +135,26 @@ System.out.println("Generating Ilog Code finished....");
 
 
 	// check whether two factors are related to each other
-	private boolean checkFactors(ArrayList<Factor> factors, ArrayList<Factor> facs) {
+	private boolean checkFactors(OWLOntology owl, ArrayList<Factor> factors, ArrayList<Factor> facs) {
 		
 		for(Factor fac:factors){
 			for(Factor f:facs){
 				if(f.getOwlProperty().equals(fac.getOwlProperty())){
 					
-					String fDescription = f.getV().getDescription();
-					String facDescription = fac.getV().getDescription();
-					String fDesArray[] = fDescription.split(" and\\s*");
-					String facDesArray[] = facDescription.split(" and\\s*");
+					String fDescription = f.getV().getDescription();// latter one
+					String facDescription = fac.getV().getDescription();// formar one
 					
-					for(String s:fDesArray){
-						for(String s1:facDesArray){
-							if(s.trim().equals(s1.trim())){
-								return true;
-							}
-						}
+					Set indsList_latter = getIndividuals(f.getV(), owl, null);
+					Set indsList_former = getIndividuals(fac.getV(), owl, null);
+					Set intersectionSet = Utils.intersectionSet(indsList_former, indsList_latter);// get intersection
+					
+					// If there's intersection return ture
+					if(intersectionSet.size()==0){
+						return false;
+					}else{
+						return true;
 					}
+					
 				}
 			}
 		}
@@ -204,13 +205,14 @@ System.out.println("no parameter");
 					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
 					String des = p.getV().getDescription();
 //System.out.println("des:"+des);
-					ArrayList<VariableStructure> vsList = getVSList(owl,p.getV());
+//					ArrayList<VariableStructure> vsList = getVSList(owl,p.getV());
 //System.out.println("vsList:"+vsList.size());
 					// Test
 //					VariableStructure vs = vsList.get(0);
 //					ArrayList<OWLIndividual> oiList = vs.getChildrens();
 //System.out.println(oiList.size());
-					ArrayList total = getAllInds(vsList);
+//					ArrayList total = getAllInds(vsList);
+					Set total = getIndividuals(p.getV(), owl, null);
 //System.out.println("total:"+total.size());					
 					// 변수에 들어있는 객체들의 개수만큼 
 					Iterator totalIt = total.iterator();
@@ -264,9 +266,8 @@ System.out.println("no parameter");
 			// subjectToStr 만들기
 			for(Constraint c:consList){
 //Utils.printConstraint(c);
-				
-				
 //System.out.println("Constraint Name:"+c.getName());
+				
 				// get qualifiers's list
 				ArrayList<Qualifier> qualifierList = c.getQualifiers();
 				ArrayList<Set<OWLIndividual>> qList = new ArrayList<Set<OWLIndividual>>();
@@ -277,7 +278,10 @@ System.out.println("no parameter");
 					String vDes = v.getDescription().trim();// qualifer description,like Vendor,Week
 //System.out.println("vDes:"+vDes);
 					OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+vDes));
-					Set<OWLIndividual> indsSet = getIndividuals(v, owl, null);
+					/**
+					 * Need update
+					 */
+					Set<OWLIndividual> indsSet = getIndividuals(v, owl, null);// get qualifier inds' list
 					qList.add(i, indsSet);
 //System.out.println("indsSet Size:"+indsSet.size());
 				}
@@ -308,8 +312,20 @@ System.out.println("no parameter");
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * 중점적으로 하고 있음,,,, 어려운 부분임.... 미치겠다,,,,,,,,,,,,,,,,,,,
+	/**
+	 * Description: generate OPL with one constraint
+	 * @param variables list
+	 * @param subjectToStr
+	 * @param varDecStr 
+	 * @param varsList (String type)
+	 * @param ontology
+	 * @param factory
+	 * @param prefix
+	 * @param constraint
+	 * @param qualifier list
+	 * @param individuals in qualifier
+	 * @param i
+	 * @param ind index
 	 */
 	private void subGenerate(ArrayList<Variable> varList, StringBuffer subjectToStr, StringBuffer varDecStr, ArrayList<String> varsList, OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
 		
@@ -318,17 +334,18 @@ System.out.println("no parameter");
 		int qListSize = qList.size();
 
 		if(qListSize>i){
+			
 			Set<OWLIndividual> indSet = qList.get(i); // 첫번째 qualifier에 들어있는 ind set
 
 				for(OWLIndividual ind:indSet){
-//System.out.println(ind);
-//System.out.println("i:"+i);
-//System.out.println("qListSize:"+qListSize);
+System.out.println(ind);
+System.out.println("i:"+i);
+System.out.println("qListSize:"+qListSize);
 					indIndex[i] = ind;
-//System.out.println("indIndex[0]"+indIndex[0]); //첫번째 qualifier에 대응하는 ind
-//System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
+System.out.println("indIndex[0]"+indIndex[0]); //첫번째 qualifier에 대응하는 ind
+System.out.println("indIndex[1]"+indIndex[1]); //두번째 qualifier에 대응하는 ind
 					if(qListSize>i+1){
-//System.out.println("==i:"+i);
+System.out.println("==i:"+i);
 						subGenerate(varList, subjectToStr, varDecStr, varsList, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 					}else{
 						
@@ -336,9 +353,6 @@ System.out.println("no parameter");
 						// Opp
 						String opp = getChangedOpp(c.getOpp().getOpp());
 
-						
-						
-						
 						// lhsStr생성
 						StringBuffer lhsStr = new StringBuffer("");
 						
@@ -358,9 +372,10 @@ System.out.println("no parameter");
 								String des = v.getDescription();
 								String desArray[] = des.split(" and\\s*");
 //System.out.println("des:"+des);
-								Set<OWLIndividual> inds = getIndsInVar(varList, desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
+								Set<OWLIndividual> inds = getIndsInVar(varList, desArray, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 //System.out.println(inds.size());
 								Iterator indsIt = inds.iterator();
+								
 								while(indsIt.hasNext()){
 									OWLIndividual fInd = (OWLIndividual) indsIt.next();
 //System.out.println("fInd:"+fInd);
@@ -375,10 +390,10 @@ System.out.println("no parameter");
 										while(dpVIt.hasNext()){
 											// str tokenize with the format of "0"^^xsd:int
 											String val = dpVIt.next().toString();
-									//System.out.println("val:"+val);
+//System.out.println("val:"+val);
 											if(val.equals("\"\"^^xsd:int")){
 												// ""^^xsd:int잡아서 변수 생성해야 함,need update
-									//System.out.println("property값이 널이네요,, 변수 생성 합시다");
+//System.out.println("property값이 널이네요,, 변수 생성 합시다");
 												// property + ind형태로 변수 생성 및 코드 생성
 												// 이미 선언한 변수인지 체크해줘야지
 												String varName = soc.getWithoutPrefix(owlP.toString().replace("#", ""), prefix)+soc.getWithoutPrefix(fInd.toString().replace("#", ""), prefix);
@@ -406,18 +421,25 @@ System.out.println("no parameter");
 								Variable v = p.getV();
 								String des = v.getDescription();
 								String desArray[] = des.split(" and\\s*");
+for(String s:desArray){
+	System.out.println("s:"+s);
+}
+
+
+
+								Set<OWLIndividual> inds = getIndsInVar(varList, desArray, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								
-								Set<OWLIndividual> inds = getIndsInVar(varList, desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
+								
+								
 								Iterator indsIt = inds.iterator();
-//for(OWLIndividual inddddd:inds){
-//	
-//	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
-//}
-//System.out.println("====");
+for(OWLIndividual indInVar:inds){
+	System.out.println(v.getName()+"에서 나온 ind:"+indInVar);
+}
 								String aggOp = tb.getAggregateOppertor();
 								if(aggOp.equals("sigma")){
 									while(indsIt.hasNext()){
-										//b에 들어있는 하나하나의 객체
+										
+										//a에 들어있는 하나하나의 객체
 										OWLIndividual indF = (OWLIndividual) indsIt.next();
 										ArrayList<Factor> fList = tb.getFactors();
 										StringBuffer fStr = new StringBuffer("");
@@ -594,8 +616,8 @@ System.out.println("no parameter");
 //System.out.println("rhsStr:"+rhsStr);
 						}
 						
-//System.out.println("final lhsStr:"+lhsStr);
-//System.out.println("final rhsStr:"+rhsStr);
+System.out.println("final lhsStr:"+lhsStr);
+System.out.println("final rhsStr:"+rhsStr);
 						
 						// lhs+sign+rhs
 						if(lhsStr.length()>=1 && rhsStr.length()>=1){
@@ -608,14 +630,13 @@ System.out.println("no parameter");
 		}
 	}
 
-
-
+	// get all inds with qualifier loop
 	private Set<OWLIndividual> getIndsInVar(ArrayList<Variable> varList, String desArray[], OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
 		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set, a에 객체들
 		for(String s:desArray){
-//System.out.println("s:"+s);
+System.out.println("s:"+s);
 			String partDes = s.trim();//앞뒤 blank들을 없앤것.
-//System.out.println("partDes:"+partDes);		
+System.out.println("partDes:"+partDes);		
 			String splitStr[] = partDes.split(" ");
 //for(String s1:splitStr){
 //System.out.println("s1:"+s1);
@@ -641,11 +662,11 @@ System.out.println("no parameter");
 				// qualifier중에 변수랑 맞으면 
 				if(checkVarInQualifiers(splitStr[2],qualifierList)){
 					for(int j=0; j<qualifierList.size(); j++){
-	//System.out.println(qualifierList.get(j).getV().getName());
+System.out.println(qualifierList.get(j).getV().getName());
 						if(qualifierList.get(j).getV().getName().equals(splitStr[2])){
 							// qualifier중 변수랑 같을 때
 							OWLObjectProperty objP = factory.getOWLObjectProperty(IRI.create(prefix+"#"+splitStr[0]));
-	//System.out.println("objP:"+objP);
+System.out.println("objP:"+objP);
 							Set inverseObjPSet = objP.getInverses(owl);
 							Iterator inverseObjPIt = inverseObjPSet.iterator();
 							OWLObjectProperty inverseObjP = null;// inverse property
@@ -653,14 +674,16 @@ System.out.println("no parameter");
 								inverseObjP = (OWLObjectProperty) inverseObjPIt.next();
 							}
 							OWLIndividual indexedInd = indIndex[j];	
-//	System.out.println("inverseObjP:"+inverseObjP);						
-//	System.out.println("indexedInd:"+indexedInd);
+	System.out.println("inverseObjP:"+inverseObjP);						
+	System.out.println("indexedInd:"+indexedInd);
 							HashMap indVs = (HashMap) indexedInd.getObjectPropertyValues(owl);
 							Set indV = (Set) indVs.get(inverseObjP);
 							if(indV != null){
 								Iterator indVIt = indV.iterator();
 								while(indVIt.hasNext()){
-									indsSet.add((OWLIndividual) indVIt.next());
+									OWLIndividual ind = (OWLIndividual) indVIt.next();
+System.out.println("ind"+ind);
+									indsSet.add(ind);
 								}
 							}else{
 								System.out.println("getIndsInVar()에서 에러 발생:"+indexedInd+":"+inverseObjP+"값이 없습니다...");
@@ -680,7 +703,7 @@ System.out.println("no parameter");
 					Iterator individualsSetIt = individualsSet.iterator();
 					while(individualsSetIt.hasNext()){
 						OWLIndividual indexedInd = (OWLIndividual) individualsSetIt.next();
-//System.out.println("case2 indexedInd:"+indexedInd);
+System.out.println("case2 indexedInd:"+indexedInd);
 						OWLObjectProperty objP = factory.getOWLObjectProperty(IRI.create(prefix+"#"+splitStr[0]));
 						Set inverseObjPSet = objP.getInverses(owl);
 						Iterator inverseObjPIt = inverseObjPSet.iterator();
@@ -693,7 +716,9 @@ System.out.println("no parameter");
 						if(indV != null){
 							Iterator indVIt = indV.iterator();
 							while(indVIt.hasNext()){
-								indsSet.add((OWLIndividual) indVIt.next());
+								OWLIndividual ind = (OWLIndividual) indVIt.next();
+System.out.println("ind:"+ind);
+								indsSet.add(ind);
 							}
 						}else{
 							System.out.println("getIndsInVar()에서 에러 발생:"+indexedInd+":"+inverseObjP+"값이 없습니다...");
@@ -726,8 +751,6 @@ System.out.println("no parameter");
 		return false;
 	}
 
-
-
 	// get opp in regular form
 	private String getChangedOpp(String opp) {
 		
@@ -749,110 +772,136 @@ System.out.println("no parameter");
 	}
 	
 	// get variable structure list 
-	private ArrayList<VariableStructure> getVSList(OWLOntology owl, Variable variable){
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		OWLDataFactory factory = manager.getOWLDataFactory();
-		SWCLOntologyController soc = new SWCLOntologyController(owl);
-		ConstraintController con = new ConstraintController(owl, soc);
-		ArrayList<Variable> varList = con.getAllVariables();
-		String prefix = soc.getPrefix();
-		
-		
-		ArrayList<VariableStructure> vsList = new ArrayList<VariableStructure>();
-		String des = variable.getDescription();
-//System.out.println(des);
-		// description에 근거하여 
-		String desArray[] = des.split("and\\s*");
-//for(String s:desArray){
-//	System.out.println(s);
-//}
-		if(desArray.length == 1){
-			// 뒤에 나오는 blank들을 없애줘야 함
-			String clsDes = desArray[0].trim();
-			// v Vendor과 같은 경우
-			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+clsDes));
-			Set inds = cls.getIndividuals(owl);
-			Iterator indsIt = inds.iterator();
-			VariableStructure vs = new VariableStructure();
-			ArrayList<OWLIndividual> indsList = new ArrayList<OWLIndividual>();
-			while(indsIt.hasNext()){
-				indsList.add((OWLIndividual) indsIt.next());
-			}
-			vs.setChildrens(indsList);
-			vsList.add(vs);
-		}
-//		else{
-//			String prop = st.nextToken();//property
-//			st.nextToken();//"VALUE"
-//			String var = st.nextToken();//class or variable
-//			Variable v = Utils.findVariableWithName(varList, var);
-//			ArrayList<VariableStructure> vs1List = getVSList(owl,v);
-//			Iterator vs1ListIt = vs1List.iterator();
-//			while(vs1ListIt.hasNext()){
-//				VariableStructure vs = (VariableStructure) vs1ListIt.next();
-//				ArrayList<OWLIndividual> chList = vs.getChildrens();
-//				Iterator chListIt = chList.iterator();
-//				while(chListIt.hasNext()){
-//					// 위에 children은 아래 parent
-//					OWLIndividual parentInd = (OWLIndividual) chListIt.next();
-//					ArrayList<OWLIndividual> childList = new ArrayList<OWLIndividual>();
-//					Set<OWLIndividual> childInds = getIndividuals(variable,owl,parentInd);
-//					Iterator childIndsIt = childInds.iterator();
-//					while(childIndsIt.hasNext()){
-//						childList.add((OWLIndividual) childIndsIt.next());
-//					}
-//					VariableStructure vs1 = new VariableStructure();
-//					vs1.setParent(parentInd);
-//					vs1.setChildrens(childList);
-//					vsList.add(vs1);
-//				}
+//	private ArrayList<VariableStructure> getVSList(OWLOntology owl, Variable variable){
+//		
+//		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+//		OWLDataFactory factory = manager.getOWLDataFactory();
+//		SWCLOntologyController soc = new SWCLOntologyController(owl);
+//		ConstraintController con = new ConstraintController(owl, soc);
+//		ArrayList<Variable> varList = con.getAllVariables();
+//		String prefix = soc.getPrefix();
+//		
+//		
+//		ArrayList<VariableStructure> vsList = new ArrayList<VariableStructure>();
+//		String des = variable.getDescription();
+////System.out.println(des);
+//		// description에 근거하여 
+//		String desArray[] = des.split("and\\s*");
+////for(String s:desArray){
+////	System.out.println(s);
+////}
+//		if(desArray.length == 1){
+//			// 뒤에 나오는 blank들을 없애줘야 함
+//			String clsDes = desArray[0].trim();
+//			// v Vendor과 같은 경우
+//			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+clsDes));
+//			Set inds = cls.getIndividuals(owl);
+//			Iterator indsIt = inds.iterator();
+//			VariableStructure vs = new VariableStructure();
+//			ArrayList<OWLIndividual> indsList = new ArrayList<OWLIndividual>();
+//			while(indsIt.hasNext()){
+//				indsList.add((OWLIndividual) indsIt.next());
 //			}
-//			
+//			vs.setChildrens(indsList);
+//			vsList.add(vs);
+//		}else{
+//			/**
+//			 * Need update
+//			 */
+//			for(String pd:desArray){
+//				String partDes = pd.trim();// delete blanks 
+//				// 각자 description에서 inds구해서 intersection해야 함.... 어떻게 할까???
+//			}
 //		}
-		return vsList;
-	}
+//		return vsList;
+//	}
+	
 	// get individuals in variable 
 	private Set<OWLIndividual> getIndividuals(Variable v,OWLOntology owl,OWLIndividual ind){
 		
+		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set
+//System.out.println("this is getIndividuals()");
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		SWCLOntologyController soc = new SWCLOntologyController(owl);
 		String prefix = soc.getPrefix();
+    	// controller
+    	ConstraintController controller = new ConstraintController(owl, soc);
+    	// get all variables to variablesList
+    	ArrayList<Variable> variablesList = controller.getAllVariables();
 		
 		String des = v.getDescription();
-		StringTokenizer st = new StringTokenizer(des);
+		String desArray[] = des.split("and\\s*");
 		
-		Set<OWLIndividual> indsSet = new HashSet<OWLIndividual>();
-		
-		if(st.countTokens()==1){
-			// class description example: Vendor
-			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+st.nextToken()));
-			return cls.getIndividuals(owl);
-		}else if(st.countTokens() == 3){
-			// class description example: produceWeek of ?v
-			String desc = st.nextToken();
-//System.out.println("val desc:"+desc);
-			OWLObjectProperty obp = factory.getOWLObjectProperty(IRI.create(prefix+"#"+desc));
-			Set obpSet = obp.getInverses(owl);
-			Iterator obpSetIt = obpSet.iterator();
-			OWLObjectProperty inverseObp = null;
-			while(obpSetIt.hasNext()){
-				inverseObp = (OWLObjectProperty) obpSetIt.next();// get hasProduceWeek
-			}
-			HashMap indVs = (HashMap) ind.getObjectPropertyValues(owl);
-			Set indV = (Set) indVs.get(inverseObp);
-			if(indV != null){
-				Iterator indVIt = indV.iterator();
-				while(indVIt.hasNext()){
-					indsSet.add((OWLIndividual) indVIt.next());
-				}
-			}else{
-				System.out.println("getIndividuals()에서 에러 발생:"+ind+":"+inverseObp+"값이 없습니다...");
-			}
+		// description이 하나일때
+		if(desArray.length==1){
 			
-//System.out.println("cls:"+clss);
+			String clsDes = desArray[0].trim();
+			// class description example: Vendor
+			OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+clsDes));
+			inds = cls.getIndividuals(owl);
+			
+		}else{
+			// description이 여러개 and로 묶여있을때
+			/**
+			 * Need Update
+			 */
+			Set indsSet = new HashSet();
+			for(String pd:desArray){
+				
+				String partDes = pd.trim();// delete blanks 
+				// 각자 description에서 inds구해서 intersection해야 함.... 어떻게 할까???
+//System.out.println("partDes:"+partDes);
+				String partDesArray[] = partDes.split(" ");
+//for(String s:partDesArray){
+//	System.out.println("s:"+s);
+//}
+				
+				if(partDesArray.length==1){
+					
+					Set indsSet_01 = new HashSet();
+					String clsDes = partDesArray[0];
+					OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+clsDes));
+					indsSet_01 = cls.getIndividuals(owl);
+					if(indsSet.size()==0){
+						indsSet = indsSet_01;
+					}else{
+						indsSet = Utils.intersectionSet(indsSet, indsSet_01);
+					}
+				}else{
+					
+					Set indsSet_02 = new HashSet();
+					// get datatype property (ex:hasConsumptionVendor value ?z)
+					OWLObjectProperty odp = factory.getOWLObjectProperty(IRI.create(prefix+"#"+partDesArray[0].trim()));
+					// get inverse property
+					Set inverseObjPSet = ((OWLObjectPropertyExpression) odp).getInverses(owl);
+					Iterator inverseObjPIt = inverseObjPSet.iterator();
+					OWLObjectProperty inverseObjP = null;// inverse property
+					while(inverseObjPIt.hasNext()){
+						inverseObjP = (OWLObjectProperty) inverseObjPIt.next();
+					}
+					// get all individuals from ?z
+					Variable var = Utils.findVariableWithName(variablesList, partDesArray[2]);
+					Set indsList = getIndividuals(var, owl, null);
+					Iterator indsListIt = indsList.iterator();
+					while(indsListIt.hasNext()){
+						OWLIndividual individual = (OWLIndividual) indsListIt.next();
+						HashMap indValues = (HashMap) individual.getObjectPropertyValues(owl);
+						Set indV = (Set) indValues.get(inverseObjP);
+						indsSet_02.addAll(indV);
+					}
+					
+					if(indsSet.size()==0){
+						indsSet = indsSet_02;
+					}else{
+						indsSet = Utils.intersectionSet(indsSet, indsSet_02);
+					}
+				}
+			}// end of for
+			
+			inds = indsSet;
 		}
-		return indsSet;
+		return inds;
 	}
 	
 	// get all constraints from ontology
@@ -1243,19 +1292,6 @@ System.out.println("no parameter");
 		return constraintsList;
 	}
 	
-	private ArrayList<OWLIndividual> getAllInds(ArrayList<VariableStructure> vsList){
-		ArrayList total = new ArrayList();
-		Iterator vsListIt = vsList.iterator();
-		// 변수에 대한 모든 객채들 모음
-		while(vsListIt.hasNext()){
-			ArrayList chList = ((VariableStructure)vsListIt.next()).getChildrens();
-			Iterator chListIt = chList.iterator();
-			while(chListIt.hasNext()){
-				total.add(chListIt.next());
-			}
-		}
-		return total;
-	}
 	// get objective from ontology, not used
 	private Objective getObjective(OWLOntology owl){
 		
