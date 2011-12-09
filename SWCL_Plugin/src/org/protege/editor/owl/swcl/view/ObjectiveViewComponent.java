@@ -15,12 +15,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 import org.protege.editor.owl.swcl.controller.ConstraintController;
+import org.protege.editor.owl.swcl.controller.SWCLOntologyController;
 import org.protege.editor.owl.swcl.model.Factor;
 import org.protege.editor.owl.swcl.model.Objective;
 import org.protege.editor.owl.swcl.model.OptModel;
@@ -31,10 +35,17 @@ import org.protege.editor.owl.swcl.utils.SolverCodeTranslator;
 import org.protege.editor.owl.swcl.utils.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
+
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 /**
  * @author parklize
  * @version 1.0, 2011-04-25
@@ -55,10 +66,12 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private JButton confirmButton = null;
 	
-	private ConstraintController con = null;
+	private ConstraintController con = null;  //  @jve:decl-index=0:
 	
 	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();  //  @jve:decl-index=0:
-	
+	private OWLEntityRemover remover = null;
+	private OWLDataFactory dataFactory = null;
+	private SWCLOntologyController soc = null;
 
 	/**
 	 * This is the default constructor
@@ -78,6 +91,9 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 		this.variablesList = variableList;
 		this.ont = ont;
 		this.con = con;
+		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
+		this.dataFactory = manager.getOWLDataFactory();
+		this.soc = new SWCLOntologyController(ont);
 
 if(ont == null){
 	System.out.println("ont is null");
@@ -240,6 +256,15 @@ if(ont == null){
 			
 		}else if(actionCommand.equals("Confirm")){
 			OptModel om = getOptModel();
+			OWLClass obj = new OWLClassImpl(this.dataFactory, IRI.create(this.soc.getPrefix()+"#Objective"));
+			Set objSet = obj.getIndividuals(ont);
+			if(objSet != null){
+				Iterator it = objSet.iterator();
+				while(it.hasNext()){
+					OWLNamedIndividual objective = (OWLNamedIndividual) it.next();
+					objective.accept(remover);
+				}
+			}
 			con.writeOptModelToOnt(om);
 			SolverCodeTranslator sct = new SolverCodeTranslator();
 			sct.translateSWCL(this.ont); // D:\eclipse\Ilog.txt·Î
