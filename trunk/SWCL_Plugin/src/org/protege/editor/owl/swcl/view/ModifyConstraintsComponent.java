@@ -1047,8 +1047,8 @@ public class ModifyConstraintsComponent extends JFrame implements ActionListener
 		if(e.getActionCommand().equals("OK")){
 
 			this.con = getConstraint();
-System.out.println("OK");
-Utils.printConstraint(con);
+//System.out.println("OK");
+//Utils.printConstraint(con);
 			String newName = this.con.getName();
 			
 			// check the constraint name exist
@@ -1128,8 +1128,8 @@ Utils.printConstraint(con);
 				
 				// write variables to ontology
 				this.controller.writeVariablesToOnt(this.variablesList);
-System.out.println("After Submit");
-Utils.printConstraint(this.con);		
+//System.out.println("After Submit");
+//Utils.printConstraint(this.con);		
 				// write constraint to ontology
 				this.controller.writeConstraintToOnt(this.con);
 				

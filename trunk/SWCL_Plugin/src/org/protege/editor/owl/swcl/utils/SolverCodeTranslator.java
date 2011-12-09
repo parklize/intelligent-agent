@@ -217,7 +217,7 @@ System.out.println("no parameter");
 					// 파라미터가 있을때
 					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
 					String des = p.getV().getDescription();
-//System.out.println("des:"+des);
+System.out.println("des:"+des);
 					
 					Set total = getIndividuals(p.getV(), owl, null);
 //System.out.println("total:"+total.size());					
@@ -1313,6 +1313,7 @@ System.out.println("no parameter");
 		Iterator objIndOPVIt = objIndOPV.iterator();
 		
 		while(objIndOPVIt.hasNext()){
+			
 			TermBlock t = new TermBlock();
 			// Term block
 			OWLNamedIndividual ind = (OWLNamedIndividual) objIndOPVIt.next();
@@ -1342,6 +1343,7 @@ System.out.println("no parameter");
 				OWLNamedIndividual v = (OWLNamedIndividual) hasParaVIt.next();
 				String vName = soc.getWithoutPrefix(v.toString(), prefix).substring(1);
 				Variable via = Utils.findVariableWithName(variablesList, vName);
+System.out.println("via:"+via.getName()+"-"+via.getDescription());
 				p.setV(via);
 				paraList.add(p);
 			}
