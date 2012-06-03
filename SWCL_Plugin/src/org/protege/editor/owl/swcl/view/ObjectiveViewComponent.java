@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.SystemColor;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,8 +22,12 @@ import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.swcl.controller.ConstraintController;
 import org.protege.editor.owl.swcl.controller.SWCLOntologyController;
 import org.protege.editor.owl.swcl.model.Factor;
@@ -57,28 +62,41 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	private JLabel jLabel = null;
 	private JComboBox instructions = null;
 	private JLabel jLabel1 = null;
+	private JLabel variableLabel = null;
 	private JScrollPane termScrollPane = null;
 	private JPanel termPanel = null;
+	private JPanel variablePanel = null;  
+	private JScrollPane variableScrollPane = null;
+	private JScrollPane variablesScrollPane = null;
+	private JTable variablesTable = null;
+	private JButton addVariableButton = null;
+	private JButton removeVariableButton = null;
 	private TermBlockComponent[] objectiveTermblocks = new TermBlockComponent[100];
 	private JButton jButton = null;
+//	private TableColumn qualifierVariable = null;
 	
+	private ArrayList<Variable> totalVariablesList = new ArrayList<Variable>();
 	private ArrayList<Variable> variablesList = new ArrayList<Variable>();  //  @jve:decl-index=0:
 	private OWLOntology ont = null;  //  @jve:decl-index=0:
 	private JButton confirmButton = null;
+	private TermBlockComponent[] rhsTermblocks = new TermBlockComponent[100];
+	private TermBlockComponent[] lhsTermblocks = new TermBlockComponent[100];
 	
-	private ConstraintController con = null;  //  @jve:decl-index=0:
-	
-	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();  //  @jve:decl-index=0:
+	private ConstraintController con = null;  
+	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager(); 
 	private OWLEntityRemover remover = null;
 	private OWLDataFactory dataFactory = null;
 	private SWCLOntologyController soc = null;
+	private ConstraintController controller = null;  //controllor  //  @jve:decl-index=0:
+
+
 
 	/**
 	 * This is the default constructor
 	 */
-	public ObjectiveViewComponent(ArrayList<Variable> variableList, OWLOntology ont, ConstraintController con) {
+	public ObjectiveViewComponent(ArrayList<Variable> variableList, OWLModelManager owlModelManager, ConstraintController con) {
 		super();
-		initialize(variableList, ont, con);
+		initialize(variableList, owlModelManager, con);
 	}
 
 	/**
@@ -86,46 +104,254 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 	 * 
 	 * @return void
 	 */
-	private void initialize(ArrayList<Variable> variableList, OWLOntology ont, ConstraintController con) {
+	private void initialize(ArrayList<Variable> totalVariablesList, OWLModelManager owlModelManager, ConstraintController con) {
 		
-		this.variablesList = variableList;
-		this.ont = ont;
+		this.totalVariablesList = totalVariablesList;
+		this.variablesList = (ArrayList<Variable>) totalVariablesList.clone();
+		this.ont = owlModelManager.getActiveOntology();
 		this.con = con;
 		this.remover = new OWLEntityRemover(this.manager,Collections.singleton(this.ont));
 		this.dataFactory = manager.getOWLDataFactory();
 		this.soc = new SWCLOntologyController(ont);
-
-if(ont == null){
-	System.out.println("ont is null");
-}else{
-	System.out.println("ont is not null");
-}
-	
 		
+		// get controller
+		this.controller = new ConstraintController(owlModelManager, soc);
+
+//		if(ont == null){
+//			System.out.println("ont is null");
+//		}else{
+//			System.out.println("ont is not null");
+//		}
+	
+		variableLabel = new JLabel();
+		variableLabel.setBounds(new Rectangle(18, 10, 141, 18));
+		variableLabel.setText("VARIABLE:");
 		jLabel1 = new JLabel();
-		jLabel1.setBounds(new Rectangle(18, 98, 141, 18));
-		jLabel1.setText("Objective Term:");
+		jLabel1.setBounds(new Rectangle(18, 198, 141, 18));
+		jLabel1.setText("OBJECTIVE TERM:");
 		jLabel = new JLabel();
-		jLabel.setBounds(new Rectangle(18, 32, 141, 18));
-		jLabel.setText("Opimization Instruction:");
+		jLabel.setBounds(new Rectangle(18, 150, 150, 18));
+		jLabel.setText("OPTIMIZATION INSTRUCTION:");
 		this.setSize(897, 600);
 		this.setLayout(null);
+		this.add(variableLabel,null);
 		this.add(jLabel, null);
 		this.add(jLabel1, null);
-		
+		this.add(getVariableScrollPane(),null);
 		this.add(getInstructionComboBox(), null);
 		this.add(getRhsScrollPane(),null);
 		this.add(getJButton(), null);
 		this.add(getConfirmButton(), null);
 	}
 
+	// variableScrollPane
+	private JScrollPane getVariableScrollPane() {
+		if (variableScrollPane == null) {
+			variableScrollPane = new JScrollPane();
+			variableScrollPane.setBounds(new Rectangle(180, 10, 620, 120));
+			variableScrollPane.setViewportView(getVariablePanel());
+		}
+		return variableScrollPane;
+	}
+	
+	// variable panel
+	private JPanel getVariablePanel() {
+		if (variablePanel == null) {
+			variablePanel = new JPanel();
+			variablePanel.setLayout(null);
+			variablePanel.add(getAddVariableButton());
+			variablePanel.add(getRemoveVariableButton(), null);
+			variablePanel.add(getVariablesScrollPane(), null);
+		}
+		return variablePanel;
+	}
+	
+	
+	// variables scrollpane
+	private JScrollPane getVariablesScrollPane() {
+		if (variablesScrollPane == null) {
+			variablesScrollPane = new JScrollPane();
+			variablesScrollPane.setBounds(new Rectangle(27, 8, 445, 103));
+			variablesScrollPane.setViewportView(getVariablesTable());
+		}
+		return variablesScrollPane;
+	}
+
+	// variables table
+	private JTable getVariablesTable() {
+		
+		if (variablesTable == null) {
+			final String[] colHeads = {"Variable","Domain Description"};
+			final String[][] data = null;
+			
+			DefaultTableModel model = new DefaultTableModel(data,colHeads);
+			variablesTable = new JTable(model);
+			
+			// set variable width
+			TableColumn tableColumn = variablesTable.getColumn("Variable");
+			tableColumn.setMaxWidth(60);
+			tableColumn.setMinWidth(60);
+			
+			// add variables from totalvariables list to display
+			if(totalVariablesList.size() != 0){                                                         
+				for(Variable v:totalVariablesList){
+					model.addRow(new Object[]{v.getName(),v.getDescription()});
+				}
+			}
+			
+			// set jcombobox to third column
+//			JComboBox jb = getClassesComboBox();
+//			TableColumn propertyColumn = variablesTable.getColumnModel().getColumn(2);
+//			propertyColumn.setCellEditor(new DefaultCellEditor(jb));
+			
+
+			/*
+			 * cell value changed listener			
+			 */
+			variablesTable.getModel().addTableModelListener(new TableModelListener(){
+
+				public void tableChanged(TableModelEvent e) {
+										if(e.getType() == TableModelEvent.UPDATE){
+						
+						// get changed value
+						String newValue = (String) variablesTable.getValueAt(e.getLastRow(),e.getColumn());
+						
+						if(e.getColumn() == 2){
+							if(!newValue.equals("Direct Input")){
+								variablesTable.setValueAt(newValue, e.getLastRow(), 1);
+							}else{
+								variablesTable.setValueAt("", e.getLastRow(), 1);
+							}
+						}
+						
+						// check rename variable
+						boolean checVariable = false;
+						for(Variable v:variablesList){
+							if(v.getName().equals(newValue) && !newValue.equals("")){
+								checVariable = true;
+							}
+						}
+						
+						if(checVariable){
+							// show msg when no constraint selected
+							JOptionPane.showMessageDialog (null, "Variable name exist!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+							variablesTable.setValueAt("", e.getLastRow(), e.getColumn());
+							
+						}else{
+							
+							// set name if column 0 is changed, set description if column 1 is changed
+							if(e.getColumn() == 0){
+								variablesList.get(e.getLastRow()).setName(newValue);
+							}else if(e.getColumn() == 1){
+								variablesList.get(e.getLastRow()).setDescription(newValue);
+							}
+							
+							// apply change to qualifierVariable table
+	//						Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+//							Utils.refreshComboBox(variablesList, qualifierVariable);
+							
+							// apply change to termblocks
+							for(int i=0;i<100;i++){
+								if(rhsTermblocks[i] != null){
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getParameterColumn());
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), rhsTermblocks[i].getFactorVariableColumn());
+									Utils.refreshComboBox(variablesList, rhsTermblocks[i].getParameterColumn());
+									Utils.refreshComboBox(variablesList, rhsTermblocks[i].getFactorVariableColumn());
+								}
+								if(lhsTermblocks[i] != null){
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getParameterColumn());
+	//								Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), lhsTermblocks[i].getFactorVariableColumn());
+									Utils.refreshComboBox(variablesList, lhsTermblocks[i].getParameterColumn());
+									Utils.refreshComboBox(variablesList, lhsTermblocks[i].getFactorVariableColumn());
+								}
+							}				
+						}
+					}
+				}
+			});
+		}
+		return variablesTable;
+	}
+	
+	// add variable button
+	private JButton getAddVariableButton() {
+		if (addVariableButton == null) {
+			addVariableButton = new JButton();
+			addVariableButton.setText("+");
+			addVariableButton.setBounds(new Rectangle(482, 7, 25, 18));
+			addVariableButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+
+					((DefaultTableModel) variablesTable.getModel()).addRow(new Object[]{"","","Direct Input"});
+
+					// add variable to variablesList
+					Variable variable = new Variable("","");
+					variablesList.add(variable);
+					
+					// apply change to qualifierVariable table
+//					Utils.refreshComboBox(Utils.sumArrayList(totalVariablesList, variablesList), qualifierVariable);
+//					Utils.refreshComboBox(variablesList, qualifierVariable); // bug occurrence
+					
+					// apply change to termblocks
+					for(int i=0;i<100;i++){
+						if(objectiveTermblocks[i] != null){
+							Utils.refreshComboBox(variablesList,objectiveTermblocks[i].getParameterColumn());
+							Utils.refreshComboBox(variablesList,objectiveTermblocks[i].getFactorVariableColumn());
+						}
+					}
+					
+				}
+			});
+		}
+		return addVariableButton; 
+	}
+	
+	// remove variable button
+	private JButton getRemoveVariableButton() {
+		
+		if (removeVariableButton == null) {
+			removeVariableButton = new JButton();
+			removeVariableButton.setText("-");
+			removeVariableButton.setBounds(new Rectangle(512, 7, 25, 18));
+			removeVariableButton.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+
+					DefaultTableModel model = (DefaultTableModel) variablesTable.getModel();
+					
+					// remove variable to variablesList
+					int index = model.getRowCount()-1;
+					if(index < 0){
+						// show msg when no constraint selected
+						JOptionPane.showMessageDialog (null, "No variable to delete!", "Wrong", JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						
+						variablesList.remove(index);
+
+						model.removeRow(index);
+						
+						// apply change to termblocks
+						for(int i=0;i<100;i++){
+							if(objectiveTermblocks[i] != null){
+								Utils.refreshComboBox(variablesList,objectiveTermblocks[i].getParameterColumn());
+								Utils.refreshComboBox(variablesList,objectiveTermblocks[i].getFactorVariableColumn());
+							}
+						}
+					}
+				}
+			});
+		}
+		return removeVariableButton;
+	}
+	
 	// get instruction combobox
 	private JComboBox getInstructionComboBox() {
 		if (instructions == null) {
 			final String[] signs = {"Maximize","Minimize"};
 			
 			instructions = new JComboBox(signs);
-			instructions.setBounds(new Rectangle(180, 40, 120, 23));
+			instructions.setBounds(new Rectangle(180, 150, 120, 23));
 		}
 		return instructions;
 	}
@@ -138,7 +364,7 @@ if(ont == null){
 	private JScrollPane getRhsScrollPane() {
 		if (termScrollPane == null) {
 			termScrollPane = new JScrollPane();
-			termScrollPane.setBounds(new Rectangle(180, 98, 620, 114));
+			termScrollPane.setBounds(new Rectangle(180, 198, 620, 114));
 			termScrollPane.setViewportView(getRhsPanel());
 		}
 		return termScrollPane;
@@ -176,7 +402,7 @@ if(ont == null){
 	private JButton getJButton() {
 		if (jButton == null) {
 			jButton = new JButton();
-			jButton.setBounds(new Rectangle(823, 98, 34, 17));
+			jButton.setBounds(new Rectangle(823, 198, 34, 17));
 			jButton.setText("+");
 			jButton.addActionListener(this);
 		}
@@ -187,7 +413,7 @@ if(ont == null){
 	private JButton getConfirmButton() {
 		if (confirmButton == null) {
 			confirmButton = new JButton();
-			confirmButton.setBounds(new Rectangle(747, 242, 52, 22));
+			confirmButton.setBounds(new Rectangle(747, 342, 52, 22));
 			confirmButton.setText("Confirm");
 			confirmButton.addActionListener(this);
 		}
@@ -255,9 +481,17 @@ if(ont == null){
 			termblockNumber++;
 			
 		}else if(actionCommand.equals("Confirm")){
+			
+			// write variables to ontology
+			
+			this.controller.deleteVariables();
+			controller.writeVariablesToOnt(this.variablesList);
+//Utils.printVariablesList("in ObjectiveViewComponent", variablesList);
+			
 			OptModel om = getOptModel();
 			OWLClass obj = new OWLClassImpl(this.dataFactory, IRI.create(this.soc.getPrefix()+"#Objective"));
 			Set objSet = obj.getIndividuals(ont);
+			
 			if(objSet != null){
 				Iterator it = objSet.iterator();
 				while(it.hasNext()){
@@ -266,11 +500,13 @@ if(ont == null){
 				}
 			}
 			con.writeOptModelToOnt(om);
+			
 			SolverCodeTranslator sct = new SolverCodeTranslator();
-			sct.translateSWCL(this.ont); // D:\eclipse\Ilog.txt·Î
+			sct.translateSWCL(this.ont); // Eclipse Installed DIR/Ilog.txt·Î
+
 		}
 		
 	}
 
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+}  //  @jve:decl-index=0:visual-constraint="13,-28"

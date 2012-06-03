@@ -122,7 +122,7 @@ public class AddConstraintsComponent extends JFrame implements ActionListener{
 
 
 	// controller
-	private ConstraintController controller = null;
+	private ConstraintController controller = null;  //  @jve:decl-index=0:
 
 
 	
