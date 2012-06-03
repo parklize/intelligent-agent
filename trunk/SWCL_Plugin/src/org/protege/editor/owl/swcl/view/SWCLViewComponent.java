@@ -270,7 +270,7 @@ public class SWCLViewComponent extends AbstractOWLViewComponent implements Actio
 	
 	// initialize objective view
 	private void initializeObjectiveView(ConstraintController con){
-		JPanel objectiveView = new ObjectiveViewComponent(this.variablesList,this.owl,con);
+		JPanel objectiveView = new ObjectiveViewComponent(this.variablesList,this.owlModelManager,con);
 		jTabbedPane.addTab("Objective View", objectiveView);
 	}
 	

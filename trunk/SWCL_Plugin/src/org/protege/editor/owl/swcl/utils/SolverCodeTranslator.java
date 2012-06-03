@@ -197,7 +197,10 @@ System.out.println("Generating Ilog Code finished....");
 			BufferedWriter bw = new BufferedWriter(fw);
 			StringTokenizer st = null;
 			
-			// objectiveStr 만들기
+			
+			
+			/* objectiveStr 만들기 */
+			
 			// objective termblocks
 			ArrayList<TermBlock> objTList = obj.getObjectiveTerm();
 			Iterator objTListIt = objTList.iterator();
@@ -212,12 +215,12 @@ System.out.println("Generating Ilog Code finished....");
 				ArrayList<Parameter> pList = tb.getParameters();
 				if(pList == null){
 					// 파라미터가 없을때
-System.out.println("no parameter");
+//System.out.println("no parameter");
 				}else{
 					// 파라미터가 있을때
 					Parameter p = pList.get(0);// parameter 하나라고 가정,need update
 					String des = p.getV().getDescription();
-System.out.println("des:"+des);
+//System.out.println("des:"+des);
 					
 					Set total = getIndividuals(p.getV(), owl, null);
 //System.out.println("total:"+total.size());					
@@ -270,7 +273,11 @@ System.out.println("des:"+des);
 				objectiveStr = new StringBuffer("minimize\n"+objectiveStr);
 			}
 			
-			// subjectToStr 만들기
+			
+			
+			
+			/* subjectToStr 만들기 */
+			
 			for(Constraint c:consList){
 //Utils.printConstraint(c);
 				
@@ -354,12 +361,8 @@ System.out.println("des:"+des);
 						subGenerate(varList, subjectToStr, varDecStr, varsList, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 					}else{
 						
-						
 						// Opp
-						String opp = getChangedOpp(c.getOpp().getOpp());
-
-						
-						
+						String opp = getChangedOpp(c.getOpp().getOpp());		
 						
 						// lhsStr생성
 						StringBuffer lhsStr = new StringBuffer("");
@@ -369,7 +372,6 @@ System.out.println("des:"+des);
 					
 						while(lhsTBIt.hasNext()){
 							TermBlock tb = (TermBlock) lhsTBIt.next();// LSH termblock
-//System.out.println("tbtbtbt");
 							StringBuffer tbStr = new StringBuffer("");
 							
 							ArrayList<Parameter> pList = tb.getParameters();// parameter list
@@ -421,7 +423,6 @@ System.out.println("des:"+des);
 								}
 								lhsStr.append(tb.getSign()+tbStr);// add factor string to termblock string
 								lhsStr = new StringBuffer(lhsStr.substring(0, lhsStr.length()-1));// delete every termblock's *
-//System.out.println("lhsStr:"+lhsStr);
 							}else{
 								// 파라미터 가 있을때
 								Parameter p = (Parameter) pList.get(0);// parameter하나라고 가정,need update
@@ -431,11 +432,11 @@ System.out.println("des:"+des);
 								
 								Set<OWLIndividual> inds = getIndsInVar(varList, desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								Iterator indsIt = inds.iterator();
-//for(OWLIndividual inddddd:inds){
-//	
-//	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
-//}
-//System.out.println("====");
+for(OWLIndividual inddddd:inds){
+	
+	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
+}
+System.out.println("====");
 								String aggOp = tb.getAggregateOppertor();
 								if(aggOp.equals("sigma")){
 									while(indsIt.hasNext()){
@@ -486,7 +487,7 @@ System.out.println("des:"+des);
 						
 						if(lhsStr.length()>=1){
 							lhsStr = new StringBuffer(lhsStr.substring(1));// delete first +
-//System.out.println("lhsStr:"+lhsStr);
+System.out.println("lhsStr:"+lhsStr);
 						}
 						
 						
@@ -558,7 +559,7 @@ System.out.println("des:"+des);
 								String des = v.getDescription();
 								String desArray[] = des.split("and\\s*");
 								
-								Set<OWLIndividual> inds = getIndsInVar(varList, desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
+								Set<OWLIndividual> inds = getIndsInVar(varList, desArray, owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								Iterator indsIt = inds.iterator();
 //	for(OWLIndividual inddddd:inds){
 //		System.out.println(inddddd);
@@ -613,11 +614,11 @@ System.out.println("des:"+des);
 						
 						if(rhsStr.length()>=1){
 							rhsStr = new StringBuffer(rhsStr.substring(1)+";");// delete first +
-//System.out.println("rhsStr:"+rhsStr);
+System.out.println("rhsStr:"+rhsStr);
 						}
 						
-//System.out.println("final lhsStr:"+lhsStr);
-//System.out.println("final rhsStr:"+rhsStr);
+System.out.println("final lhsStr:"+lhsStr);
+System.out.println("final rhsStr:"+rhsStr);
 						
 						// lhs+sign+rhs
 						if(lhsStr.length()>=1 && rhsStr.length()>=1){
@@ -646,11 +647,12 @@ System.out.println("des:"+des);
 	 * @return
 	 */
 	private Set<OWLIndividual> getIndsInVar(ArrayList<Variable> varList, String desArray[], OWLOntology owl, OWLDataFactory factory, String prefix, Constraint c,ArrayList<Qualifier> qualifierList, ArrayList<Set<OWLIndividual>> qList,int i,OWLIndividual[] indIndex) {
+		
 		Set<OWLIndividual> inds = new HashSet<OWLIndividual>();// 최종 intersection담을 set, a에 객체들
 		for(String s:desArray){
 //System.out.println("s:"+s);
 			String partDes = s.trim();//앞뒤 blank들을 없앤것.
-//System.out.println("partDes:"+partDes);		
+System.out.println("partDes:"+partDes);		
 			String splitStr[] = partDes.split(" ");
 //for(String s1:splitStr){
 //System.out.println("s1:"+s1);
@@ -658,7 +660,7 @@ System.out.println("des:"+des);
 			// consumption과 같은 하나짜리 일때
 			if(splitStr.length == 1){
 				OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+s.trim()));
-//System.out.println("cls:"+cls);
+System.out.println("cls:"+cls);
 				Set indsSet = cls.getIndividuals(owl);
 				if(inds.size()==0){
 					// 초기화 
@@ -667,6 +669,10 @@ System.out.println("des:"+des);
 					// intersection
 					inds = Utils.intersectionSet(inds, indsSet);
 				}
+System.out.println("individuals in inds now");
+for(Object ind11:inds){
+	System.out.println(ind11);
+}
 			}else{
 				// hasProduceWeek value w 과 같은 세개짜리 일때, 
 				// w는 qualifier리스트에서 찾아서 inds+index형태로 객체 써보자
@@ -676,11 +682,11 @@ System.out.println("des:"+des);
 				// qualifier중에 변수랑 맞으면 
 				if(checkVarInQualifiers(splitStr[2],qualifierList)){
 					for(int j=0; j<qualifierList.size(); j++){
-	//System.out.println(qualifierList.get(j).getV().getName());
+	System.out.println(qualifierList.get(j).getV().getName());
 						if(qualifierList.get(j).getV().getName().equals(splitStr[2])){
 							// qualifier중 변수랑 같을 때
 							OWLObjectProperty objP = factory.getOWLObjectProperty(IRI.create(prefix+"#"+splitStr[0]));
-	//System.out.println("objP:"+objP);
+	System.out.println("objP:"+objP);
 							Set inverseObjPSet = objP.getInverses(owl);
 							Iterator inverseObjPIt = inverseObjPSet.iterator();
 							OWLObjectProperty inverseObjP = null;// inverse property
@@ -688,14 +694,18 @@ System.out.println("des:"+des);
 								inverseObjP = (OWLObjectProperty) inverseObjPIt.next();
 							}
 							OWLIndividual indexedInd = indIndex[j];	
-//	System.out.println("inverseObjP:"+inverseObjP);						
-//	System.out.println("indexedInd:"+indexedInd);
+	System.out.println("inverseObjP:"+inverseObjP);						
+	System.out.println("indexedInd:"+indexedInd);
 							HashMap indVs = (HashMap) indexedInd.getObjectPropertyValues(owl);
 							Set indV = (Set) indVs.get(inverseObjP);
 							if(indV != null){
 								Iterator indVIt = indV.iterator();
 								while(indVIt.hasNext()){
-									indsSet.add((OWLIndividual) indVIt.next());
+// test code
+OWLIndividual inddddd = (OWLIndividual) indVIt.next();
+System.out.println(inddddd);
+indsSet.add(inddddd);
+//									indsSet.add((OWLIndividual) indVIt.next());
 								}
 							}else{
 								System.out.println("getIndsInVar()에서 에러 발생:"+indexedInd+":"+inverseObjP+"값이 없습니다...");
@@ -1291,10 +1301,13 @@ System.out.println("des:"+des);
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		SWCLOntologyController soc = new SWCLOntologyController(owl);
 		String prefix = soc.getPrefix();
+		
     	// controller
     	ConstraintController controller = new ConstraintController(owl, soc);
+    	
     	// get all variables to variablesList
     	ArrayList<Variable> variablesList = controller.getAllVariables();
+//Utils.printVariablesList("all variables:", variablesList);
 		
 		OWLNamedIndividual objInd = new OWLNamedIndividualImpl(factory,IRI.create(prefix+"#objective"));
 		
@@ -1343,7 +1356,8 @@ System.out.println("des:"+des);
 				OWLNamedIndividual v = (OWLNamedIndividual) hasParaVIt.next();
 				String vName = soc.getWithoutPrefix(v.toString(), prefix).substring(1);
 				Variable via = Utils.findVariableWithName(variablesList, vName);
-System.out.println("via:"+via.getName()+"-"+via.getDescription());
+//System.out.println("via:");
+//System.out.println(via.getName()+"-"+via.getDescription());
 				p.setV(via);
 				paraList.add(p);
 			}
