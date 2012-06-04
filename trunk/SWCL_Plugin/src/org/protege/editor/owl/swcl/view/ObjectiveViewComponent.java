@@ -116,12 +116,6 @@ public class ObjectiveViewComponent extends JPanel implements ActionListener{
 		
 		// get controller
 		this.controller = new ConstraintController(owlModelManager, soc);
-
-//		if(ont == null){
-//			System.out.println("ont is null");
-//		}else{
-//			System.out.println("ont is not null");
-//		}
 	
 		variableLabel = new JLabel();
 		variableLabel.setBounds(new Rectangle(18, 10, 141, 18));
