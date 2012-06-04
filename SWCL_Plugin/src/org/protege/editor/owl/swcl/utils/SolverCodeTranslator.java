@@ -432,11 +432,11 @@ System.out.println("Generating Ilog Code finished....");
 								
 								Set<OWLIndividual> inds = getIndsInVar(varList, desArray,owl, factory, prefix,c, qualifierList, qList, i+1, indIndex);
 								Iterator indsIt = inds.iterator();
-for(OWLIndividual inddddd:inds){
-	
-	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
-}
-System.out.println("====");
+//for(OWLIndividual inddddd:inds){
+//	
+//	System.out.println(v.getName()+"에서 나온 ind:"+inddddd);
+//}
+//System.out.println("====");
 								String aggOp = tb.getAggregateOppertor();
 								if(aggOp.equals("sigma")){
 									while(indsIt.hasNext()){
@@ -487,7 +487,7 @@ System.out.println("====");
 						
 						if(lhsStr.length()>=1){
 							lhsStr = new StringBuffer(lhsStr.substring(1));// delete first +
-System.out.println("lhsStr:"+lhsStr);
+//System.out.println("lhsStr:"+lhsStr);
 						}
 						
 						
@@ -614,11 +614,11 @@ System.out.println("lhsStr:"+lhsStr);
 						
 						if(rhsStr.length()>=1){
 							rhsStr = new StringBuffer(rhsStr.substring(1)+";");// delete first +
-System.out.println("rhsStr:"+rhsStr);
+//System.out.println("rhsStr:"+rhsStr);
 						}
 						
-System.out.println("final lhsStr:"+lhsStr);
-System.out.println("final rhsStr:"+rhsStr);
+//System.out.println("final lhsStr:"+lhsStr);
+//System.out.println("final rhsStr:"+rhsStr);
 						
 						// lhs+sign+rhs
 						if(lhsStr.length()>=1 && rhsStr.length()>=1){
@@ -652,7 +652,7 @@ System.out.println("final rhsStr:"+rhsStr);
 		for(String s:desArray){
 //System.out.println("s:"+s);
 			String partDes = s.trim();//앞뒤 blank들을 없앤것.
-System.out.println("partDes:"+partDes);		
+//System.out.println("partDes:"+partDes);		
 			String splitStr[] = partDes.split(" ");
 //for(String s1:splitStr){
 //System.out.println("s1:"+s1);
@@ -660,7 +660,7 @@ System.out.println("partDes:"+partDes);
 			// consumption과 같은 하나짜리 일때
 			if(splitStr.length == 1){
 				OWLClass cls = factory.getOWLClass(IRI.create(prefix+"#"+s.trim()));
-System.out.println("cls:"+cls);
+//System.out.println("cls:"+cls);
 				Set indsSet = cls.getIndividuals(owl);
 				if(inds.size()==0){
 					// 초기화 
@@ -669,10 +669,10 @@ System.out.println("cls:"+cls);
 					// intersection
 					inds = Utils.intersectionSet(inds, indsSet);
 				}
-System.out.println("individuals in inds now");
-for(Object ind11:inds){
-	System.out.println(ind11);
-}
+//System.out.println("individuals in inds now");
+//for(Object ind11:inds){
+//	System.out.println(ind11);
+//}
 			}else{
 				// hasProduceWeek value w 과 같은 세개짜리 일때, 
 				// w는 qualifier리스트에서 찾아서 inds+index형태로 객체 써보자
@@ -682,11 +682,11 @@ for(Object ind11:inds){
 				// qualifier중에 변수랑 맞으면 
 				if(checkVarInQualifiers(splitStr[2],qualifierList)){
 					for(int j=0; j<qualifierList.size(); j++){
-	System.out.println(qualifierList.get(j).getV().getName());
+//	System.out.println(qualifierList.get(j).getV().getName());
 						if(qualifierList.get(j).getV().getName().equals(splitStr[2])){
 							// qualifier중 변수랑 같을 때
 							OWLObjectProperty objP = factory.getOWLObjectProperty(IRI.create(prefix+"#"+splitStr[0]));
-	System.out.println("objP:"+objP);
+//	System.out.println("objP:"+objP);
 							Set inverseObjPSet = objP.getInverses(owl);
 							Iterator inverseObjPIt = inverseObjPSet.iterator();
 							OWLObjectProperty inverseObjP = null;// inverse property
@@ -694,18 +694,18 @@ for(Object ind11:inds){
 								inverseObjP = (OWLObjectProperty) inverseObjPIt.next();
 							}
 							OWLIndividual indexedInd = indIndex[j];	
-	System.out.println("inverseObjP:"+inverseObjP);						
-	System.out.println("indexedInd:"+indexedInd);
+//System.out.println("inverseObjP:"+inverseObjP);						
+//System.out.println("indexedInd:"+indexedInd);
 							HashMap indVs = (HashMap) indexedInd.getObjectPropertyValues(owl);
 							Set indV = (Set) indVs.get(inverseObjP);
 							if(indV != null){
 								Iterator indVIt = indV.iterator();
 								while(indVIt.hasNext()){
 // test code
-OWLIndividual inddddd = (OWLIndividual) indVIt.next();
-System.out.println(inddddd);
-indsSet.add(inddddd);
-//									indsSet.add((OWLIndividual) indVIt.next());
+//OWLIndividual inddddd = (OWLIndividual) indVIt.next();
+//System.out.println(inddddd);
+//indsSet.add(inddddd);
+									indsSet.add((OWLIndividual) indVIt.next());
 								}
 							}else{
 								System.out.println("getIndsInVar()에서 에러 발생:"+indexedInd+":"+inverseObjP+"값이 없습니다...");
