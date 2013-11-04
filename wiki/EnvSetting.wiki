@@ -1,15 +1,18 @@
 #labels Phase-Implementation,Phase-Deploy
 Subclipse
-http://subclipse.tigris.org/install.html
+- http://subclipse.tigris.org/install.html
+
+Java
+- Java 7 Update 5
 
 Eclispse
-Helios
+- Helios
 
 OS
-Windows XP
+- Windows XP
 
 Protege
-4.1
+- 4.1
 
 Ant
-1.8.2
+- 1.8.2
