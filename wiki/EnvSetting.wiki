@@ -3,7 +3,7 @@ Subclipse
 - http://subclipse.tigris.org/install.html
 
 Java
-- Java 7 Update 5
+- Java 6 Update 45
 
 Eclispse
 - Helios
