@@ -1,18 +1,19 @@
 #labels Phase-Implementation,Phase-Deploy
-Subclipse
-- http://subclipse.tigris.org/install.html
+1.OS
+- Windows 7
 
-Java
+2.Download Eclispse
+- Version : Helios
+
+3.Install update in Eclipse for Subclipse
+- URL : http://subclipse.tigris.org/install.html
+
+4.Java
 - Java 6 Update 45
 
-Eclispse
-- Helios
-
-OS
-- Windows XP
-
-Protege
-- 4.1
+5.Checkout Protege4.1 from SVN repository
+- SVN URL : https://smi-protege.stanford.edu/repos/protege/protege4/ide/eclipse/protege4.1/trunk
+- Ref : http://protegewiki.stanford.edu/wiki/CompileProtege4InEclipseFromSvn
 
 Ant
 - 1.8.2
