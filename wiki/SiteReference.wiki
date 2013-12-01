@@ -4,3 +4,6 @@ http://protege.stanford.edu/protege/4.1/docs/api/
 http://protegewiki.stanford.edu/wiki/PluginAnatomy
 http://owlapi.sourceforge.net/
 http://www.co-ode.org/downloads/protege-x/plugin-code-example.php
+
+Project Settings:
+http://protegewiki.stanford.edu/wiki/PluginAnatomy#Adding_a_View_Plugin_to_the_Plugin.xml_file
