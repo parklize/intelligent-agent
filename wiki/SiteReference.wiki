@@ -1,6 +1,6 @@
 #labels Phase-Implementation,RelatedSites
-http://protegewiki.stanford.edu/wiki/P4APIOverview#Overview
-http://protege.stanford.edu/protege/4.1/docs/api/
+#Protege4 API: http://protegewiki.stanford.edu/wiki/P4APIOverview#Overview
+#Protege4.1 API: http://protege.stanford.edu/protege/4.1/docs/api/
 http://protegewiki.stanford.edu/wiki/PluginAnatomy
 http://owlapi.sourceforge.net/
 http://protegewiki.stanford.edu/wiki/Protege4DevDocs
