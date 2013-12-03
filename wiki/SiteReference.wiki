@@ -1,8 +1,8 @@
 #labels Phase-Implementation,RelatedSites
- * Protege4 API: http://protegewiki.stanford.edu/wiki/P4APIOverview#Overview
- * Protege4.1 API: http://protege.stanford.edu/protege/4.1/docs/api/
-http://protegewiki.stanford.edu/wiki/PluginAnatomy
-http://owlapi.sourceforge.net/
+ * Protege4 API : http://protegewiki.stanford.edu/wiki/P4APIOverview#Overview
+ * Protege4.1 API : http://protege.stanford.edu/protege/4.1/docs/api/
+ * Plug-in Project Structure : http://protegewiki.stanford.edu/wiki/PluginAnatomy
+ * OWL API : http://owlapi.sourceforge.net/
 http://protegewiki.stanford.edu/wiki/Protege4DevDocs
 http://www.co-ode.org/downloads/protege-x/plugin-code-example.php
 
