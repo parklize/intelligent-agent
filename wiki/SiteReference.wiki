@@ -3,8 +3,4 @@
  * Protege4.1 API : http://protege.stanford.edu/protege/4.1/docs/api/
  * Plug-in Project Structure : http://protegewiki.stanford.edu/wiki/PluginAnatomy
  * OWL API : http://owlapi.sourceforge.net/
-http://protegewiki.stanford.edu/wiki/Protege4DevDocs
-http://www.co-ode.org/downloads/protege-x/plugin-code-example.php
-
-Project Settings:
-http://protegewiki.stanford.edu/wiki/PluginAnatomy#Adding_a_View_Plugin_to_the_Plugin.xml_file
+ * Protege4 Developer Guidelines : http://protegewiki.stanford.edu/wiki/Protege4DevDocs
