@@ -4,3 +4,4 @@
  * Plug-in Project Structure : http://protegewiki.stanford.edu/wiki/PluginAnatomy
  * OWL API : http://owlapi.sourceforge.net/
  * Protege4 Developer Guidelines : http://protegewiki.stanford.edu/wiki/Protege4DevDocs
+ * Plug-in Types : http://protegewiki.stanford.edu/wiki/PluginTypes
