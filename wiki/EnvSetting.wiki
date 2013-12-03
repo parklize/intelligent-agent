@@ -12,8 +12,5 @@
 - Java 6 Update 45
 
 5.Checkout Protege4.1 from SVN repository using Tortoise
-- SVN URL : https://smi-protege.stanford.edu/repos/protege/protege4/ide/eclipse/protege4.1/trunk
-- Ref : http://protegewiki.stanford.edu/wiki/CompileProtege4InEclipseFromSvn
-
-Ant
-- 1.8.2
+* SVN URL : https://smi-protege.stanford.edu/repos/protege/protege4/ide/eclipse/protege4.1/trunk
+* Ref : http://protegewiki.stanford.edu/wiki/CompileProtege4InEclipseFromSvn
