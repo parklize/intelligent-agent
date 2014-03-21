@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   <extension id="ExampleViewComponent"
+              point="org.protege.editor.core.application.ViewComponent">
+      <label value="Constraint View"/>
+      <class value="org.protege.editor.owl.swcl.view.ExampleViewComponent"/>
+      <category value="@org.protege.ontologycategory"/>
+   </extension>
+   <extension id="ExampleWorkspaceTab"
+              point="org.protege.editor.core.application.WorkspaceTab">
+      <label value="Example Tab"/>
+      <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
+      <index value="X"/>
+      <editorKitId value="OWLEditorKit"/>
+      <defaultViewConfigFileName value="viewconfig-exampleTab.xml"/>
+   </extension>
+</plugin>
